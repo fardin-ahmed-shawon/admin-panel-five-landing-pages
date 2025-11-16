@@ -4,16 +4,16 @@ $servername = "localhost";
 //--------------------------------------------------------------------
 
 // For local development ---------------------------------------------
-// $site_link = "http://localhost/test/easy_tech_solutions/react_easy_commerce/";
-// $username = "root";
-// $password = "";
-// $database_name = "easy_commerce_v9_4";
+$site_link = "http://localhost/test/clothdrob/";
+$username = "root";
+$password = "";
+$database_name = "clothdrob";
 
 // For production -----------------------------------------------------
-$site_link = "https://clothdrob.com/";
-$username = "clothd";
-$password = "Vp6IY-Lese6!56";
-$database_name = "clothd_easy_commerce";
+// $site_link = "https://clothdrob.com/";
+// $username = "clothd";
+// $password = "Vp6IY-Lese6!56";
+// $database_name = "clothd_easy_commerce";
 
 //---------------------------------------------------------------------
 

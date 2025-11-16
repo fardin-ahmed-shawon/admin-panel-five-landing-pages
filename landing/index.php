@@ -1,5 +1,5 @@
 <?php
-//require 'dbconnection.php';
+session_start();
 require '../database/dbConnection.php';
 
 $product_slug = $_GET['slug'] ?? '';
@@ -12,18 +12,13 @@ if ($product_slug != '') {
     $row = mysqli_num_rows($result);
 
     if ($row > 0) {
-
         $data = mysqli_fetch_assoc($result);
         $product_id = $data['product_id'];
 
     } else {
-        // If no product found with the given slug, redirect to a default page or show an error
-        header("Location: 404.php");
         exit;
     }
 } else {
-    // If no slug is provided, redirect to a default page or show an error
-    header("Location: 404.php");
     exit;
 }
 // END
@@ -76,6 +71,100 @@ if ($row > 0) {
 }
 // END
 
+?>
+
+<!-- Checkout Start -->
+<?php
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            // Retrieve form data
+            $fullName = $_POST['fullName'];
+            $phone = $_POST['phone'];
+            $email = $_POST['email'];
+            $address = $_POST['address'];
+            $city = $_POST['city'];
+            $payment_method = $_POST['payment'] ?? 'Cash On Delivery';
+            $accNum = $_POST['accNum'] ?? '';
+            $transactionID = $_POST['transactionID'] ?? '';
+            $user_id = 0;
+
+            // Generate a unique invoice number
+            function generateInvoiceNo() {
+                $timestamp = microtime(true) * 10000;
+                $uniqueString = 'INV-' . strtoupper(base_convert($timestamp, 10, 36));
+                return $uniqueString;
+            }
+            $invoice_no = generateInvoiceNo();
+            $_SESSION['temporary_invoice_no'] = $invoice_no;
+
+            // Validate payment details for mobile banking
+            if ($payment_method != "Cash On Delivery" && ($accNum == "" || $transactionID == "")) {
+                ?>
+                <META HTTP-EQUIV="Refresh" CONTENT="2; URL=index.php#checkout">
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        let msg_box = document.getElementById("msg");
+                        if (msg_box) {
+                            msg_box.style.display = "block";
+                            msg_box.innerText = "Please Provide both Account Number and Transaction ID!";
+                            setTimeout(() => {
+                                msg_box.style.display = "none";
+                            }, 3000);
+                        }
+                    });
+                </script>
+                <?php
+                exit;
+            } else {
+                // Retrieve cart data from POST request
+                $cartData = json_decode($_POST['carts'], true);
+
+                foreach ($cartData as $product) {
+                    $product_id = $product['id'];
+                    $product_title = $product['name'];
+                    $product_quantity = $product['quantity'];
+                    $total_price = $product['price'] * $product_quantity;
+
+                    // Insert data into order_info table
+                    $sql = "INSERT INTO order_info (user_id, user_full_name, user_phone, user_email, user_address, city_address, invoice_no, product_id, product_title, product_quantity, total_price, payment_method)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param(
+                        "issssssisiss",
+                        $user_id,
+                        $fullName,
+                        $phone,
+                        $email,
+                        $address,
+                        $city,
+                        $invoice_no,
+                        $product_id,
+                        $product_title,
+                        $product_quantity,
+                        $total_price,
+                        $payment_method
+                    );
+
+                    if ($stmt->execute()) {
+                        if ($payment_method != "Cash On Delivery") {
+                            $order_no = $conn->insert_id;
+                            // Insert data into payment_info table
+                            $sql_payment = "INSERT INTO payment_info (invoice_no, order_no, payment_method, acc_number, transaction_id)
+                            VALUES (?, ?, ?, ?, ?)";
+                            $stmt_payment = $conn->prepare($sql_payment);
+                            $stmt_payment->bind_param("sisss", $invoice_no, $order_no, $payment_method, $accNum, $transactionID);
+                            $stmt_payment->execute();
+                            $stmt_payment->close();
+                        }
+                    }
+                    $stmt->close();
+                }
+                $conn->close();
+                // Redirect or show success message
+                echo "<script>window.location.href = 'index.php?or_msg=successful';</script>";
+                exit;
+            }
+        }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -340,98 +429,7 @@ if ($row > 0) {
         </div>
         <!-- Product Gallery End -->
 
-
-        <!-- Checkout Start -->
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            session_start();
-            // Retrieve form data
-            $fullName = $_POST['fullName'];
-            $phone = $_POST['phone'];
-            $email = $_POST['email'];
-            $address = $_POST['address'];
-            $city = $_POST['city'];
-            $payment_method = $_POST['payment'] ?? 'Cash On Delivery';
-            $accNum = $_POST['accNum'] ?? '';
-            $transactionID = $_POST['transactionID'] ?? '';
-
-            // Generate a unique invoice number
-            function generateInvoiceNo() {
-                $timestamp = microtime(true) * 10000;
-                $uniqueString = 'INV-' . strtoupper(base_convert($timestamp, 10, 36));
-                return $uniqueString;
-            }
-            $invoice_no = generateInvoiceNo();
-            $_SESSION['temporary_invoice_no'] = $invoice_no;
-
-            // Validate payment details for mobile banking
-            if ($payment_method != "Cash On Delivery" && ($accNum == "" || $transactionID == "")) {
-                ?>
-                <META HTTP-EQUIV="Refresh" CONTENT="2; URL=index.php#checkout">
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        let msg_box = document.getElementById("msg");
-                        if (msg_box) {
-                            msg_box.style.display = "block";
-                            msg_box.innerText = "Please Provide both Account Number and Transaction ID!";
-                            setTimeout(() => {
-                                msg_box.style.display = "none";
-                            }, 3000);
-                        }
-                    });
-                </script>
-                <?php
-                exit;
-            } else {
-                // Retrieve cart data from POST request
-                $cartData = json_decode($_POST['carts'], true);
-
-                foreach ($cartData as $product) {
-                    $product_id = $product['id'];
-                    $product_title = $product['name'];
-                    $product_quantity = $product['quantity'];
-                    $total_price = $product['price'] * $product_quantity;
-
-                    // Insert data into order_info table
-                    $sql = "INSERT INTO order_info (user_full_name, user_phone, user_email, user_address, city_address, invoice_no, product_id, product_title, product_quantity, total_price, payment_method)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param(
-                        "ssssssisiss",
-                        $fullName,
-                        $phone,
-                        $email,
-                        $address,
-                        $city,
-                        $invoice_no,
-                        $product_id,
-                        $product_title,
-                        $product_quantity,
-                        $total_price,
-                        $payment_method
-                    );
-
-                    if ($stmt->execute()) {
-                        if ($payment_method != "Cash On Delivery") {
-                            $order_no = $conn->insert_id;
-                            // Insert data into payment_info table
-                            $sql_payment = "INSERT INTO payment_info (invoice_no, order_no, payment_method, acc_number, transaction_id)
-                            VALUES (?, ?, ?, ?, ?)";
-                            $stmt_payment = $conn->prepare($sql_payment);
-                            $stmt_payment->bind_param("sisss", $invoice_no, $order_no, $payment_method, $accNum, $transactionID);
-                            $stmt_payment->execute();
-                            $stmt_payment->close();
-                        }
-                    }
-                    $stmt->close();
-                }
-                $conn->close();
-                // Redirect or show success message
-                echo "<script>window.location.href = 'index.php?or_msg=successful';</script>";
-                exit;
-            }
-        }
-        ?>
+        
 
         <div id="checkout">
             <div class="container" id="products">

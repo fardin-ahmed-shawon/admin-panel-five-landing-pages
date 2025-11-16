@@ -1,7 +1,7 @@
 RewriteEngine On
 
 # RewriteBase https://clothdrob.com/landing
-RewriteBase /landing/
+RewriteBase /test/clothdrob/landing/
 
 # Landing without slug
 RewriteRule ^$ index.php [L]
