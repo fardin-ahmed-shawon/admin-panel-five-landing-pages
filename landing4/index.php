@@ -1,203 +1,154 @@
 <?php
-// Site Configuration
-$site_title = "নারিকেল নাড়ু - ঢাকা ফুড সার্ভিস";
-$site_language = "bn";
-$site_charset = "UTF-8";
+session_start();
+require '../database/dbConnection.php';
 
-// Hero Section
-$hero_section = array(
-    'title' => "বাংলার ঐতিহ্যবাহী মিষ্টি<br>নারিকেলের নাড়ু",
-    'image' => "https://dhakafoodservice.com/wp-content/uploads/2025/07/152151-1024x1024.webp",
-    'alt' => "নারিকেল নাড়ু"
-);
+$product_slug = $_GET['slug'] ?? '';
 
-// Price Box
-$price_box = array(
-    array(
-        'weight' => "৫০০ গ্রাম",
-        'old_price' => "৫৫০ টাকা",
-        'new_price' => "৪৯০ টাকা",
-        'gift_text' => ""
-    ),
-    array(
-        'weight' => "১ কেজি",
-        'old_price' => "১০২০ টাকা",
-        'new_price' => "৯৫০ টাকা",
-        'gift_text' => ""
-    ),
-    array(
-        'weight' => "২ কেজি",
-        'old_price' => "১৯৫০ টাকা",
-        'new_price' => "১৮০০ টাকা",
-        'gift_text' => "সাথে পাচ্ছেন ১০০ গ্রাম দানাদার ঘি ফ্রী 🎁"
-    )
-);
+// Fetch product id based on slug
+if ($product_slug != '') {
+    $sql = "SELECT product_id FROM landing_pages WHERE product_slug='$product_slug'";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_num_rows($result);
 
-// Offer Notice
-$offer_notice = "🔥বিঃদ্রঃ অফারটি সীমিত সময়ের জন্য থাকবে🔥";
+    if ($row > 0) {
+        $data = mysqli_fetch_assoc($result);
+        $product_id = $data['product_id'];
+    } else {
+        exit;
+    }
+} else {
+    exit;
+}
 
-// Countdown Timer
-$countdown_target = "2025-12-31T23:59:59";
+// Fetch website settings
+$sql = "SELECT * FROM website_info";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_num_rows($result);
+if ($row > 0) {
+    while ($data = mysqli_fetch_assoc($result)) {
+        $websiteName = $data['name'];
+        $websitePhone = $data['phone'];
+        $logo = $data['logo'];
+    }
+}
 
-// Order Button Text
-$order_button_text = "🛒 অর্ডার করতে ক্লিক করুন";
+// Fetch Landing Page Info
+$sql = "SELECT * FROM landing_pages WHERE product_slug='$product_slug'";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_num_rows($result);
+if ($row > 0) {
+    while ($data = mysqli_fetch_assoc($result)) {
+        $home_title = $data['home_title'];
+        $home_des = $data['home_description'];
+        $home_img = $data['home_img'];
+    }
+}
 
-// Product Details Section
-$details_section = array(
-    'images' => array(
-        array(
-            'src' => "https://dhakafoodservice.com/wp-content/uploads/2025/07/ARI09908-768x512.webp",
-            'alt' => "নারিকেল নাড়ু"
-        ),
-        array(
-            'src' => "https://dhakafoodservice.com/wp-content/uploads/2025/07/ARI09333-768x512.webp",
-            'alt' => "নারিকেল নাড়ু"
-        )
-    ),
-    'benefits' => array(
-        "পুরনো দিনের মিষ্টি স্মৃতি এবার ফিরে আসবে আমাদের নাড়ুর প্রতিটি কামড়ে।",
-        "চিনির বদলে আছে খাঁটি আখের গুড় – ডায়াবেটিস রোগীরাও খেতে পারবেন।",
-        "শিশু থেকে বয়স্ক, সবার মুখে হাসি ফোটাবে এই মজাদার নাড়ুর স্বাদ।",
-        "প্রতিটি নাড়ুতে টের পাবেন আসল নারিকেলের খসখসে স্বাদ আর মিষ্টি-ঘ্রাণের পারফেক্ট মেলবন্ধন।",
-        "উন্নত মানের প্যাকেজিং – যাতে গুণগত মান ঠিক থাকে এবং ঠিকমতো আপনার কাছে পৌঁছে যায়"
-    )
-);
+// Fetch Product Info
+$sql = "SELECT * FROM product_info WHERE product_id = $product_id LIMIT 1";
+$result = mysqli_query($conn, $sql);
+$productData = mysqli_fetch_assoc($result);
+$productTitle = $productData['product_title'];
+$productPrice = $productData['product_price'];
+$productImg = $productData['product_img1'];
+$regularPrice = $productData['product_regular_price'];
+$discount = round((($regularPrice - $productPrice) / $regularPrice) * 100);
 
-// Ingredients Section
-$ingredients_section = array(
-    'title' => "আমাদের মজাদার নারিকেলের নাড়ুর উপকরণ",
-    'image' => "https://dhakafoodservice.com/wp-content/uploads/2025/07/ARI09944-1-1024x1024.webp",
-    'alt' => "উপকরণ",
-    'ingredients' => array(
-        "বাছাইকৃত পরিপক্ক নোয়াখালীর নারিকেল",
-        "খাঁটি আঁখের গুড় - কেমিকেলমুক্ত",
-        "পাবনার বিখ্যাত গাওয়া ঘি বাড়ায় মিষ্টির ঘ্রাণ ও স্বাদ",
-        "সিক্রেট ঘরোয়া মসলা – যা নাড়ুকে করে তোলে অনন্য",
-        "কোনো প্রিজারভেটিভ বা কৃত্রিম ফ্লেভার নয়",
-        "সম্পূর্ণ হাইজেনিক পরিবেশে ১০০% হাতে তৈরি"
-    )
-);
+// Fetch available sizes
+$sizes_sql = "SELECT size FROM product_size_list WHERE product_id = $product_id";
+$sizes_result = mysqli_query($conn, $sizes_sql);
+$sizes = [];
+while ($size_row = mysqli_fetch_assoc($sizes_result)) {
+    $sizes[] = $size_row['size'];
+}
 
-// Reviews Section
-$reviews_section = array(
-    'title' => "আমাদের কাস্টমার ফিডব্যাক",
-    'reviews' => array(
-        array(
-            'src' => "https://dhakafoodservice.com/wp-content/uploads/2025/11/1.webp",
-            'alt' => "Review 1"
-        ),
-        array(
-            'src' => "https://dhakafoodservice.com/wp-content/uploads/2025/11/6-1.webp",
-            'alt' => "Review 2"
-        ),
-        array(
-            'src' => "https://dhakafoodservice.com/wp-content/uploads/2025/11/5.webp",
-            'alt' => "Review 3"
-        ),
-        array(
-            'src' => "https://dhakafoodservice.com/wp-content/uploads/2025/11/4.webp",
-            'alt' => "Review 4"
-        ),
-        array(
-            'src' => "https://dhakafoodservice.com/wp-content/uploads/2025/11/3.webp",
-            'alt' => "Review 5"
-        ),
-        array(
-            'src' => "https://dhakafoodservice.com/wp-content/uploads/2025/11/2.webp",
-            'alt' => "Review 6"
-        )
-    )
-);
+// Fetch gallery images
+$gallery_sql = "SELECT gallery_image FROM gallery WHERE product_id = $product_id";
+$gallery_result = mysqli_query($conn, $gallery_sql);
+$gallery_images = [];
+while ($gallery_row = mysqli_fetch_assoc($gallery_result)) {
+    $gallery_images[] = $gallery_row['gallery_image'];
+}
 
-// Contact Section
-$contact_section = array(
-    'title' => "প্রয়োজনে কল করুন:",
-    'phone_number' => "09647001998",
-    'display_number' => "09647001998"
-);
+// Fetch features
+$features_sql = "SELECT feature_title, feature_description FROM features WHERE product_id = $product_id";
+$features_result = mysqli_query($conn, $features_sql);
+$features = [];
+while ($feature_row = mysqli_fetch_assoc($features_result)) {
+    $features[] = $feature_row;
+}
 
-// Order Form Section
-$order_form = array(
-    'logo' => "https://dhakafoodservice.com/wp-content/uploads/2025/07/Dhaka-food-new-logo-ai-01-300x300.png",
-    'logo_alt' => "Dhaka Food Service",
-    'title' => "অর্ডার করতে সঠিক তথ্য দিয়ে নিচের ফর্মটি পূরণ করুন"
-);
+// Process Order
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $fullName = $_POST['name'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
+    $selectedSize = $_POST['product_size'];
+    $quantity = intval($_POST['quantity']);
+    $shippingCost = intval($_POST['shipping']);
+    
+    $city = $shippingCost == 80 ? 'Inside Dhaka' : 'Outside Dhaka';
+    $payment_method = 'Cash On Delivery';
+    $user_id = 0;
 
-// Form Labels
-$form_labels = array(
-    'name' => "নাম",
-    'address' => "ঠিকানা",
-    'phone' => "নাম্বার",
-    'country' => "Country / Region"
-);
+    function generateInvoiceNo() {
+        $timestamp = microtime(true) * 10000;
+        $uniqueString = 'INV-' . strtoupper(base_convert($timestamp, 10, 36));
+        return $uniqueString;
+    }
+    $invoice_no = generateInvoiceNo();
+    $_SESSION['temporary_invoice_no'] = $invoice_no;
 
-// Product Options
-$product_options = array(
-    array(
-        'value' => "500g",
-        'image' => "https://dhakafoodservice.com/wp-content/uploads/2025/08/6-300x300.webp",
-        'alt' => "500g",
-        'name' => "নারিকেলের নাড়ু ৫০০ গ্রাম",
-        'price' => "490.00",
-        'gift_badge' => ""
-    ),
-    array(
-        'value' => "1kg",
-        'image' => "https://dhakafoodservice.com/wp-content/uploads/2025/08/6-300x300.webp",
-        'alt' => "1kg",
-        'name' => "নারিকেলের নাড়ু ১ কেজি",
-        'price' => "950.00",
-        'gift_badge' => ""
-    ),
-    array(
-        'value' => "2kg",
-        'image' => "https://dhakafoodservice.com/wp-content/uploads/2025/08/6-300x300.webp",
-        'alt' => "2kg",
-        'name' => "নারিকেলের নাড়ু ২ কেজি",
-        'price' => "1,800.00",
-        'gift_badge' => "১০০ গ্রাম পাবনার বিখ্যাত দানাদার গাওয়া ঘি ফ্রি 🎁"
-    )
-);
+    $product_title_full = $productTitle;
+    if (!empty($selectedSize) && $selectedSize !== 'standard') {
+        $product_title_full .= " (Size: $selectedSize)";
+    }
+    
+    $total_price = ($productPrice * $quantity);
 
-// Order Summary
-$order_summary = array(
-    'title' => "আপনার অর্ডার",
-    'subtotal' => "Subtotal",
-    'shipping' => "Shipping",
-    'total' => "Total"
-);
+    $sql = "INSERT INTO order_info (user_id, user_full_name, user_phone, user_email, user_address, city_address, invoice_no, product_id, product_title, product_quantity, product_size, total_price, payment_method)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $email = '';
+    $stmt->bind_param(
+        "issssssisisss",
+        $user_id,
+        $fullName,
+        $phone,
+        $email,
+        $address,
+        $city,
+        $invoice_no,
+        $product_id,
+        $product_title_full,
+        $quantity,
+        $selectedSize,
+        $total_price,
+        $payment_method
+    );
+    $stmt->execute();
+    
+    $stmt->close();
+    $conn->close();
+    echo "<script>window.location.href = 'index.php?slug=$product_slug&or_msg=successful';</script>";
+    exit;
+}
 
-// Shipping Options
-$shipping_options = array(
-    'outside_dhaka' => array(
-        'value' => "130",
-        'label' => "ঢাকার বাইরে: ৳ 130.00"
-    ),
-    'inside_dhaka' => array(
-        'value' => "70",
-        'label' => "ঢাকার ভিতরে: ৳ 70.00"
-    )
-);
-
-// Submit Button
-$submit_button = "অর্ডারটি কনফার্ম করুন";
-
-// Chat Widget
-$chat_widget = array(
-    'url' => "https://m.me/dhakafoodservic",
-    'button_text' => "💬"
-);
-
-// WhatsApp Configuration
-$whatsapp_number = "8809647001998";
+// Fetch reviews
+$reviews_sql = "SELECT review_image FROM reviews WHERE product_id = $product_id";
+$reviews_result = mysqli_query($conn, $reviews_sql);
+$reviews = [];
+while($review = mysqli_fetch_assoc($reviews_result)) {
+    $reviews[] = $review['review_image'];
+}
 ?>
-
 <!DOCTYPE html>
-<html lang="<?php echo $site_language; ?>">
+<html lang="bn">
 <head>
-    <meta charset="<?php echo $site_charset; ?>">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $site_title; ?></title>
+    <title><?php echo $websiteName; ?> - <?php echo $productTitle; ?></title>
+    <link href="../Admin/<?= $logo ?>" rel="icon">
     
     <!-- Hind Siliguri font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -208,7 +159,6 @@ $whatsapp_number = "8809647001998";
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     
     <style>
-        /* All the CSS styles from the original HTML remain exactly the same */
         * {
             margin: 0;
             padding: 0;
@@ -227,6 +177,21 @@ $whatsapp_number = "8809647001998";
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+        }
+
+        .success-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            text-align: center;
+            z-index: 9999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-size: 18px;
+            font-weight: bold;
         }
 
         .hero-section {
@@ -278,13 +243,6 @@ $whatsapp_number = "8809647001998";
             font-size: 1.2rem;
         }
 
-        .gift-text {
-            color: #e67e22;
-            font-weight: 600;
-            margin-top: 10px;
-            font-size: 0.9rem;
-        }
-
         .offer-notice {
             background: #e74c3c;
             color: white;
@@ -293,33 +251,6 @@ $whatsapp_number = "8809647001998";
             margin: 20px 0;
             font-weight: 600;
             font-size: 1.1rem;
-        }
-
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .countdown-item {
-            text-align: center;
-            background: #2c3e50;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            min-width: 80px;
-        }
-
-        .countdown-number {
-            font-size: 2rem;
-            font-weight: 700;
-            display: block;
-        }
-
-        .countdown-label {
-            font-size: 0.9rem;
-            opacity: 0.8;
         }
 
         .order-button {
@@ -375,42 +306,12 @@ $whatsapp_number = "8809647001998";
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        .ingredients-section {
-            margin: 60px 0;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
         .section-title {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 30px;
             color: #2c3e50;
-        }
-
-        .ingredients-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 15px;
-            margin: 20px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .ingredients-list {
-            list-style: none;
-            padding: 0;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .ingredients-list li {
-            padding: 12px 20px;
-            margin-bottom: 8px;
-            background: white;
-            border-radius: 8px;
-            border-left: 4px solid #e67e22;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            text-align: left;
+            text-align: center;
         }
 
         .reviews-section {
@@ -467,16 +368,6 @@ $whatsapp_number = "8809647001998";
             margin: 40px 0;
         }
 
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .logo img {
-            max-width: 150px;
-            height: auto;
-        }
-
         .form-title {
             text-align: center;
             font-size: 1.5rem;
@@ -496,7 +387,8 @@ $whatsapp_number = "8809647001998";
             color: #2c3e50;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 15px;
             border: 2px solid #e0e0e0;
@@ -505,7 +397,8 @@ $whatsapp_number = "8809647001998";
             transition: border-color 0.3s ease;
         }
 
-        .form-group input:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #27ae60;
         }
@@ -514,14 +407,16 @@ $whatsapp_number = "8809647001998";
             color: #e74c3c;
         }
 
-        .product-options {
+        .product-variants {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            margin-bottom: 30px;
         }
 
-        .product-option {
-            display: flex;
+        .product-variant-card {
+            display: grid;
+            grid-template-columns: auto 80px 1fr auto;
             align-items: center;
             padding: 20px;
             border: 2px solid #e0e0e0;
@@ -529,16 +424,77 @@ $whatsapp_number = "8809647001998";
             cursor: pointer;
             transition: all 0.3s ease;
             gap: 15px;
+            background: white;
         }
 
-        .product-option.selected {
+        .product-variant-card:hover {
+            border-color: #27ae60;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.1);
+        }
+
+        .product-variant-card.selected {
             border-color: #27ae60;
             background: #f8fff9;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.2);
+        }
+
+        .variant-radio {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .variant-radio input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #27ae60;
+        }
+
+        .variant-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .variant-info {
+            flex: 1;
+        }
+
+        .variant-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-size: 1.05rem;
+        }
+
+        .variant-price {
+            font-weight: 700;
+            color: #27ae60;
+            font-size: 1.2rem;
+        }
+
+        .variant-quantity {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .product-display {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            gap: 15px;
         }
 
         .product-image-small {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             object-fit: cover;
             border-radius: 8px;
         }
@@ -551,23 +507,13 @@ $whatsapp_number = "8809647001998";
             font-weight: 600;
             margin-bottom: 5px;
             color: #2c3e50;
+            font-size: 1.1rem;
         }
 
         .product-price {
             font-weight: 700;
             color: #27ae60;
-            font-size: 1.1rem;
-        }
-
-        .gift-badge {
-            display: inline-block;
-            background: #fff3cd;
-            color: #856404;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-top: 5px;
-            border: 1px solid #ffeaa7;
+            font-size: 1.2rem;
         }
 
         .quantity-control {
@@ -579,8 +525,8 @@ $whatsapp_number = "8809647001998";
         .quantity-btn {
             background: #f8f9fa;
             border: 1px solid #ddd;
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             border-radius: 5px;
             cursor: pointer;
             display: flex;
@@ -595,12 +541,39 @@ $whatsapp_number = "8809647001998";
         }
 
         .quantity-input {
-            width: 50px;
+            width: 60px;
             text-align: center;
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 8px;
             font-weight: 600;
+        }
+
+        .size-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .size-option {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .size-option:hover {
+            border-color: #27ae60;
+        }
+
+        .size-option.selected {
+            border-color: #27ae60;
+            background: #f8fff9;
+            color: #27ae60;
         }
 
         .order-summary {
@@ -644,292 +617,224 @@ $whatsapp_number = "8809647001998";
             box-shadow: 0 12px 35px rgba(231, 76, 60, 0.4);
         }
 
-        .chat-widget {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
-        }
-
-        .chat-button {
-            background: #0084ff;
-            color: white;
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 132, 255, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(0, 132, 255, 0.4);
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2rem;
             }
             
-            .countdown {
-                gap: 10px;
-            }
-            
-            .countdown-item {
-                min-width: 70px;
-                padding: 10px;
-            }
-            
-            .countdown-number {
-                font-size: 1.5rem;
-            }
-            
-            .product-option {
+            .product-display {
                 flex-direction: column;
                 text-align: center;
-            }
-            
-            .quantity-control {
-                justify-content: center;
             }
             
             .form-section {
                 padding: 20px;
             }
         }
-
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 1.5rem;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
-            
-            .order-button {
-                padding: 15px 25px;
-                font-size: 1rem;
-            }
-            
-            .contact-button {
-                padding: 12px 25px;
-                font-size: 1.1rem;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Section 1: Hero Product -->
+    <?php if (isset($_GET['or_msg'])): ?>
+    <div class="success-message" id="successMsg">
+        আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে! আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।
+    </div>
+    <script>
+        setTimeout(() => {
+            document.getElementById('successMsg').style.display = 'none';
+        }, 5000);
+    </script>
+    <?php endif; ?>
+
     <div class="container">
+        <!-- Hero Section -->
         <div class="hero-section">
-            <h1 class="hero-title"><?php echo $hero_section['title']; ?></h1>
-            <img src="<?php echo $hero_section['image']; ?>" alt="<?php echo $hero_section['alt']; ?>" class="hero-image">
+            <h1 class="hero-title"><?= $home_title ?></h1>
+            <?php 
+            $hero_img = strpos($home_img, 'Admin/') === 0 ? '../' . $home_img : '../Admin/' . $home_img;
+            ?>
+            <img src="<?= $hero_img ?>" alt="<?= $productTitle ?>" class="hero-image">
             
             <div class="price-box">
-                <?php foreach($price_box as $price_item): ?>
                 <div class="price-item">
-                    <div><?php echo $price_item['weight']; ?> পূর্বের মূল্য <span class="old-price"><?php echo $price_item['old_price']; ?></span></div>
-                    <div>বর্তমান মূল্য <span class="new-price"><?php echo $price_item['new_price']; ?></span></div>
-                    <?php if(!empty($price_item['gift_text'])): ?>
-                    <div class="gift-text"><?php echo $price_item['gift_text']; ?></div>
-                    <?php endif; ?>
+                    <div>পূর্বের মূল্য <span class="old-price">৳<?= $regularPrice ?></span></div>
+                    <div>বর্তমান মূল্য <span class="new-price">৳<?= $productPrice ?></span></div>
                 </div>
-                <?php endforeach; ?>
             </div>
 
             <div class="offer-notice">
-                <?php echo $offer_notice; ?>
-            </div>
-
-            <div class="countdown" id="countdown">
-                <div class="countdown-item">
-                    <span class="countdown-number" id="hours">13</span>
-                    <span class="countdown-label">Hours</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="minutes">28</span>
-                    <span class="countdown-label">Minutes</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="seconds">52</span>
-                    <span class="countdown-label">Seconds</span>
-                </div>
+                🔥 বিঃদ্রঃ অফারটি সীমিত সময়ের জন্য থাকবে 🔥
             </div>
 
             <button class="order-button" onclick="scrollToForm()">
-                <?php echo $order_button_text; ?>
+                🛒 অর্ডার করতে ক্লিক করুন
             </button>
         </div>
 
-        <!-- Section 2: Product Details -->
+        <!-- Product Details -->
+        <?php if (!empty($gallery_images) || !empty($features)): ?>
         <div class="details-section">
+            <?php if (!empty($gallery_images)): ?>
             <div class="detail-images">
-                <?php foreach($details_section['images'] as $image): ?>
-                <img src="<?php echo $image['src']; ?>" alt="<?php echo $image['alt']; ?>" class="detail-image">
+                <?php foreach($gallery_images as $img): 
+                    $img_path = strpos($img, 'Admin/') === 0 ? '../' . $img : '../Admin/' . $img;
+                ?>
+                <img src="<?= $img_path ?>" alt="Product Image" class="detail-image">
                 <?php endforeach; ?>
             </div>
+            <?php endif; ?>
 
+            <?php if (!empty($features)): ?>
             <ul class="benefits-list">
-                <?php foreach($details_section['benefits'] as $benefit): ?>
-                <li><?php echo $benefit; ?></li>
+                <?php foreach($features as $feature): ?>
+                <li><strong><?= $feature['feature_title'] ?>:</strong> <?= $feature['feature_description'] ?></li>
                 <?php endforeach; ?>
             </ul>
+            <?php endif; ?>
 
             <div style="text-align: center; margin: 30px 0;">
                 <button class="order-button" onclick="scrollToForm()">
-                    <?php echo $order_button_text; ?>
+                    🛒 অর্ডার করতে ক্লিক করুন
                 </button>
             </div>
         </div>
+        <?php endif; ?>
 
-        <!-- Section 3: Ingredients -->
-        <div class="ingredients-section">
-            <h2 class="section-title"><?php echo $ingredients_section['title']; ?></h2>
-            <img src="<?php echo $ingredients_section['image']; ?>" alt="<?php echo $ingredients_section['alt']; ?>" class="ingredients-image">
-            
-            <ul class="ingredients-list">
-                <?php foreach($ingredients_section['ingredients'] as $ingredient): ?>
-                <li><?php echo $ingredient; ?></li>
-                <?php endforeach; ?>
-            </ul>
-
-            <div style="text-align: center; margin: 30px 0;">
-                <button class="order-button" onclick="scrollToForm()">
-                    <?php echo $order_button_text; ?>
-                </button>
-            </div>
-        </div>
-
-        <!-- Section 4: Customer Reviews with Swiper -->
+        <!-- Customer Reviews -->
+        <?php if (!empty($reviews)): ?>
         <div class="reviews-section">
-            <h2 class="section-title"><?php echo $reviews_section['title']; ?></h2>
+            <h2 class="section-title">আমাদের কাস্টমার ফিডব্যাক</h2>
             
             <div class="swiper reviews-swiper">
                 <div class="swiper-wrapper">
-                    <?php foreach($reviews_section['reviews'] as $review): ?>
+                    <?php foreach($reviews as $review_img): ?>
                     <div class="swiper-slide">
                         <div class="review-card">
-                            <img src="<?php echo $review['src']; ?>" alt="<?php echo $review['alt']; ?>" class="review-image">
+                            <img src="../Admin/<?= $review_img ?>" alt="Review" class="review-image">
                         </div>
                     </div>
                     <?php endforeach; ?>
                 </div>
                 
-                <!-- Navigation buttons -->
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
-                
-                <!-- Pagination -->
                 <div class="swiper-pagination"></div>
             </div>
         </div>
+        <?php endif; ?>
 
-        <!-- Section 5: Contact -->
+        <!-- Contact Section -->
         <div class="contact-section">
-            <h2 class="section-title" style="color: white;"><?php echo $contact_section['title']; ?></h2>
-            <a href="tel:<?php echo $contact_section['phone_number']; ?>" class="contact-button">
-                📞 <?php echo $contact_section['display_number']; ?>
+            <h2 class="section-title" style="color: white;">প্রয়োজনে কল করুন:</h2>
+            <a href="tel:<?= $websitePhone ?>" class="contact-button">
+                📞 <?= $websitePhone ?>
             </a>
         </div>
 
-        <!-- Section 6: Order Form -->
+        <!-- Order Form -->
         <div class="form-section" id="orderForm">
-            <div class="logo">
-                <img src="<?php echo $order_form['logo']; ?>" alt="<?php echo $order_form['logo_alt']; ?>">
-            </div>
-            <h2 class="form-title"><?php echo $order_form['title']; ?></h2>
+            <h2 class="form-title">অর্ডার করতে সঠিক তথ্য দিয়ে নিচের ফর্মটি পূরণ করুন</h2>
 
-            <form id="checkoutForm">
+            <form method="POST" id="checkoutForm">
                 <div class="form-group">
-                    <label><?php echo $form_labels['name']; ?> <span class="required">*</span></label>
+                    <label>নাম <span class="required">*</span></label>
                     <input type="text" name="name" placeholder="আপনার নাম" required>
                 </div>
 
                 <div class="form-group">
-                    <label><?php echo $form_labels['address']; ?> <span class="required">*</span></label>
+                    <label>ঠিকানা <span class="required">*</span></label>
                     <input type="text" name="address" placeholder="সম্পূর্ণ ঠিকানা, থানা, জেলা" required>
                 </div>
 
                 <div class="form-group">
-                    <label><?php echo $form_labels['phone']; ?> <span class="required">*</span></label>
+                    <label>নাম্বার <span class="required">*</span></label>
                     <input type="tel" name="phone" placeholder="আপনার ১১ ডিজিটের মোবাইল নাম্বার" pattern="[0-9]{11}" required>
                 </div>
 
-                <div class="form-group">
-                    <label><?php echo $form_labels['country']; ?> <span class="required">*</span></label>
-                    <input type="text" value="Bangladesh" readonly>
-                </div>
+                <h3 style="margin: 30px 0 20px 0; text-align: center;">পণ্য নির্বাচন করুন</h3>
 
-                <h3 style="margin: 30px 0 20px 0; text-align: center;">Your Products</h3>
-
-                <div class="product-options">
-                    <?php foreach($product_options as $index => $product): ?>
-                    <div class="product-option <?php echo $index === 0 ? 'selected' : ''; ?>" onclick="selectProduct(<?php echo $index; ?>)">
-                        <input type="radio" name="product" value="<?php echo $product['value']; ?>" <?php echo $index === 0 ? 'checked' : ''; ?>>
-                        <img src="<?php echo $product['image']; ?>" alt="<?php echo $product['alt']; ?>" class="product-image-small">
-                        <div class="product-info">
-                            <div class="product-name"><?php echo $product['name']; ?></div>
-                            <div class="product-price">৳ <?php echo $product['price']; ?></div>
-                            <?php if(!empty($product['gift_badge'])): ?>
-                            <span class="gift-badge"><?php echo $product['gift_badge']; ?></span>
-                            <?php endif; ?>
+                <div class="product-variants">
+                    <?php if (!empty($sizes)): ?>
+                        <?php foreach($sizes as $index => $size): ?>
+                        <div class="product-variant-card <?= $index === 0 ? 'selected' : '' ?>" onclick="selectVariant(<?= $index ?>)">
+                            <div class="variant-radio">
+                                <input type="radio" name="product_variant" value="<?= $size ?>" <?= $index === 0 ? 'checked' : '' ?> id="variant_<?= $index ?>">
+                            </div>
+                            <img src="<?= $productImg ?>" alt="<?= $productTitle ?>" class="variant-image">
+                            <div class="variant-info">
+                                <div class="variant-name"><?= $productTitle ?> - সাইজ: <?= $size ?></div>
+                                <div class="variant-price">৳ <?= $productPrice ?></div>
+                            </div>
+                            <div class="variant-quantity">
+                                <button type="button" class="quantity-btn" onclick="updateVariantQuantity(<?= $index ?>, -1); event.stopPropagation();">−</button>
+                                <input type="text" class="quantity-input" value="1" readonly data-variant="<?= $index ?>">
+                                <button type="button" class="quantity-btn" onclick="updateVariantQuantity(<?= $index ?>, 1); event.stopPropagation();">+</button>
+                            </div>
                         </div>
-                        <div class="quantity-control">
-                            <button type="button" class="quantity-btn" onclick="updateQuantity(<?php echo $index; ?>, -1)">−</button>
-                            <input type="text" class="quantity-input" value="1" min="1" readonly>
-                            <button type="button" class="quantity-btn" onclick="updateQuantity(<?php echo $index; ?>, 1)">+</button>
+                        <?php endforeach; ?>
+                        <input type="hidden" name="product_size" id="selectedSize" value="<?= $sizes[0] ?? 'standard' ?>">
+                        <input type="hidden" name="quantity" id="selectedQuantity" value="1">
+                    <?php else: ?>
+                        <div class="product-variant-card selected" onclick="selectVariant(0)">
+                            <div class="variant-radio">
+                                <input type="radio" name="product_variant" value="standard" checked id="variant_0">
+                            </div>
+                            <img src="<?= $productImg ?>" alt="<?= $productTitle ?>" class="variant-image">
+                            <div class="variant-info">
+                                <div class="variant-name"><?= $productTitle ?></div>
+                                <div class="variant-price">৳ <?= $productPrice ?></div>
+                            </div>
+                            <div class="variant-quantity">
+                                <button type="button" class="quantity-btn" onclick="updateVariantQuantity(0, -1); event.stopPropagation();">−</button>
+                                <input type="text" class="quantity-input" value="1" readonly data-variant="0">
+                                <button type="button" class="quantity-btn" onclick="updateVariantQuantity(0, 1); event.stopPropagation();">+</button>
+                            </div>
                         </div>
-                    </div>
-                    <?php endforeach; ?>
+                        <input type="hidden" name="product_size" value="standard">
+                        <input type="hidden" name="quantity" id="selectedQuantity" value="1">
+                    <?php endif; ?>
                 </div>
 
                 <div class="order-summary">
-                    <h3 style="margin-bottom: 20px;"><?php echo $order_summary['title']; ?></h3>
+                    <h3 style="margin-bottom: 20px;">আপনার অর্ডার</h3>
                     <div class="summary-row">
-                        <span><?php echo $order_summary['subtotal']; ?></span>
-                        <span id="subtotal">৳ 490.00</span>
+                        <span>Subtotal</span>
+                        <span id="subtotal">৳ <?= $productPrice ?></span>
                     </div>
                     <div class="summary-row">
-                        <span><?php echo $order_summary['shipping']; ?></span>
+                        <span>Shipping</span>
                         <div>
                             <div style="margin-bottom: 10px;">
-                                <input type="radio" name="shipping" value="<?php echo $shipping_options['outside_dhaka']['value']; ?>" id="shipping-outside" checked onchange="updateTotal()">
-                                <label for="shipping-outside"><?php echo $shipping_options['outside_dhaka']['label']; ?></label>
+                                <input type="radio" name="shipping" value="150" id="shipping-outside" checked onchange="updateTotal()">
+                                <label for="shipping-outside">ঢাকার বাইরে: ৳ 150</label>
                             </div>
                             <div>
-                                <input type="radio" name="shipping" value="<?php echo $shipping_options['inside_dhaka']['value']; ?>" id="shipping-inside" onchange="updateTotal()">
-                                <label for="shipping-inside"><?php echo $shipping_options['inside_dhaka']['label']; ?></label>
+                                <input type="radio" name="shipping" value="80" id="shipping-inside" onchange="updateTotal()">
+                                <label for="shipping-inside">ঢাকার ভিতরে: ৳ 80</label>
                             </div>
                         </div>
                     </div>
                     <div class="summary-row">
-                        <span><?php echo $order_summary['total']; ?></span>
-                        <span id="total">৳ 620.00</span>
+                        <span>Total</span>
+                        <span id="total">৳ <?= $productPrice + 130 ?></span>
                     </div>
                 </div>
 
-                <input type="submit" class="submit-button" id="submitBtn" value="<?php echo $submit_button; ?>"/>
+                <input type="submit" class="submit-button" value="অর্ডারটি কনফার্ম করুন"/>
             </form>
         </div>
-    </div>
-
-    <!-- Chat Widget -->
-    <div class="chat-widget">
-        <a href="<?php echo $chat_widget['url']; ?>" target="_blank">
-            <button class="chat-button"><?php echo $chat_widget['button_text']; ?></button>
-        </a>
     </div>
 
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
+        const productPrice = <?= $productPrice ?>;
+        let selectedVariantIndex = 0;
+        let variantQuantities = [1<?php if (!empty($sizes)): ?><?php for($i = 1; $i < count($sizes); $i++): ?>, 1<?php endfor; ?><?php endif; ?>];
+
         // Initialize Swiper for Reviews
+        <?php if (!empty($reviews)): ?>
         const reviewsSwiper = new Swiper('.reviews-swiper', {
             slidesPerView: 1,
             spaceBetween: 20,
@@ -937,173 +842,87 @@ $whatsapp_number = "8809647001998";
             autoplay: {
                 delay: 3000,
                 disableOnInteraction: false,
-                pauseOnMouseEnter: true,
             },
-            speed: 800,
-            effect: 'slide',
-            
             navigation: {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
-            
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
-                dynamicBullets: true,
             },
-            
             breakpoints: {
                 640: {
                     slidesPerView: 2,
-                    spaceBetween: 20
                 },
                 1024: {
                     slidesPerView: 3,
-                    spaceBetween: 30
                 }
-            },
-            
-            a11y: {
-                prevSlideMessage: 'Previous slide',
-                nextSlideMessage: 'Next slide',
-            },
-            
-            keyboard: {
-                enabled: true,
-                onlyInViewport: true,
-            },
-            
-            mousewheel: {
-                forceToAxis: true,
-            },
-        });
-
-        // Product data
-        const products = [
-            <?php foreach($product_options as $index => $product): ?>
-            ,{ 
-                name: '<?php echo $product['name']; ?>', 
-                price: <?php echo str_replace(',', '', $product['price']); ?>, 
-                quantity: 1 
-            }<?php echo $index < count($product_options) - 1 ? ',' : ''; ?>
-            <?php endforeach; ?>
-        ];
-
-        let selectedProductIndex = 0;
-
-        // Countdown Timer
-        function updateCountdown() {
-            const targetDate = new Date('<?php echo $countdown_target; ?>').getTime();
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-
-            if (distance < 0) {
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
             }
-        }
+        });
+        <?php endif; ?>
 
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        // Product Selection
-        function selectProduct(index) {
-            selectedProductIndex = index;
-            const options = document.querySelectorAll('.product-option');
-            options.forEach((option, i) => {
+        function selectVariant(index) {
+            selectedVariantIndex = index;
+            
+            // Update card selection
+            document.querySelectorAll('.product-variant-card').forEach((card, i) => {
                 if (i === index) {
-                    option.classList.add('selected');
-                    option.querySelector('input[type="radio"]').checked = true;
+                    card.classList.add('selected');
+                    card.querySelector('input[type="radio"]').checked = true;
                 } else {
-                    option.classList.remove('selected');
+                    card.classList.remove('selected');
                 }
             });
+
+            // Update hidden inputs
+            const selectedRadio = document.querySelector(`#variant_${index}`);
+            document.getElementById('selectedSize').value = selectedRadio.value;
+            document.getElementById('selectedQuantity').value = variantQuantities[index];
+
             updateTotal();
         }
 
-        // Quantity Update
-        function updateQuantity(index, change) {
-            event.stopPropagation();
-            const quantityInput = document.querySelectorAll('.quantity-input')[index];
-            let currentQuantity = parseInt(quantityInput.value);
-            let newQuantity = currentQuantity + change;
-
-            if (newQuantity >= 1) {
-                quantityInput.value = newQuantity;
-                products[index].quantity = newQuantity;
-                updateTotal();
-            }
-        }
-
-        // Update Total
-        function updateTotal() {
-            const selectedProduct = products[selectedProductIndex];
-            const subtotal = selectedProduct.price * selectedProduct.quantity;
+        function updateVariantQuantity(index, change) {
+            variantQuantities[index] = Math.max(1, variantQuantities[index] + change);
             
-            const shippingCost = document.querySelector('input[name="shipping"]:checked').value;
-            const total = subtotal + parseInt(shippingCost);
+            const quantityInput = document.querySelector(`input.quantity-input[data-variant="${index}"]`);
+            quantityInput.value = variantQuantities[index];
 
-            document.getElementById('subtotal').textContent = '৳ ' + subtotal.toFixed(2);
-            document.getElementById('total').textContent = '৳ ' + total.toFixed(2);
-            document.getElementById('totalAmount').textContent = total.toFixed(2);
+            // If this is the selected variant, update the hidden quantity
+            if (index === selectedVariantIndex) {
+                document.getElementById('selectedQuantity').value = variantQuantities[index];
+            }
+
+            updateTotal();
         }
 
-        // Scroll to Form
+        function updateTotal() {
+            const quantity = variantQuantities[selectedVariantIndex];
+            const subtotal = productPrice * quantity;
+            const shippingCost = parseInt(document.querySelector('input[name="shipping"]:checked').value);
+            const total = subtotal + shippingCost;
+
+            document.getElementById('subtotal').textContent = '৳ ' + subtotal;
+            document.getElementById('total').textContent = '৳ ' + total;
+        }
+
         function scrollToForm() {
             document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // Form Submission
+        // Form validation
         document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const selectedProduct = products[selectedProductIndex];
-            const shippingCost = document.querySelector('input[name="shipping"]:checked').value;
-            const total = (selectedProduct.price * selectedProduct.quantity) + parseInt(shippingCost);
-
-            // Collect form data
-            const orderData = {
-                name: formData.get('name'),
-                address: formData.get('address'),
-                phone: formData.get('phone'),
-                product: selectedProduct.name,
-                quantity: selectedProduct.quantity,
-                price: selectedProduct.price,
-                shipping: shippingCost === '130' ? 'ঢাকার বাইরে' : 'ঢাকার ভিতরে',
-                shippingCost: shippingCost,
-                total: total
-            };
-
-            // Create WhatsApp message
-            const message = `নতুন অর্ডার:\n\n নাম: ${orderData.name}\nঠিকানা: ${orderData.address}\nমোবাইল: ${orderData.phone}\n\nপণ্য: ${orderData.product}\nপরিমাণ: ${orderData.quantity}\nমূল্য: ৳${orderData.price}\n\nশিপিং: ${orderData.shipping} (৳${orderData.shippingCost})\n\nমোট: ৳${orderData.total}`;
-
-            const whatsappNumber = '<?php echo $whatsapp_number; ?>';
-            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-
-            // Show confirmation
-            if (confirm('আপনার অর্ডার কনফার্ম করতে চান?')) {
-                window.open(whatsappURL, '_blank');
-                alert('ধন্যবাদ! আপনার অর্ডার পাঠানো হয়েছে। আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।');
+            const phone = document.querySelector('input[name="phone"]').value;
+            if (phone.length !== 11 || !/^\d+$/.test(phone)) {
+                e.preventDefault();
+                alert('দয়া করে সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন');
+                return false;
             }
         });
 
-        // Initialize total on page load
+        // Initialize
         updateTotal();
-
-        // ... (Rest of the JavaScript remains the same as in the original HTML)
-        // The JavaScript code is quite long, so I've kept the main functionality intact
-        // while replacing the dynamic values with PHP variables where needed
     </script>
 </body>
 </html>
