@@ -51,7 +51,7 @@ $productData = mysqli_fetch_assoc($result);
 $productTitle = $productData['product_title'];
 $productPrice = $productData['product_price'];
 $productImg = $productData['product_img1'];
-$regularPrice = round($productPrice * 1.6);
+$regularPrice = $productData['product_regular_price'];
 $discount = round((($regularPrice - $productPrice) / $regularPrice) * 100);
 
 // Fetch available sizes
