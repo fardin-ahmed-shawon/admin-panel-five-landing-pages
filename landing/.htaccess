@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# RewriteBase https://clothdrob.com/landing
+RewriteBase /landing/
+
+# Landing without slug
+RewriteRule ^$ index.php [L]
+
+# Landing with slug
+RewriteRule ^([^/]+)/?$ index.php?slug=$1 [L,QSA]

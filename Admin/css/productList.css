@@ -1,0 +1,70 @@
+/* Grid Layouting */
+.grid-container {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+}
+
+.grid-container > div {
+    margin: 10px;
+}
+
+.card {
+    border: 1px solid #ccc;
+}
+
+@media only screen and (max-width: 1700px) {
+    .grid-container {
+        grid-template-columns: 25% 25% 25% 25%;
+    }
+}
+
+@media only screen and (max-width: 1290px) {
+    .grid-container {
+        grid-template-columns: 33.33% 33.33% 33.33%;
+    }
+}
+@media only screen and (max-width: 900px) {
+    .card h6 {
+        font-size: 17px;
+    }
+    .card-body .btn {
+        font-size: 14px;
+    }
+}
+@media only screen and (max-width: 800px) {
+    .card h6 {
+        font-size: 13px;
+    }
+    .card p {
+        font-size: 13px;
+    }
+    .card-body .btn {
+        font-size: 12px;
+    }
+    .card-body .btn {
+        padding: 10px;
+    }
+}
+@media only screen and (max-width: 700px) {
+    .card-body .btn {
+        padding: 5px;
+    }
+    .card {
+        border-radius: 15px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .grid-container {
+        grid-template-columns: 50% 50%;
+    }
+    .card-body {
+        padding: 10px;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .grid-container > div {
+        margin: 5px;
+    }
+}

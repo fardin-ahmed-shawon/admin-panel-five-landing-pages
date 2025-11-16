@@ -1,0 +1,7 @@
+[18-Sep-2025 06:09:09 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/clothd/public_html/api/users.php on line 286
+[18-Sep-2025 06:09:44 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/clothd/public_html/api/users.php on line 286
+[07-Oct-2025 09:38:18 UTC] PHP Warning:  Undefined variable $newInvoice in /home/clothd/public_html/api/checkout.php on line 119
+[07-Oct-2025 09:42:21 UTC] PHP Warning:  Undefined variable $newInvoice in /home/clothd/public_html/api/checkout.php on line 119
+[07-Oct-2025 09:42:58 UTC] PHP Warning:  Undefined variable $newInvoice in /home/clothd/public_html/api/checkout.php on line 119
+[07-Oct-2025 09:42:58 UTC] PHP Warning:  Undefined variable $newInvoice in /home/clothd/public_html/api/checkout.php on line 119
+[07-Oct-2025 09:45:08 UTC] PHP Warning:  Undefined variable $newInvoice in /home/clothd/public_html/api/checkout.php on line 119

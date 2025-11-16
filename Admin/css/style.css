@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --white: #fff;
+    --black: #000;
+    --gray: #787878;
+    --topback: #F4F6F8;
+    --back2: #fffcf886;
+    --theme: #ff0000;
+    --themehover: #cf0909;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    transition: .3s;
+}
+
+.menu-title {
+    font-weight: 500;
+}
+.sub-menu {
+    font-weight: 500;
+}
+.sidebar .nav .nav-item.active > .nav-link .menu-title {
+    font-family: "Poppins", serif;
+}
+
+.font-weight-bold {
+    font-family: "Poppins", serif;
+}
+
+/* Content Area */
+.content-wrapper {
+    background: var(--topback);
+}
+
+a {
+    text-align: none;
+    color: var(--black);
+}
+
+h1 {
+    font-family: "Poppins", serif;
+    font-weight: 700;
+    margin-bottom: 50px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* button */
+.btn {
+    border: none;
+    font-weight: 400;
+    font-family: "Poppins", serif;
+}
+
+.btn-dark {
+    background-color: #000;
+}
+.btn-dark:hover {
+    background-color: #434343;
+}
+
+.btn-danger {
+    background-color: #e40606;
+}
+.btn-danger:hover {
+    background-color: rgb(174, 2, 2);
+}
+
+/* Full Sized Form */
+/* Form */
+.content form .full-input-box {
+    display: block;
+}
+
+form .user-details .input-box {
+    width: 100%;
+}
+select {
+    color: grey;
+    width: 100%;
+    height: 45px;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+}
+#file {
+    color: grey;
+    width: 100%;
+    height: 45px;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.input-checkbox {
+    margin-left: 25px;
+}
+
+/* Start Card Area */
+.card {
+    border-radius: 20px;
+}
+
+/* Card Button */
+.card-body .btn {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.card-body .btn:last-child {
+    margin-bottom: 0;
+}
+
+.card-body .btn span {
+    font-weight: 600;
+}
+
+/* Card Text */
+.card h6 {
+    font-family: "Poppins", serif;
+    font-size: 20px;
+    font-weight: 600;
+}
+.card h4 {
+    font-family: "Poppins", serif;
+    font-size: 17px;
+    font-weight: 600;
+}
+.card p {
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+/* Card Image */
+.card-img-top {
+    padding: 7px;
+    border-radius: 20px 20px 0px 0;
+}
+
+/* End Card Area */
+.card .card-body {
+    padding: 15px;
+}
+
+/*Accordion*/
+.accordion {
+    max-width: 800px;
+    margin: auto;
+}
+.accordion-button {
+    font-size: 17px;
+    font-weight: 500;
+    font-family: "Poppins", serif;
+}

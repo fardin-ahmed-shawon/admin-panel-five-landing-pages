@@ -1,0 +1,154 @@
+.checkout {
+    width: 100%;
+    grid-area: checkout;
+}
+
+.cart-quantity {
+    display: flex;
+    width: 100px;
+    height: 35px;
+    border: 1px solid #999;
+    border-radius: 6px;
+}
+.cart-quantity button {
+    background: transparent;
+    width: 30px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+.cart-quantity .number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
+    cursor: default;
+}
+
+.order-info {
+    grid-area: orderInfo;
+}
+
+.cart-box {
+    display: flex;
+}
+
+
+/* Layouting */
+.checkout-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'checkout orderInfo';
+    gap: 50px;
+}
+
+@media only screen and (max-width: 1150px) {
+    .checkout-container {
+        grid-template-areas: 'checkout checkout'
+                             'orderInfo orderInfo';
+                             align-items: start;
+    }
+}
+
+/* Billing Form */
+.content form .full-input-box {
+    display: block;
+}
+
+form .user-details .input-box {
+    width: 100%;
+}
+
+/* Order Info */
+.order-list {
+    background: var(--topback);
+    padding: 25px;
+    border-radius: 10px;
+}
+
+@media only screen and (max-width: 550px) {
+    .order-list {
+        padding: 15px
+    }
+}
+
+
+.order-titles,
+.order-item,
+.subtotal,
+.shipping,
+.total-product-price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.order-titles h5 {
+    font-weight: 700;
+}
+
+.order-product-price {
+    display: flex;
+    align-items: end;
+}
+
+/* Payment Info */
+.payment-info .selection-box {
+    background: var(--topback);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.payment-info .selection-box input {
+    cursor: pointer;
+}
+
+.selection-box label {
+    font-size: 18px;
+    margin-left: 15px;
+}
+
+.selection-box .input-box label {
+    margin-left: 0;
+}
+
+.selection-box .input-box input {
+    margin-top: 10px;
+    padding: 15px;
+}
+
+.selection-box p {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.input-box label {
+    font-size: 16px;
+}
+
+.payment-instructions p {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.amount {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+@media only screen and (max-width: 450px) {
+    .cart-box img {
+        width: 70px;
+        height: 70px
+    }
+    .selection-box p {
+        font-size: 16px;
+    }
+}
+
+

@@ -1,0 +1,18 @@
+[18-Sep-2025 11:25:17 UTC] PHP Warning:  session_start(): Session cannot be started after headers have already been sent in /home/clothd/public_html/landing/index.php on line 347
+[18-Sep-2025 11:25:17 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Field 'user_id' doesn't have a default value in /home/clothd/public_html/landing/index.php:414
+Stack trace:
+#0 /home/clothd/public_html/landing/index.php(414): mysqli_stmt->execute()
+#1 {main}
+  thrown in /home/clothd/public_html/landing/index.php on line 414
+[18-Sep-2025 11:33:57 UTC] PHP Warning:  session_start(): Session cannot be started after headers have already been sent in /home/clothd/public_html/landing/index.php on line 347
+[18-Sep-2025 11:33:57 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Field 'user_id' doesn't have a default value in /home/clothd/public_html/landing/index.php:414
+Stack trace:
+#0 /home/clothd/public_html/landing/index.php(414): mysqli_stmt->execute()
+#1 {main}
+  thrown in /home/clothd/public_html/landing/index.php on line 414
+[21-Sep-2025 14:08:57 UTC] PHP Warning:  session_start(): Session cannot be started after headers have already been sent in /home/clothd/public_html/landing/index.php on line 347
+[21-Sep-2025 14:08:57 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Field 'user_id' doesn't have a default value in /home/clothd/public_html/landing/index.php:414
+Stack trace:
+#0 /home/clothd/public_html/landing/index.php(414): mysqli_stmt->execute()
+#1 {main}
+  thrown in /home/clothd/public_html/landing/index.php on line 414

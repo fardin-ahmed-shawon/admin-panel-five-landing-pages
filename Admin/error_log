@@ -1,0 +1,14 @@
+[21-Sep-2025 13:56:18 UTC] PHP Warning:  Undefined array key "home_title" in /home/clothd/public_html/Admin/edit-landing-page.php on line 40
+[21-Sep-2025 13:56:18 UTC] PHP Warning:  Undefined array key "home_description" in /home/clothd/public_html/Admin/edit-landing-page.php on line 41
+[21-Sep-2025 13:56:18 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Column 'home_title' cannot be null in /home/clothd/public_html/Admin/edit-landing-page.php:74
+Stack trace:
+#0 /home/clothd/public_html/Admin/edit-landing-page.php(74): mysqli_stmt->execute()
+#1 {main}
+  thrown in /home/clothd/public_html/Admin/edit-landing-page.php on line 74
+[21-Sep-2025 13:56:34 UTC] PHP Warning:  Undefined array key "home_title" in /home/clothd/public_html/Admin/edit-landing-page.php on line 40
+[21-Sep-2025 13:56:34 UTC] PHP Warning:  Undefined array key "home_description" in /home/clothd/public_html/Admin/edit-landing-page.php on line 41
+[21-Sep-2025 13:56:34 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Column 'home_title' cannot be null in /home/clothd/public_html/Admin/edit-landing-page.php:74
+Stack trace:
+#0 /home/clothd/public_html/Admin/edit-landing-page.php(74): mysqli_stmt->execute()
+#1 {main}
+  thrown in /home/clothd/public_html/Admin/edit-landing-page.php on line 74
