@@ -62,7 +62,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $phone = $_POST['phone'];
     $email = $_POST['email'] ?? '';
     $address = $_POST['address'];
-    $city = $_POST['shipping'] == 'inside-dhaka' ? 'Inside Dhaka' : 'Outside Dhaka';
+    $product_selection = $_POST['product'];
+    
+    // Determine city based on product selection
+    if ($product_selection == '2-box') {
+        $city = 'Free Shipping';
+    } else {
+        $city = $_POST['shipping'] == 'inside-dhaka' ? 'Inside Dhaka' : 'Outside Dhaka';
+    }
+    
     $payment_method = 'Cash On Delivery';
     $user_id = 0;
 
@@ -75,7 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['temporary_invoice_no'] = $invoice_no;
 
     // Get product data from POST
-    $product_selection = $_POST['product'];
     $quantity = $_POST['quantity'] ?? 1;
     
     // Fetch product details
@@ -88,6 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Adjust based on selection
         if ($product_selection == '2-box') {
             $quantity = 2;
+            $product_title = "2 Box " . $product_title;
         }
         
         $total_price = $product_price * $quantity;
