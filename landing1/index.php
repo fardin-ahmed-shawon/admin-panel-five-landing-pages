@@ -1,256 +1,137 @@
 <?php
-// ============================================
-// SITE CONFIGURATION
-// ============================================
-$site_config = [
-    'site_name' => 'ClothDrob',
-    'logo_path' => 'images/logo.png',
-    'phone' => '09697-359942',
-    'copyright_year' => '2025'
-];
+session_start();
+require '../database/dbConnection.php';
 
-// ============================================
-// HERO SECTION
-// ============================================
-$hero = [
-    'title' => 'ClothDrob-এর ২৮ টি দেশে এক্সপোর্ট হওয়া অরিজিনাল Nike Socks কম্বো প্যাক',
-    'subtitle' => '(গ্রীষ্মের গরম বা শীতের ঠান্ডা, ১০০% কটন মোজা আপনার পায়ের আরামের জন্য সবসময় প্রস্তুত)'
-];
+$product_slug = $_GET['slug'] ?? '';
 
-// ============================================
-// VIDEO SECTION
-// ============================================
-$video = [
-    'youtube_url' => 'https://www.youtube.com/embed/FJmrlDkNKOI',
-    'cta_text' => 'অর্ডার করতে চাই',
-    'cta_subtext' => 'অফারটি সীমিত সময়ের জন্য!'
-];
+// Fetch product id based on slug
+if ($product_slug != '') {
+    $sql = "SELECT product_id FROM landing_pages WHERE product_slug='$product_slug'";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_num_rows($result);
 
-// ============================================
-// COUNTDOWN SECTION
-// ============================================
-$countdown = [
-    'title' => 'Limited Time OFFER!',
-    'hours_label' => 'Hours',
-    'minutes_label' => 'Minutes',
-    'seconds_label' => 'Seconds'
-];
+    if ($row > 0) {
+        $data = mysqli_fetch_assoc($result);
+        $product_id = $data['product_id'];
+    } else {
+        exit;
+    }
+} else {
+    exit;
+}
 
-// ============================================
-// BANNER
-// ============================================
-$banner = [
-    'text' => '২ বক্স Socks অর্ডার করলেই ডেলিভারি চার্জ সম্পূর্ণ ফ্রি!'
-];
+// Fetch website settings
+$sql = "SELECT * FROM website_info";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_num_rows($result);
+if ($row > 0) {
+    while ($data = mysqli_fetch_assoc($result)) {
+        $websiteName = $data['name'];
+        $websiteAddress = $data['address'];
+        $websitePhone = $data['phone'];
+        $accNum = $data['acc_num'];
+        $websiteEmail = $data['email'];
+        $websiteFbLink = $data['fb_link'];
+        $websiteInstaLink = $data['insta_link'];
+        $websiteTwitterLink = $data['twitter_link'];
+        $websiteYtLink = $data['yt_link'];
+        $inside_location = $data['inside_location'];
+        $inside_delivery_charge = $data['inside_delivery_charge'];
+        $outside_delivery_charge = $data['outside_delivery_charge'];
+        $logo = $data['logo'];
+    }
+}
 
-// ============================================
-// FEATURES SECTION
-// ============================================
-$features_title = 'অরিজিনাল Nike Socks এর বৈশিষ্ট্য';
+// Fetch Landing Page Info
+$sql = "SELECT * FROM landing_pages WHERE product_slug='$product_slug'";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_num_rows($result);
+if ($row > 0) {
+    while ($data = mysqli_fetch_assoc($result)) {
+        $home_title = $data['home_title'];
+        $home_des = $data['home_description'];
+        $home_img = $data['home_img'];
+        $feature_img = $data['feature_img'];
+        $youtube_url = $data['youtube_url'] ?? '';
+    }
+}
 
-$features = [
-    [
-        'title' => 'Stylish and Versatile Design',
-        'description' => 'অফিস থেকে ক্যাজুয়াল আউটিং—সব পরিবেশেই মানানসই।',
-        'icon' => '<path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>'
-    ],
-    [
-        'title' => 'Odor-free & comfortable experience',
-        'description' => 'কটনের বিশেষ বৈশিষ্ট্য পায়ের ঘাম ও দুর্গন্ধ প্রতিরোধ করে, নিশ্চিত করে দীর্ঘস্থায়ী সতেজতা ও স্বাস্থ্যকর অনুভূতি।',
-        'icon' => '<path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>'
-    ],
-    [
-        'title' => 'Long-lasting quality & durability',
-        'description' => 'প্রতিদিনের ব্যবহারে গুণগত মান অটুট থাকে, যা দীর্ঘসময় ধরে নির্ভরযোগ্য।',
-        'icon' => '<path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>'
-    ],
-    [
-        'title' => 'Affordable solution',
-        'description' => 'এক বক্সেই পাঁচ জোড়া, ব্যয়বহুল নয় এবং একসাথে প্রতিদিনের প্রয়োজন পূরণ করে।',
-        'icon' => '<path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>'
-    ],
-    [
-        'title' => 'Excellent for foot health',
-        'description' => 'উন্নত কটনের গুণ পায়ের আরাম ও সতেজতা নিশ্চিত করে।',
-        'icon' => '<path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>'
-    ]
-];
+// Process Order
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $fullName = $_POST['name'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'] ?? '';
+    $address = $_POST['address'];
+    $city = $_POST['shipping'] == 'inside-dhaka' ? 'Inside Dhaka' : 'Outside Dhaka';
+    $payment_method = 'Cash On Delivery';
+    $user_id = 0;
 
-$features_cta = [
-    'button_text' => 'এখনই অর্ডার করুন',
-    'subtext' => 'Limited Time OFFER!'
-];
+    function generateInvoiceNo() {
+        $timestamp = microtime(true) * 10000;
+        $uniqueString = 'INV-' . strtoupper(base_convert($timestamp, 10, 36));
+        return $uniqueString;
+    }
+    $invoice_no = generateInvoiceNo();
+    $_SESSION['temporary_invoice_no'] = $invoice_no;
 
-// ============================================
-// GALLERY SECTION
-// ============================================
-$gallery = [
-    'title' => 'Product Gallery',
-    'images' => [
-        ['src' => 'images/sock1.webp', 'alt' => 'Product 1'],
-        ['src' => 'images/sock2.webp', 'alt' => 'Product 2'],
-        ['src' => 'images/sock3.webp', 'alt' => 'Product 3'],
-        ['src' => 'images/sock4.webp', 'alt' => 'Product 4'],
-        ['src' => 'images/sock5.webp', 'alt' => 'Product 5']
-    ]
-];
-
-// ============================================
-// WHY CHOOSE US SECTION
-// ============================================
-$why_choose = [
-    'title' => 'কেন আমাদের থেকে নেবেন?',
-    'image' => 'images/pairedSocks.jpg',
-    'points' => [
-        'প্রতিটি বক্সে পাচ্ছেন ৫ জোড়া Nike Socks কম্বো প্যাক',
-        'চেক করে নেওয়ার সুবিধা।',
-        'পছন্দ না হলে রিটার্ন করার সুবিধা।',
-        'ঢাকায় নিজস্ব প্রোডাকশন হাউস রয়েছে।',
-        'আমাদের থেকে প্রোডাক্ট নিয়ে অন্যরা বিজনেস করছে।',
-        'দেশের বাইরে এক্সপোর্ট করে থাকি।',
-        '২০০০+ সেটিসফাই কাস্টমার রয়েছে।'
-    ]
-];
-
-// ============================================
-// REVIEWS SECTION
-// ============================================
-$reviews = [
-    'title' => 'সম্মানিত কাস্টমারের রিভিউ সমূহ',
-    'images' => [
-        ['src' => 'https://shop.clothdrob.com/wp-content/uploads/2025/10/302c7005-5699-4c6f-a8f6-0d595454b9de-461x1024-1.webp', 'alt' => 'Review 1'],
-        ['src' => 'https://shop.clothdrob.com/wp-content/uploads/2025/10/d867c252-fc41-4f0c-a017-f2a7b163adcd-461x1024-1.webp', 'alt' => 'Review 2'],
-        ['src' => 'https://shop.clothdrob.com/wp-content/uploads/2025/10/f481ced3-e034-4187-83b0-bbb0f97c635f-461x1024-1.webp', 'alt' => 'Review 3'],
-        ['src' => 'https://shop.clothdrob.com/wp-content/uploads/2025/10/2fb70b29-9a8a-42e5-830b-9c15c9a5228c-461x1024-1.webp', 'alt' => 'Review 4']
-    ],
-    'cta_button' => 'এখনই অর্ডার করুন',
-    'cta_subtext' => 'Limited Time OFFER!'
-];
-
-// ============================================
-// PRICING SECTION
-// ============================================
-$pricing = [
-    'main_title' => 'Extra 30% Off!',
-    'regular_price' => '৭২০',
-    'offer_price' => '৪৯৯',
-    'savings' => '২২১',
-    'regular_label' => 'রেগুলার মূল্য',
-    'offer_label' => 'অফার মূল্য',
-    'savings_label' => 'Save ৳'
-];
-
-// ============================================
-// PRODUCTS
-// ============================================
-$products = [
-    [
-        'id' => 'product1',
-        'value' => '1-box',
-        'name' => '1Box Nike Socks Combo Pack (5 Pair in 1 Box)',
-        'price' => 499,
-        'regular_price' => 720,
-        'shipping' => 100,
-        'discount_text' => 'EXTRA 30% OFF!',
-        'save_text' => 'SAVE ৳221',
-        'badge' => '',
-        'checked' => true
-    ],
-    [
-        'id' => 'product2',
-        'value' => '2-box',
-        'name' => '2 Box Nike Socks Combo (10 Pair in 2 Box)',
-        'price' => 998,
-        'regular_price' => 1440,
-        'shipping' => 0,
-        'discount_text' => 'SAVE ৳442 ',
-        'save_text' => 'SAVE ৳442',
-        'badge' => '',
-        'checked' => false
-    ]
-];
-
-// ============================================
-// ORDER FORM
-// ============================================
-$order_form = [
-    'section_title' => '২ বক্স Socks অর্ডার করলেই ডেলিভারি চার্জ সম্পূর্ণ ফ্রি!',
-    'form_instruction' => 'নিচের ফর্মে আপনার নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা লিখে "Place Order" ক্লিক করুন',
-    'billing_title' => 'Billing details',
-    'product_title' => 'Your Product',
-    'order_summary_title' => 'Your order',
+    // Get product data from POST
+    $product_selection = $_POST['product'];
+    $quantity = $_POST['quantity'] ?? 1;
     
-    'fields' => [
-        'name' => [
-            'label' => 'Your Name *',
-            'placeholder' => 'Type your full Name here....',
-            'type' => 'text'
-        ],
-        'address' => [
-            'label' => 'Your Address *',
-            'placeholder' => 'Type your full Address here....',
-            'type' => 'textarea'
-        ],
-        'phone' => [
-            'label' => 'Your Phone Number *',
-            'placeholder' => 'Type your 11 digits Number here....',
-            'type' => 'tel'
-        ]
-    ],
-    
-    'shipping_options' => [
-        [
-            'value' => 'outside-dhaka',
-            'label' => 'Outside Dhaka',
-            'cost' => 100,
-            'checked' => true
-        ],
-        [
-            'value' => 'inside-dhaka',
-            'label' => 'Inside Dhaka',
-            'cost' => 60,
-            'checked' => false
-        ]
-    ],
-    
-    'payment_method' => [
-        'title' => 'Cash on delivery',
-        'description' => 'Pay with cash upon delivery.'
-    ],
-    
-    'privacy_text' => 'Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our',
-    'privacy_link_text' => 'privacy policy',
-    'privacy_link_url' => 'privacy-policy.php',
-    
-    'submit_button' => 'Place Order',
-    'form_action' => 'process-order.php'
-];
+    // Fetch product details
+    $sql = "SELECT * FROM product_info WHERE product_id = $product_id";
+    $result = mysqli_query($conn, $sql);
+    if ($row = mysqli_fetch_assoc($result)) {
+        $product_title = $row['product_title'];
+        $product_price = $row['product_price'];
+        
+        // Adjust based on selection
+        if ($product_selection == '2-box') {
+            $quantity = 2;
+        }
+        
+        $total_price = $product_price * $quantity;
 
-// ============================================
-// FOOTER
-// ============================================
-$footer = [
-    'links' => [
-        ['text' => 'Call us: 09697-359942', 'url' => 'tel:09697359942'],
-        ['text' => 'Privacy Policy', 'url' => ''],
-        ['text' => 'Terms & Conditions', 'url' => '']
-    ],
-    'copyright' => '© 2025 ClothDrob. All Rights Reserved'
-];
+        $sql = "INSERT INTO order_info (user_id, user_full_name, user_phone, user_email, user_address, city_address, invoice_no, product_id, product_title, product_quantity, total_price, payment_method)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param(
+            "issssssisiss",
+            $user_id,
+            $fullName,
+            $phone,
+            $email,
+            $address,
+            $city,
+            $invoice_no,
+            $product_id,
+            $product_title,
+            $quantity,
+            $total_price,
+            $payment_method
+        );
 
-// ============================================
-// SVG ICONS
-// ============================================
-$icons = [
-    'cart' => '<path fill="currentColor" d="M423.3 440.7c0 25.3-20.3 45.6-45.6 45.6s-45.8-20.3-45.8-45.6 20.6-45.8 45.8-45.8c25.4 0 45.6 20.5 45.6 45.8zm-253.9-45.8c-25.3 0-45.6 20.6-45.6 45.8s20.3 45.6 45.6 45.6 45.8-20.3 45.8-45.6-20.5-45.8-45.8-45.8zm291.7-270C158.9 124.9 81.9 112.1 0 25.7c34.4 51.7 53.3 148.9 373.1 144.2 333.3-5 130 86.1 70.8 188.9 186.7-166.7 319.4-233.9 17.2-233.9z"></path>'
-];
+        if ($stmt->execute()) {
+            $stmt->close();
+            $conn->close();
+            echo "<script>window.location.href = 'index.php?slug=$product_slug&or_msg=successful';</script>";
+            exit;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nike Socks Combo Pack - <?php echo $site_config['site_name']; ?></title>
+    <title><?php echo $websiteName; ?> - <?php echo $home_title; ?></title>
+    <link href="../Admin/<?= $logo ?>" rel="icon">
+    
+    <!-- Slick Slider CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+    
     <style>
         * {
             margin: 0;
@@ -288,6 +169,21 @@ $icons = [
             height: auto;
         }
 
+        /* Success Message */
+        #success-box {
+            margin: auto;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 500;
+            padding: 20px;
+            color: #0A3622;
+            background: #D1E7DD;
+            position: fixed;
+            width: 100%;
+            z-index: 9999;
+            top: 0;
+        }
+
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #017739 0%, #04aa3e 100%);
@@ -318,7 +214,7 @@ $icons = [
             margin: 0 auto;
             position: relative;
             padding-bottom: 56.25%;
-            height: 101%;
+            height: 0;
             overflow: hidden;
         }
 
@@ -343,20 +239,13 @@ $icons = [
             font-weight: bold;
             margin: 20px 0;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 48, 255, 0.3);
         }
 
         .cta-button:hover {
             background: #4764e5ff;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-        }
-
-        .cta-button svg {
-            width: 20px;
-            height: 20px;
-            vertical-align: middle;
-            margin-right: 8px;
+            box-shadow: 0 6px 20px rgba(0, 48, 255, 0.4);
         }
 
         /* Countdown Timer */
@@ -370,7 +259,7 @@ $icons = [
             z-index: 100;
         }
 
-        .countdown-section .container h3 {
+        .countdown-section h3 {
             color: #f62222ff;
         }
 
@@ -398,16 +287,11 @@ $icons = [
             opacity: 0.8;
         }
 
-        /* Features Section */
-        .features {
-            background: #fff;
-            padding: 40px 20px;
-        }
-
+        /* Section Title */
         .section-title {
             text-align: center;
             font-size: 1.8rem;
-            margin-bottom: 10px;
+            margin: 20px 0;
             color: #000;
             background: #fff;
             padding: 15px 0;
@@ -415,16 +299,10 @@ $icons = [
             border-bottom: 1px solid #e0e0e0;
         }
 
-        .original-section-title {
-            margin: 20px 0;
-            text-align: center;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            color: #fff;
-            background: #000;
-            padding: 15px 0;
-            border-top: 1px solid #e0e0e0;
-            border-bottom: 1px solid #e0e0e0;
+        /* Features Section */
+        .features {
+            background: #fff;
+            padding: 40px 20px;
         }
 
         .features-grid {
@@ -439,7 +317,7 @@ $icons = [
             background: #fff;
             padding: 30px 20px;
             text-align: center;
-            transition: none;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         .feature-icon {
@@ -487,75 +365,76 @@ $icons = [
             transform: scale(1.05);
         }
 
-        /* Why Choose Us */
-        .why-choose {
+        /* Products Section */
+        .products {
             background: #fff;
-            padding: 60px 20px;
+            padding: 40px 20px;
         }
 
-        .why-choose-content {
+        .products-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
         }
 
-        .checklist {
-            list-style: none;
-        }
-
-        .checklist li {
-            padding: 10px 0;
-            padding-left: 35px;
-            position: relative;
-        }
-
-        .checklist li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #4caf50;
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-
-        /* Pricing */
-        .pricing {
-            background: #c6edfc;
-            color: #fff;
-            padding: 60px 20px;
+        .product-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
             text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .price-box {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 500px;
-            margin: 30px auto;
-            backdrop-filter: blur(10px);
+        .product-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .regular-price {
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .product-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .product-price h4 {
+            color: #4caf50;
+            font-size: 1.3rem;
+        }
+
+        .product-price .old-price {
+            color: gray;
             text-decoration: line-through;
-            opacity: 0.7;
-            font-size: 1.5rem;
-            color: #000;
+            font-size: 1rem;
         }
 
-        .offer-price {
-            font-size: 3rem;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #000;
+        /* Reviews */
+        .reviews {
+            background: #f8f9fa;
+            padding: 40px 20px;
         }
 
-        .savings {
-            background: #ff6b6b;
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: bold;
+        .reviews-slider .review-card {
+            padding: 10px;
+        }
+
+        .reviews-slider .review-card img {
+            width: 100%;
+            border-radius: 10px;
         }
 
         /* Order Form */
@@ -587,8 +466,6 @@ $icons = [
         .product-selection {
             background: transparent;
             padding: 0;
-            border-radius: 0;
-            margin-bottom: 0;
             margin-top: 20px;
         }
 
@@ -600,48 +477,15 @@ $icons = [
             cursor: pointer;
             border: 2px solid #e0e0e0;
             transition: all 0.3s ease;
-            position: relative;
         }
 
-        .product-option:hover {
-            border-color: #0030FF;
-        }
-
-        .product-option.highlight {
+        .product-option:hover,
+        .product-option.active {
             border-color: #0030FF;
         }
 
         .product-option input[type="radio"] {
             margin-right: 10px;
-        }
-
-        .product-option label {
-            cursor: pointer;
-            display: inline;
-        }
-
-        .product-option h4 {
-            display: inline;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #000;
-        }
-
-        .product-option p {
-            margin: 8px 0 0 25px;
-            font-size: 0.9rem;
-        }
-
-        .highlight-badge {
-            position: absolute;
-            top: -10px;
-            right: 10px;
-            background: #ff6b6b;
-            color: #fff;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: bold;
         }
 
         .form-section-title {
@@ -664,7 +508,6 @@ $icons = [
         }
 
         .form-group input,
-        .form-group select,
         .form-group textarea {
             width: 100%;
             padding: 12px;
@@ -676,21 +519,15 @@ $icons = [
         }
 
         .form-group input:focus,
-        .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: #0030FF;
-        }
-
-        .shipping-options {
-            margin-top: 10px;
         }
 
         .shipping-options label {
             display: flex;
             align-items: center;
             margin-bottom: 10px;
-            font-weight: 400;
             cursor: pointer;
         }
 
@@ -706,22 +543,12 @@ $icons = [
             border: 1px solid #e0e0e0;
         }
 
-        .order-summary h3 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: #000;
-        }
-
         .summary-row {
             display: flex;
             justify-content: space-between;
             padding: 12px 0;
             border-bottom: 1px solid #e0e0e0;
             font-size: 0.95rem;
-        }
-
-        .summary-row:last-of-type {
-            border-bottom: none;
         }
 
         .summary-total {
@@ -731,26 +558,6 @@ $icons = [
             margin-top: 15px;
             padding-top: 15px;
             border-top: 2px solid #000;
-        }
-
-        .payment-info {
-            margin-top: 20px;
-            padding: 15px;
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-        }
-
-        .payment-info strong {
-            display: block;
-            margin-bottom: 8px;
-            color: #000;
-        }
-
-        .payment-info p {
-            margin: 5px 0;
-            font-size: 0.9rem;
-            color: #666;
         }
 
         .submit-btn {
@@ -770,50 +577,7 @@ $icons = [
         .submit-btn:hover {
             background: #0028dd;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 48, 255, 0.3);
         }
-
-        .privacy-note {
-            margin-top: 15px;
-            font-size: 0.8rem;
-            color: #666;
-            text-align: center;
-            line-height: 1.4;
-        }
-
-        .privacy-note a {
-            color: #0030FF;
-            text-decoration: none;
-        }
-
-        /* Reviews */
-        /* .reviews {
-            background: #f8f9fa;
-            padding: 60px 20px;
-        }
-
-        .reviews-slider {
-            display: flex;
-            overflow-x: auto;
-            gap: 20px;
-            scroll-snap-type: x mandatory;
-            padding: 20px 0;
-        }
-
-        .review-card {
-            min-width: 380px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            scroll-snap-align: start;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .review-card img {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        } */
 
         /* Footer */
         footer {
@@ -834,64 +598,34 @@ $icons = [
         .footer-links a {
             color: #fff;
             text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: #667eea;
-        }
-
-        /* Sticky Button */
-        .sticky-cta {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            display: none;
-        }
-
-        .sticky-cta.show {
-            display: block;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translate(-50%, 100px);
-                opacity: 0;
-            }
-            to {
-                transform: translate(-50%, 0);
-                opacity: 1;
-            }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 { font-size: 1.5rem; }
             .features-grid { grid-template-columns: 1fr; }
-            .form-grid, .why-choose-content { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
             .countdown { gap: 10px; }
             .countdown-item { padding: 8px 15px; }
             .countdown-item span { font-size: 1.5rem; }
-            .offer-price { font-size: 2rem; }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 1.3rem; }
-            .section-title, .original-section-title { font-size: 1.3rem; }
-            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-            .review-card { min-width: 350px; }
         }
     </style>
 </head>
 <body>
+    <?php if (isset($_GET['or_msg'])): ?>
+    <div id="success-box">Order Successfully Placed...</div>
+    <script>
+        setTimeout(() => {
+            document.getElementById('success-box').style.display = 'none';
+        }, 3000);
+    </script>
+    <?php endif; ?>
+
     <!-- Header -->
     <header>
         <div class="container">
             <div class="logo">
-                <img src="<?php echo $site_config['logo_path']; ?>" alt="<?php echo $site_config['site_name']; ?>">
+                <img src="../Admin/<?= $logo ?>" alt="<?= $websiteName ?>">
             </div>
         </div>
     </header>
@@ -899,75 +633,69 @@ $icons = [
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1><?php echo $hero['title']; ?></h1>
-            <p><?php echo $hero['subtitle']; ?></p>
+            <h1><?= $home_title ?></h1>
+            <p><?= $home_des ?></p>
         </div>
     </section>
 
     <!-- Video Section -->
+    <?php if (!empty($youtube_url)): ?>
     <section class="video-section">
         <div class="container">
             <div class="video-wrapper">
-                <iframe src="<?php echo $video['youtube_url']; ?>" allowfullscreen></iframe>
+                <iframe src="<?= $youtube_url ?>" allowfullscreen></iframe>
             </div>
-            <a href="#order" class="cta-button">
-                <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg">
-                    <?php echo $icons['cart']; ?>
-                </svg>
-                <?php echo $video['cta_text']; ?>
-            </a>
-            <p style="margin-top: 10px; color: #666;"><?php echo $video['cta_subtext']; ?></p>
+            <a href="#order" class="cta-button">অর্ডার করতে চাই</a>
+            <p style="margin-top: 10px; color: #666;">অফারটি সীমিত সময়ের জন্য!</p>
         </div>
     </section>
+    <?php endif; ?>
 
     <!-- Countdown Timer -->
     <section class="countdown-section">
         <div class="container">
-            <h3><?php echo $countdown['title']; ?></h3>
+            <h3>Limited Time OFFER!</h3>
             <div class="countdown" id="countdown">
                 <div class="countdown-item">
                     <span id="hours">00</span>
-                    <label><?php echo $countdown['hours_label']; ?></label>
+                    <label>Hours</label>
                 </div>
                 <div class="countdown-item">
                     <span id="minutes">00</span>
-                    <label><?php echo $countdown['minutes_label']; ?></label>
+                    <label>Minutes</label>
                 </div>
                 <div class="countdown-item">
                     <span id="seconds">00</span>
-                    <label><?php echo $countdown['seconds_label']; ?></label>
+                    <label>Seconds</label>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Free Delivery Banner -->
-    <section style="background: #4caf50; color: #fff; padding: 30px 20px; text-align: center;">
-        <div class="container">
-            <h2 style="font-size: 1.8rem; margin: 0;"><?php echo $banner['text']; ?></h2>
-        </div>
-    </section>
-
-    <h2 class="original-section-title"><?php echo $features_title; ?></h2>
-
     <!-- Features Section -->
+    <h2 class="section-title">Product Features</h2>
     <section class="features">
         <div class="container">
             <div class="features-grid">
-                <?php foreach ($features as $feature): ?>
-                <div class="feature-card">
-                    <svg class="feature-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                        <?php echo $feature['icon']; ?>
-                    </svg>
-                    <h3><?php echo $feature['title']; ?></h3>
-                    <p><?php echo $feature['description']; ?></p>
-                </div>
-                <?php endforeach; ?>
+                <?php
+                $sql = "SELECT * FROM features WHERE product_id = $product_id";
+                $result = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($result) > 0) {
+                    while ($data = mysqli_fetch_assoc($result)) {
+                        echo '
+                        <div class="feature-card">
+                            <svg class="feature-icon" viewBox="0 0 512 512">
+                                <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
+                            </svg>
+                            <h3>'.$data['feature_title'].'</h3>
+                            <p>'.$data['feature_description'].'</p>
+                        </div>';
+                    }
+                }
+                ?>
             </div>
-
             <div style="text-align: center; margin-top: 40px;">
-                <a href="#order" class="cta-button"><?php echo $features_cta['button_text']; ?></a>
-                <p style="margin-top: 10px; color: #666;"><?php echo $features_cta['subtext']; ?></p>
+                <a href="#order" class="cta-button">এখনই অর্ডার করুন</a>
             </div>
         </div>
     </section>
@@ -975,85 +703,204 @@ $icons = [
     <!-- Gallery Section -->
     <section class="gallery">
         <div class="container">
-            <h2 class="section-title"><?php echo $gallery['title']; ?></h2>
+            <h2 class="section-title">Product Gallery</h2>
             <div class="gallery-grid">
-                <?php foreach ($gallery['images'] as $image): ?>
-                <div class="gallery-item">
-                    <img src="<?php echo $image['src']; ?>" alt="<?php echo $image['alt']; ?>">
-                </div>
-                <?php endforeach; ?>
+                <?php
+                $sql = "SELECT * FROM gallery WHERE product_id = $product_id";
+                $result = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($result) > 0) {
+                    while ($data = mysqli_fetch_assoc($result)) {
+                        echo '<div class="gallery-item">
+                                <img src="../Admin/'.$data['gallery_image'].'" alt="Gallery Image">
+                              </div>';
+                    }
+                }
+                ?>
             </div>
         </div>
     </section>
 
-    <h2 class="original-section-title"><?php echo $why_choose['title']; ?></h2>
-
-    <!-- Why Choose Us Section -->
-    <section class="why-choose">
+    <!-- Products Section -->
+    <section class="products">
         <div class="container">
-            <div class="why-choose-content">
-                <ul class="checklist">
-                    <?php foreach ($why_choose['points'] as $point): ?>
-                    <li><?php echo $point; ?></li>
-                    <?php endforeach; ?>
-                </ul>
-                <div>
-                    <img src="<?php echo $why_choose['image']; ?>" alt="Why Choose Us" style="width: 100%; border-radius: 15px;">
-                </div>
+            <h2 class="section-title">Get Your Products</h2>
+            <div class="products-grid">
+                <?php
+                $sql = "SELECT * FROM product_info WHERE product_id = $product_id";
+                $result = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($result) > 0) {
+                    while ($data = mysqli_fetch_assoc($result)) {
+                        echo '
+                        <div class="product-card">
+                            <img src="'.$data['product_img1'].'" alt="'.$data['product_title'].'">
+                            <h3>'.$data['product_title'].'</h3>
+                            <div class="product-price">
+                                <h4>৳'.$data['product_price'].'</h4>
+                                <span class="old-price">৳'.$data['product_regular_price'].'</span>
+                            </div>
+                        </div>';
+                    }
+                }
+                ?>
             </div>
         </div>
     </section>
-
-    <h2 class="original-section-title"><?php echo $reviews['title']; ?></h2>
 
     <!-- Reviews Section -->
-    <!-- Slick Slider CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
-    <style>
-        .reviews {
-            padding: 40px 0;
-        }
-
-        .reviews-slider .review-card {
-            padding: 10px;
-        }
-
-        .reviews-slider .review-card img {
-            width: 100%;
-            border-radius: 10px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: #ff5722;
-            padding: 12px 25px;
-            border-radius: 8px;
-            color: #fff;
-            font-weight: bold;
-            text-decoration: none;
-        }
-    </style>
     <section class="reviews">
         <div class="container">
+            <h2 class="section-title">সম্মানিত কাস্টমারের রিভিউ সমূহ</h2>
             <div class="reviews-slider">
-                <?php foreach ($reviews['images'] as $review): ?>
-                    <div class="review-card">
-                        <img src="<?php echo $review['src']; ?>" alt="<?php echo $review['alt']; ?>">
-                    </div>
-                <?php endforeach; ?>
+                <?php
+                $sql = "SELECT * FROM reviews WHERE product_id = $product_id";
+                $result = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($result) > 0) {
+                    while ($data = mysqli_fetch_assoc($result)) {
+                        echo '<div class="review-card">
+                                <img src="../Admin/'.$data['review_image'].'" alt="Review">
+                              </div>';
+                    }
+                }
+                ?>
             </div>
             <div style="text-align: center; margin-top: 40px;">
-                <a href="#order" class="cta-button"><?php echo $reviews['cta_button']; ?></a>
-                <p style="margin-top: 10px; color: #666;"><?php echo $reviews['cta_subtext']; ?></p>
+                <a href="#order" class="cta-button">এখনই অর্ডার করুন</a>
             </div>
         </div>
     </section>
+
+    <!-- Order Form Section -->
+    <section class="order-form" id="order">
+        <div class="container">
+            <h2 class="section-title">Place Your Order Now!</h2>
+            <div class="form-container">
+                <form method="POST" action="" id="orderForm">
+                    <div class="form-grid">
+                        <div>
+                            <h3 class="form-section-title">Billing details</h3>
+                            
+                            <div class="form-group">
+                                <label for="name">Your Name *</label>
+                                <input type="text" id="name" name="name" placeholder="Type your full Name here...." required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address">Your Address *</label>
+                                <textarea id="address" name="address" rows="3" placeholder="Type your full Address here...." required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Your Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" placeholder="Type your 11 digits Number here...." required pattern="[0-9]{11}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Your Email (Optional)</label>
+                                <input type="email" id="email" name="email" placeholder="Type your email here....">
+                            </div>
+
+                            <div class="product-selection">
+                                <?php
+                                $sql = "SELECT * FROM product_info WHERE product_id = $product_id LIMIT 1";
+                                $result = mysqli_query($conn, $sql);
+                                if ($row = mysqli_fetch_assoc($result)) {
+                                    $productTitle = $row['product_title'];
+                                    $productPrice = $row['product_price'];
+                                    $doublePrice = $productPrice * 2;
+                                    
+                                    echo '
+                                    <div class="product-option active" data-price="'.$productPrice.'" data-shipping="'.$outside_delivery_charge.'">
+                                        <input type="radio" name="product" id="product1" value="1-box" checked>
+                                        <label for="product1">
+                                            <h4>1 '.$productTitle.' (৳'.$productPrice.')</h4>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="product-option" data-price="'.$doublePrice.'" data-shipping="0">
+                                        <input type="radio" name="product" id="product2" value="2-box">
+                                        <label for="product2">
+                                            <h4>2 '.$productTitle.' (৳'.$doublePrice.') - FREE DELIVERY</h4>
+                                        </label>
+                                    </div>';
+                                }
+                                ?>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="form-section-title">Your order</h3>
+                            
+                            <div class="order-summary">
+                                <?php
+                                $sql = "SELECT * FROM product_info WHERE product_id = $product_id LIMIT 1";
+                                $result = mysqli_query($conn, $sql);
+                                $defaultProduct = mysqli_fetch_assoc($result);
+                                $defaultPrice = $defaultProduct['product_price'];
+                                $defaultTotal = $defaultPrice + $outside_delivery_charge;
+                                ?>
+                                
+                                <div class="summary-row">
+                                    <span>Product</span>
+                                    <span id="productName">1 <?= $defaultProduct['product_title'] ?> × 1</span>
+                                </div>
+
+                                <div class="summary-row">
+                                    <span>Subtotal</span>
+                                    <span id="subtotal">৳<?= number_format($defaultPrice, 2) ?></span>
+                                </div>
+
+                                <div class="summary-row">
+                                    <span>Shipping</span>
+                                    <span>
+                                        <div class="shipping-options" style="text-align: right;">
+                                            <label>
+                                                <input type="radio" name="shipping" value="outside-dhaka" data-cost="<?= $outside_delivery_charge ?>" checked>
+                                                Outside Dhaka: ৳<?= $outside_delivery_charge ?>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="shipping" value="inside-dhaka" data-cost="<?= $inside_delivery_charge ?>">
+                                                Inside Dhaka: ৳<?= $inside_delivery_charge ?>
+                                            </label>
+                                        </div>
+                                    </span>
+                                </div>
+
+                                <div class="summary-row summary-total">
+                                    <span>Total</span>
+                                    <span id="total">৳<?= number_format($defaultTotal, 2) ?></span>
+                                </div>
+
+                                <button type="submit" class="submit-btn">
+                                    Place Order <span id="orderTotal">৳<?= number_format($defaultTotal, 2) ?></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="quantity" id="quantityField" value="1">
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="tel:<?= $websitePhone ?>">Call us: <?= $websitePhone ?></a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a>
+            </div>
+            <p>© <?= date('Y') ?> <?= $websiteName ?>. All Rights Reserved</p>
+        </div>
+    </footer>
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Slick Slider JS -->
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    
     <script>
+        // Slick Slider
         $('.reviews-slider').slick({
             slidesToShow: 3,
             slidesToScroll: 1,
@@ -1066,201 +913,7 @@ $icons = [
                 { breakpoint: 768, settings: { slidesToShow: 1 } }
             ]
         });
-    </script>
 
-
-    <!-- Pricing Section -->
-    <section class="pricing">
-        <div class="container">
-            <h2 style="font-size: 2.5rem; margin-bottom: 20px; color:#000;"><?php echo $pricing['main_title']; ?></h2>
-            <div class="price-box">
-                <p class="regular-price"><?php echo $pricing['regular_label']; ?>: <?php echo $pricing['regular_price']; ?> টাকা</p>
-                <p class="offer-price"><?php echo $pricing['offer_label']; ?>: <?php echo $pricing['offer_price']; ?> টাকা</p>
-                <p class="savings"><?php echo $pricing['savings_label'] . $pricing['savings']; ?></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Order Form Section -->
-    <section class="order-form" id="order">
-        <div class="container">
-            <h2 class="section-title"><?php echo $order_form['section_title']; ?></h2>
-            <h2 style="text-align: center;"><?php echo $order_form['form_instruction']; ?></h2>
-            <br>
-
-            <div class="form-container order-summary">
-                <form method="POST" action="<?php echo $order_form['form_action']; ?>" id="orderForm">
-                    <div class="form-grid">
-                        <div>
-                            <h3 class="form-section-title"><?php echo $order_form['billing_title']; ?></h3>
-
-                            <div class="form-group">
-                                <label for="name"><?php echo $order_form['fields']['name']['label']; ?></label>
-                                <input type="<?php echo $order_form['fields']['name']['type']; ?>" 
-                                       id="name" name="name" 
-                                       placeholder="<?php echo $order_form['fields']['name']['placeholder']; ?>" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="address"><?php echo $order_form['fields']['address']['label']; ?></label>
-                                <textarea id="address" name="address" rows="3" 
-                                          placeholder="<?php echo $order_form['fields']['address']['placeholder']; ?>" required></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="phone"><?php echo $order_form['fields']['phone']['label']; ?></label>
-                                <input type="<?php echo $order_form['fields']['phone']['type']; ?>" 
-                                       id="phone" name="phone" 
-                                       placeholder="<?php echo $order_form['fields']['phone']['placeholder']; ?>" 
-                                       required pattern="[0-9]{11}">
-                            </div>
-
-                            <div class="product-selection">
-                                <?php foreach ($products as $product): ?>
-                                <div class="product-option <?php echo $product['badge'] ? 'highlight' : ''; ?>" 
-                                     data-price="<?php echo $product['price']; ?>" 
-                                     data-shipping="<?php echo $product['shipping']; ?>">
-                                    <?php if ($product['badge']): ?>
-                                    <span class="highlight-badge"><?php echo $product['badge']; ?></span>
-                                    <?php endif; ?>
-                                    <input type="radio" name="product" 
-                                           id="<?php echo $product['id']; ?>" 
-                                           value="<?php echo $product['value']; ?>" 
-                                           <?php echo $product['checked'] ? 'checked' : ''; ?>>
-                                    <label for="<?php echo $product['id']; ?>">
-                                        <h4><?php echo $product['name']; ?></h4>
-                                    </label>
-                                    <p><strong><?php echo $product['discount_text']; ?></strong></p>
-                                    <?php if ($product['save_text']): ?>
-                                    <p><?php echo $product['save_text']; ?></p>
-                                    <?php endif; ?>
-                                    <p>Price: <del>৳<?php echo $product['regular_price']; ?></del> 
-                                       <strong style="color: #000; font-size: 1.1rem;">৳<?php echo number_format($product['price'], 2); ?></strong>
-                                    </p>
-                                </div>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 class="form-section-title"><?php echo $order_form['product_title']; ?></h3>
-
-                            <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-                                <table style="width: 100%; border-collapse: collapse;">
-                                    <thead>
-                                        <tr style="border-bottom: 2px solid #e0e0e0;">
-                                            <th style="text-align: left; padding: 10px 0; font-weight: 600;">Product</th>
-                                            <th style="text-align: center; padding: 10px 0; font-weight: 600;">Quantity</th>
-                                            <th style="text-align: right; padding: 10px 0; font-weight: 600;">Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td style="padding: 15px 0;">
-                                                <div id="productDisplay" style="font-size: 0.9rem; color: #666;"><?php echo $products[0]['name']; ?></div>
-                                                <div id="productBadge" style="display: inline-block; background: #ff6b6b; color: #fff; padding: 3px 10px; border-radius: 3px; font-size: 0.75rem; margin-top: 5px;"><?php echo $products[0]['save_text']; ?></div>
-                                            </td>
-                                            <td style="text-align: center; padding: 15px 0;">
-                                                <div style="display: inline-flex; align-items: center; border: 1px solid #ddd; border-radius: 5px;">
-                                                    <button type="button" style="padding: 5px 12px; border: none; background: #f5f5f5; cursor: pointer;">-</button>
-                                                    <input type="text" value="1" readonly style="width: 40px; text-align: center; border: none; padding: 5px;">
-                                                    <button type="button" style="padding: 5px 12px; border: none; background: #f5f5f5; cursor: pointer;">+</button>
-                                                </div>
-                                            </td>
-                                            <td style="text-align: right; padding: 15px 0;">
-                                                <div><del style="color: #999; font-size: 0.9rem;">৳<?php echo $products[0]['regular_price']; ?></del></div>
-                                                <div id="productPriceDisplay" style="font-weight: 600; font-size: 1.1rem;">৳<?php echo number_format($products[0]['price'], 2); ?></div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="order-summary">
-                                <h3><?php echo $order_form['order_summary_title']; ?></h3>
-
-                                <div class="summary-row">
-                                    <span>Product</span>
-                                    <span>Subtotal</span>
-                                </div>
-
-                                <div class="summary-row">
-                                    <span id="productName" style="color: #666; font-size: 0.9rem;"><?php echo $products[0]['name']; ?> × 1</span>
-                                    <span id="subtotal">৳<?php echo number_format($products[0]['price'], 2); ?></span>
-                                </div>
-
-                                <div class="summary-row">
-                                    <span>Subtotal</span>
-                                    <span id="subtotalAmount">৳<?php echo number_format($products[0]['price'], 2); ?></span>
-                                </div>
-
-                                <div class="summary-row">
-                                    <span>Shipping</span>
-                                    <span>
-                                        <div class="shipping-options" style="text-align: right;">
-                                            <?php foreach ($order_form['shipping_options'] as $shipping): ?>
-                                            <label style="justify-content: flex-end; margin-bottom: 5px;">
-                                                <input type="radio" name="shipping" 
-                                                       value="<?php echo $shipping['value']; ?>" 
-                                                       data-cost="<?php echo $shipping['cost']; ?>" 
-                                                       <?php echo $shipping['checked'] ? 'checked' : ''; ?>>
-                                                <?php echo $shipping['label']; ?>: ৳<?php echo number_format($shipping['cost'], 2); ?>
-                                            </label>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    </span>
-                                </div>
-
-                                <div class="summary-row summary-total">
-                                    <span>Total</span>
-                                    <span id="total">৳<?php echo number_format($products[0]['price'] + $order_form['shipping_options'][0]['cost'], 2); ?></span>
-                                </div>
-
-                                <div class="payment-info">
-                                    <strong><?php echo $order_form['payment_method']['title']; ?></strong>
-                                    <p><?php echo $order_form['payment_method']['description']; ?></p>
-                                </div>
-
-                                <p class="privacy-note">
-                                    <?php echo $order_form['privacy_text']; ?> 
-                                    <a href="<?php echo $order_form['privacy_link_url']; ?>"><?php echo $order_form['privacy_link_text']; ?></a>.
-                                </p>
-
-                                <button type="submit" class="submit-btn">
-                                    <?php echo $order_form['submit_button']; ?> <span id="orderTotal">৳<?php echo number_format($products[0]['price'] + $order_form['shipping_options'][0]['cost'], 2); ?></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-links">
-                <?php foreach ($footer['links'] as $link): ?>
-                <a href="<?php echo $link['url']; ?>"><?php echo $link['text']; ?></a>
-                <?php endforeach; ?>
-            </div>
-            <p><?php echo $footer['copyright']; ?></p>
-        </div>
-    </footer>
-
-    <!-- Sticky CTA Button -->
-    <div class="sticky-cta" id="stickyCta">
-        <a href="#order" class="cta-button">
-            <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg">
-                <?php echo $icons['cart']; ?>
-            </svg>
-            <?php echo $video['cta_text']; ?>
-        </a>
-    </div>
-
-  
-  <script>
         // Countdown Timer
         function startCountdown() {
             const endDate = new Date();
@@ -1289,51 +942,51 @@ $icons = [
         }
 
         // Order Calculation
-function updateOrderSummary() {
-    const selectedProduct = document.querySelector('input[name="product"]:checked');
-    const selectedShipping = document.querySelector('input[name="shipping"]:checked');
-    const qty = parseInt(document.querySelector('td input[type="text"]').value); // GET QUANTITY
+        function updateOrderSummary() {
+            const selectedProduct = document.querySelector('input[name="product"]:checked');
+            const selectedShipping = document.querySelector('input[name="shipping"]:checked');
 
-    if (!selectedProduct || !selectedShipping) return;
+            if (!selectedProduct || !selectedShipping) return;
 
-    const productOption = selectedProduct.closest('.product-option');
-    const productPrice = parseInt(productOption.dataset.price);
-    const shippingPrice = parseInt(selectedShipping.dataset.cost);
+            const productOption = selectedProduct.closest('.product-option');
+            const productPrice = parseInt(productOption.dataset.price);
+            const productShipping = parseInt(productOption.dataset.shipping);
+            
+            // Get product name from label
+            const productLabel = productOption.querySelector('label h4').textContent;
+            
+            // If product has free shipping (2-box), use 0, otherwise use selected shipping
+            const shippingPrice = productShipping === 0 ? 0 : parseInt(selectedShipping.dataset.cost);
 
-    // Calculate totals
-    const productTotal = productPrice * qty;
-    const subtotal = productTotal;
-    const total = subtotal + shippingPrice;
+            const subtotal = productPrice;
+            const total = subtotal + shippingPrice;
 
-    // Set product data
-    const productName = selectedProduct.value === '1-box'
-        ? '<?php echo $products[0]['name']; ?>'
-        : '<?php echo $products[1]['name']; ?>';
+            // Update quantity field
+            const quantity = selectedProduct.value === '1-box' ? 1 : 2;
+            document.getElementById('quantityField').value = quantity;
 
-    const productBadge = selectedProduct.value === '1-box'
-        ? '<?php echo $products[0]['save_text']; ?>'
-        : '<?php echo $products[1]['save_text']; ?>';
+            // Update HTML
+            document.getElementById('productName').textContent = productLabel.replace(/\(.*?\)/g, '').trim() + ' × 1';
+            document.getElementById('subtotal').textContent = '৳' + subtotal.toFixed(2);
+            document.getElementById('total').textContent = '৳' + total.toFixed(2);
+            document.getElementById('orderTotal').textContent = '৳' + total.toFixed(2);
 
-    // Update HTML
-    document.getElementById('productDisplay').textContent = productName;
-    document.getElementById('productBadge').textContent = productBadge;
-    document.getElementById('productPriceDisplay').innerHTML = '৳' + productPrice.toFixed(2);
-
-    document.getElementById('productName').textContent = productName + ' × ' + qty;
-    document.getElementById('subtotal').textContent = '৳' + productTotal.toFixed(2);
-    document.getElementById('subtotalAmount').textContent = '৳' + subtotal.toFixed(2);
-
-    document.getElementById('total').textContent = '৳' + total.toFixed(2);
-    document.getElementById('orderTotal').textContent = '৳' + total.toFixed(2);
-}
-
+            // Update shipping options display
+            const shippingContainer = document.querySelector('.shipping-options');
+            if (productShipping === 0 && shippingContainer) {
+                shippingContainer.parentElement.innerHTML = 
+                    '<span style="color: #4caf50; font-weight: bold;">FREE DELIVERY</span>';
+            }
+        }
 
         // Product Selection
         document.querySelectorAll('input[name="product"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 document.querySelectorAll('.product-option').forEach(option => {
+                    option.classList.remove('active');
                     option.style.borderColor = '#e0e0e0';
                 });
+                this.closest('.product-option').classList.add('active');
                 this.closest('.product-option').style.borderColor = '#0030FF';
                 updateOrderSummary();
             });
@@ -1342,19 +995,6 @@ function updateOrderSummary() {
         // Shipping Selection
         document.querySelectorAll('input[name="shipping"]').forEach(radio => {
             radio.addEventListener('change', updateOrderSummary);
-        });
-
-        // Sticky CTA Button
-        window.addEventListener('scroll', function() {
-            const stickyCta = document.getElementById('stickyCta');
-            const orderSection = document.getElementById('order');
-            const orderPosition = orderSection.getBoundingClientRect().top;
-
-            if (window.scrollY > 500 && orderPosition > window.innerHeight) {
-                stickyCta.classList.add('show');
-            } else {
-                stickyCta.classList.remove('show');
-            }
         });
 
         // Smooth Scroll
@@ -1367,26 +1007,7 @@ function updateOrderSummary() {
                 }
             });
         });
-// Quantity Counter
- const minusBtn = document.querySelector('td button:first-child');
-const plusBtn = document.querySelector('td button:last-child');
-const qtyInput = document.querySelector('td input[type="text"]');
 
-plusBtn.addEventListener('click', () => {
-    let qty = parseInt(qtyInput.value);
-    qty++;
-    qtyInput.value = qty;
-    updateOrderSummary();
-});
-
-minusBtn.addEventListener('click', () => {
-    let qty = parseInt(qtyInput.value);
-    if (qty > 1) {
-        qty--;
-        qtyInput.value = qty;
-        updateOrderSummary();
-    }
-});
         // Form Validation
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             const phone = document.getElementById('phone').value;
@@ -1400,7 +1021,6 @@ minusBtn.addEventListener('click', () => {
         // Initialize
         startCountdown();
         updateOrderSummary();
-    
     </script>
 </body>
 </html>
