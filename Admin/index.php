@@ -92,269 +92,6 @@ while($row = $cityWiseResult->fetch_assoc()) {
 }
 ?>
 
-<!-- <style>
-  /* Modern Stats Card Styles */
-  .stats-card {
-    position: relative;
-    padding: 24px;
-    border-radius: 16px;
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    overflow: visible;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    height: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    min-height: 140px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .stats-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-    border-radius: 0 0 16px 16px;
-  }
-
-  .stats-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: 16px 16px 0 0;
-  }
-
-  .stats-card:hover::before {
-    opacity: 1;
-  }
-
-  .stats-icon {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-
-  .stats-icon i {
-    font-size: 28px;
-    color: #fff;
-  }
-
-  .stats-content {
-    position: relative;
-    z-index: 1;
-    padding-right: 76px;
-  }
-
-  .stats-label {
-    font-size: 15px;
-    font-weight: 600;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 12px;
-  }
-
-  .stats-value {
-    font-size: 36px;
-    font-weight: 700;
-    color: #1e293b;
-    margin: 0;
-    line-height: 1.2;
-    margin-bottom: 16px;
-  }
-
-  .stats-trend {
-    margin-top: auto;
-  }
-
-  .trend-icon {
-    font-size: 20px;
-    color: #10b981;
-    font-weight: bold;
-  }
-
-  .stats-badge {
-    margin-top: auto;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-block;
-    width: fit-content;
-  }
-
-  .badge-warning {
-    background: #fef3c7;
-    color: #92400e;
-  }
-
-  .badge-info {
-    background: #dbeafe;
-    color: #1e40af;
-  }
-
-  .badge-success {
-    background: #d1fae5;
-    color: #065f46;
-  }
-
-  .badge-purple {
-    background: #e9d5ff;
-    color: #6b21a8;
-  }
-
-  .badge-dark {
-    background: #e2e8f0;
-    color: #334155;
-  }
-
-  /* Gradient Variants */
-  .stats-gradient-danger {
-    --gradient-start: #ef4444;
-    --gradient-end: #dc2626;
-  }
-
-  .stats-gradient-info {
-    --gradient-start: #3b82f6;
-    --gradient-end: #2563eb;
-  }
-
-  .stats-gradient-success {
-    --gradient-start: #10b981;
-    --gradient-end: #059669;
-  }
-
-  .stats-gradient-primary {
-    --gradient-start: #8b5cf6;
-    --gradient-end: #7c3aed;
-  }
-
-  .stats-gradient-warning {
-    --gradient-start: #f59e0b;
-    --gradient-end: #d97706;
-  }
-
-  .stats-gradient-purple {
-    --gradient-start: #a855f7;
-    --gradient-end: #9333ea;
-  }
-
-  .stats-gradient-dark {
-    --gradient-start: #64748b;
-    --gradient-end: #475569;
-  }
-
-  /* Chart Card Styles */
-  .chart-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    margin-bottom: 24px;
-  }
-
-  .chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  .chart-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #1e293b;
-    margin: 0;
-  }
-
-  .time-filter {
-    display: flex;
-    gap: 8px;
-  }
-
-  .time-btn {
-    padding: 8px 16px;
-    border: 1px solid #e2e8f0;
-    background: #fff;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #64748b;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .time-btn:hover {
-    background: #f8fafc;
-    border-color: #cbd5e1;
-  }
-
-  .time-btn.active {
-    background: #3b82f6;
-    color: #fff;
-    border-color: #3b82f6;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 1199px) {
-    .stats-value {
-      font-size: 28px;
-    }
-    
-    .stats-icon {
-      width: 48px;
-      height: 48px;
-    }
-    
-    .stats-icon i {
-      font-size: 24px;
-    }
-  }
-
-  @media (max-width: 767px) {
-    .stats-card {
-      padding: 20px;
-    }
-    
-    .stats-value {
-      font-size: 24px;
-    }
-    
-    .stats-icon {
-      width: 44px;
-      height: 44px;
-      top: 16px;
-      right: 16px;
-    }
-    
-    .stats-icon i {
-      font-size: 20px;
-    }
-
-    .chart-card {
-      padding: 16px;
-    }
-
-    .time-filter {
-      flex-wrap: wrap;
-    }
-  }
-</style> -->
-
 <style>
   /* Modern Stats Card Styles */
   .stats-card {
@@ -751,9 +488,10 @@ while($row = $cityWiseResult->fetch_assoc()) {
   /* Chart Canvas Wrapper */
   .chart-canvas-wrapper {
     position: relative;
-    height: 350px;
+    /* height: 350px; */
     z-index: 1;
   }
+  
 
   /* Badge variants */
   .badge-warning { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; }
@@ -779,7 +517,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
             <div class="row g-4">
 
               <!-- Total Products -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='viewProduct.php';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-danger">
                   <div class="stats-icon">
                     <i class="mdi mdi-apps"></i>
@@ -802,7 +540,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
               </div>
 
               <!-- Product Categories -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='viewCategory.php';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-info">
                   <div class="stats-icon">
                     <i class="mdi mdi-order-bool-ascending"></i>
@@ -826,7 +564,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
 
               <?php if (isset($access['inventory']) && $access['inventory'] == 1) { ?>
               <!-- Total Stock -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='inventory.php';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-success">
                   <div class="stats-icon">
                     <i class="mdi mdi-archive-clock-outline"></i>
@@ -851,7 +589,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
 
               <?php if (isset($access['customers']) && $access['customers'] == 1) { ?>
               <!-- Total Customers -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='viewCustomers.php';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-primary">
                   <div class="stats-icon">
                     <i class="mdi mdi-account"></i>
@@ -876,7 +614,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
 
               <?php if (isset($access['orders']) && $access['orders'] == 1) { ?>
               <!-- Total Purchased Unit -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='purchaseHistory.php';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-primary">
                   <div class="stats-icon">
                     <i class="mdi mdi-cart-variant"></i>
@@ -901,7 +639,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
 
               <?php if (isset($access['accounts']) && $access['accounts'] == 1) { ?>
               <!-- Total Sales -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='total-collections.php';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-success">
                   <div class="stats-icon">
                     <i class="mdi mdi-cash-check"></i>
@@ -926,7 +664,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
 
               <?php if (isset($access['orders']) && $access['orders'] == 1) { ?>
               <!-- Pending Orders -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='pendingOrders.php';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-warning">
                   <div class="stats-icon">
                     <i class="mdi mdi-cart-arrow-down"></i>
@@ -947,7 +685,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
               </div>
 
               <!-- Approved Orders -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='viewOrders.php';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-info">
                   <div class="stats-icon">
                     <i class="mdi mdi-cart-arrow-up"></i>
@@ -970,7 +708,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
               </div>
 
               <!-- Processing Orders -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='makeInvoice.php';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-info">
                   <div class="stats-icon">
                     <i class="mdi mdi-cart-outline"></i>
@@ -991,7 +729,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
               </div>
 
               <!-- Shipped Orders -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='makeInvoice.php?search_query=&from_date=&to_date=&main_ctg=&filter=Shipped';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-purple">
                   <div class="stats-icon">
                     <i class="mdi mdi-cart-arrow-right"></i>
@@ -1012,7 +750,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
               </div>
 
               <!-- Delivered Orders -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='makeInvoice.php?search_query=&from_date=&to_date=&main_ctg=&filter=Completed';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-success">
                   <div class="stats-icon">
                     <i class="mdi mdi-cart-check"></i>
@@ -1033,7 +771,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
               </div>
 
               <!-- Cancelled Orders -->
-              <div class="col-xl-3 col-md-6">
+              <div class="col-xl-3 col-md-6" onclick="window.location.href='makeInvoice.php?search_query=&from_date=&to_date=&main_ctg=&filter=Canceled';" style="cursor: pointer;">
                 <div class="stats-card stats-gradient-dark">
                   <div class="stats-icon">
                     <i class="mdi mdi-cart-remove"></i>
@@ -1049,7 +787,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
                       ?>
                     </h2>
                   </div>
-                  <div class="stats-badge badge-dark">Void</div>
+                  <div class="stats-badge badge-dark">Cancelled</div>
                 </div>
               </div>
               <?php } ?>
@@ -1076,7 +814,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
               </div>
 
               <!-- Payment Methods Chart -->
-              <!-- <div class="col-lg-3">
+              <!-- <div class="col-lg-4">
                 <div class="chart-card">
                   <div class="chart-header">
                     <h3 class="chart-title">Payment Methods</h3>
@@ -1116,7 +854,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
               // admin & autherized user can access this area
               if ($_SESSION['role'] == 'Admin' || (isset($access['orders']) && $access['orders'] == 1)) {
                 ?>
-                    <div class="col-md-8">
+                    <div class="col-lg-8">
                       <!-- Latest pending orders Card -->
                         <div class="card p-3">
                           <div class="card-body">
@@ -1124,7 +862,6 @@ while($row = $cityWiseResult->fetch_assoc()) {
                             <p>List of latest pending orders</p><br>
                             <div class="table-responsive">
                               <table class="table table-bordered">
-                                <thead>
                                   <tr>
                                     <th>SL</th>
                                     <th>Order No(s)</th>
@@ -1135,7 +872,6 @@ while($row = $cityWiseResult->fetch_assoc()) {
                                     <th>Order Date</th>
                                     <th colspan="2">Action</th>
                                   </tr>
-                                </thead>
                                 <tbody>
                                   <?php
                                   // Fetch grouped pending orders
@@ -1198,7 +934,7 @@ while($row = $cityWiseResult->fetch_assoc()) {
             <?php 
               if ($_SESSION['role'] == 'Admin' || (isset($access['courier']) && $access['courier'] == 1)) {
                 ?>
-                    <div class="col-md-4 mt-4 mt-md-0">
+                    <div class="col-lg-4 mt-4 mt-md-0">
                       <!-- Latest parcel Card -->
                       <div class="card p-3">
                         <div class="card-body">
@@ -1435,37 +1171,39 @@ while($row = $cityWiseResult->fetch_assoc()) {
     const paymentMethodData = <?php echo json_encode($paymentMethodsData); ?>;
     
     new Chart(paymentMethodCtx, {
-      type: 'bar',
+      type: 'doughnut',
       data: {
         labels: paymentMethodData.map(item => item.name),
         datasets: [{
-          label: 'Amount (৳)',
           data: paymentMethodData.map(item => item.amount),
           backgroundColor: [
-            'rgba(59, 130, 246, 0.8)',
-            'rgba(16, 185, 129, 0.8)',
-            'rgba(245, 158, 11, 0.8)',
-            'rgba(239, 68, 68, 0.8)',
-            'rgba(139, 92, 246, 0.8)'
+            'rgba(59, 130, 246, 0.9)',
+            'rgba(16, 185, 129, 0.9)',
+            'rgba(245, 158, 11, 0.9)',
+            'rgba(239, 68, 68, 0.9)',
+            'rgba(139, 92, 246, 0.9)'
           ],
-          borderColor: [
-            'rgb(59, 130, 246)',
-            'rgb(16, 185, 129)',
-            'rgb(245, 158, 11)',
-            'rgb(239, 68, 68)',
-            'rgb(139, 92, 246)'
-          ],
-          borderWidth: 2,
-          borderRadius: 10,
-          borderSkipped: false
+          borderColor: '#fff',
+          borderWidth: 3,
+          hoverOffset: 15
         }]
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
+        cutout: '65%',
         plugins: {
           legend: {
-            display: false
+            position: 'bottom',
+            labels: {
+              padding: 15,
+              font: {
+                size: 13,
+                weight: '600'
+              },
+              usePointStyle: true,
+              pointStyle: 'circle'
+            }
           },
           tooltip: {
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -1474,30 +1212,11 @@ while($row = $cityWiseResult->fetch_assoc()) {
             bodyFont: { size: 13 },
             callbacks: {
               label: function(context) {
-                const value = context.parsed.y;
+                const value = context.parsed;
                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
                 const percentage = ((value / total) * 100).toFixed(1);
-                return 'Amount: ৳' + value.toLocaleString() + ' (' + percentage + '%)';
+                return context.label + ': ৳' + value.toLocaleString() + ' (' + percentage + '%)';
               }
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: 'rgba(0, 0, 0, 0.05)'
-            },
-            ticks: {
-              callback: function(value) {
-                return '৳' + value.toLocaleString();
-              },
-              font: { size: 12 }
-            }
-          },
-          x: {
-            grid: {
-              display: false
             }
           }
         }

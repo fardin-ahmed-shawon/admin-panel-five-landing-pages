@@ -59,6 +59,7 @@ $pageAccessMap = [
 
     'pendingOrders.php'       => 'orders',
     'viewOrders.php'          => 'orders',
+    'makeInvoice.php'          => 'orders',
 
     'viewPayments.php'        => 'payments',
 
@@ -70,10 +71,15 @@ $pageAccessMap = [
     'statements.php'          => 'accounts',
     'view-statement.php'      => 'accounts',
 
+    'daily-sales-report.php'  => 'accounts',
+    'monthly-sales-report.php' => 'accounts',
+    'yearly-sales-report.php'  => 'accounts',
+
     'inventory.php'           => 'inventory',
 
-    'makeInvoice.php'         => 'invoice',
+    'pos-invoice.php'         => 'invoice',
     'invoice.php'             => 'invoice',
+    'generate_label.php'      => 'invoice',
 
     'courier.php'             => 'courier',
     'steadfast_entry.php'     => 'courier',

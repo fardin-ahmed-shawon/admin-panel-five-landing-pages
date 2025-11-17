@@ -166,6 +166,9 @@
                   <li class="nav-item">
                     <a class="nav-link" href="create-order.php">Create Order</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="makeInvoice.php">Order Management</a>
+                  </li>
                 </ul>
               </div>
             </li>
@@ -240,14 +243,6 @@
             </li>
             <?php endif; ?>
             
-            <?php if (isset($access['invoice']) && $access['invoice'] == 1): ?>
-            <li class="nav-item">
-              <a class="nav-link" href="makeInvoice.php">
-                <span class="menu-title">Make Invoice</span>
-                <i class="mdi mdi-invoice-list-outline menu-icon"></i>
-              </a>
-            </li>
-            <?php endif; ?>
 
             <?php if (isset($access['courier']) && $access['courier'] == 1): ?>
             <li class="nav-item">
