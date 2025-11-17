@@ -47,7 +47,8 @@ $page_title = 'Landing Page List';
               <td>ID</td>
               <td>Image</td>
               <td>Title</td>
-              <td>URL</td>
+              <td rowspan="6">URL</td>
+              <td>Preview</td>
               <td>Actions</td>
             </tr>
           </thead>
@@ -78,25 +79,57 @@ $page_title = 'Landing Page List';
 
             if ($result && mysqli_num_rows($result) > 0) {
               while ($item = mysqli_fetch_assoc($result)) {
-                $title = htmlspecialchars($item['product_title'], ENT_QUOTES);
-                $slug = htmlspecialchars($item['product_slug'], ENT_QUOTES);
-                $code  = htmlspecialchars($item['product_code'], ENT_QUOTES);
-                $price = htmlspecialchars($item['product_price'], ENT_QUOTES);
-                $id    = (int)$item['product_id'];
-                $landingId = (int)$item['landing_id'];
+                  $title = htmlspecialchars($item['product_title'], ENT_QUOTES);
+                  $slug = htmlspecialchars($item['product_slug'], ENT_QUOTES);
+                  $id    = (int)$item['product_id'];
+                  $landingId = (int)$item['landing_id'];
 
-                echo '<tr>';
-                echo '<td>'. $id .'</td>';
-                echo '<td><img src="../img/'. htmlspecialchars($item['product_img1']) .'" alt="img" style="width:50px;height:50px;"></td>';
-                echo '<td>'. $title .'</td>';
-                echo '<td>'.$site_link.'landing/'. $slug .'</td>';
-                echo '<td>';
-                echo '<a href="'.$site_link.'landing/'. $slug .'" class="btn btn-dark btn-sm" target="_blank">Preview <span class="mdi mdi-eye"></span></a> ';
-                echo '<button class="btn btn-dark btn-sm" onclick="confirmEdit('. $landingId .')">Edit <span class="mdi mdi-square-edit-outline"></span></button> ';
-                echo '<button class="btn btn-dark btn-sm" onclick="confirmDelete('. $id .')">Delete <span class="mdi mdi-trash-can-outline"></span></button> ';
-                echo '</td>';
-                echo '</tr>';
+                  // 6 Landing URLs
+                  $urls = [
+                      $site_link . "landing1/" . $slug,
+                      $site_link . "landing2/" . $slug,
+                      $site_link . "landing3/" . $slug,
+                      $site_link . "landing4/" . $slug,
+                      $site_link . "landing5/" . $slug,
+                      $site_link . "landing/"  . $slug,
+                  ];
+
+                  // FIRST ROW
+                  echo "<tr>";
+                  echo "<td rowspan='6'>{$id}</td>";
+                  echo "<td rowspan='6'>
+                          <img src='../img/".htmlspecialchars($item['product_img1'])."' style='width:50px;height:50px;'>
+                        </td>";
+                  echo "<td rowspan='6'>{$title}</td>";
+
+                  // URL (row 1)
+                  echo "<td><a href='{$urls[0]}' target='_blank'>{$urls[0]}</a></td>";
+
+                  // Preview + Copy URL
+                  echo "<td>
+                          <a href='{$urls[0]}' class='btn btn-dark btn-sm' target='_blank'>Preview</a>
+                          <button class='btn btn-primary btn-sm' onclick=\"copyURL('{$urls[0]}')\">Copy URL</button>
+                        </td>";
+
+                  // Edit / Delete (rowspan)
+                  echo "<td rowspan='6'>
+                          <button class='btn btn-dark btn-sm' onclick='confirmEdit({$landingId})'>Edit</button>
+                          <button class='btn btn-dark btn-sm' onclick='confirmDelete({$id})'>Delete</button>
+                        </td>";
+                  echo "</tr>";
+
+                  // Remaining rows (URLs + Preview + Copy)
+                  for ($i = 1; $i < 6; $i++) {
+                      echo "<tr>
+                              <td><a href='{$urls[$i]}' target='_blank'>{$urls[$i]}</a></td>
+                              <td>
+                                  <a href='{$urls[$i]}' class='btn btn-dark btn-sm' target='_blank'>Preview</a>
+                                  <button class='btn btn-primary btn-sm' onclick=\"copyURL('{$urls[$i]}')\">Copy URL</button>
+                              </td>
+                            </tr>";
+                  }
               }
+
             } else {
               echo "<tr><td colspan='10' class='text-center text-danger'>No matching products found.</td></tr>";
             }
@@ -132,4 +165,15 @@ $page_title = 'Landing Page List';
     });
   }
 </script>
+
+<script>
+  function copyURL(url) {
+      navigator.clipboard.writeText(url).then(() => {
+          alert("URL Copied!");
+      }).catch(err => {
+          console.error("Copy failed", err);
+      });
+  }
+</script>
+
 <?php require 'footer.php'; ?>
