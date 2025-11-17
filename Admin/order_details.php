@@ -91,23 +91,49 @@ $order = $orders[0]; // First row for summary
                   
                   <p><strong>Order Amount:</strong> ৳ <?= calculate_order_amount($order['invoice_no']) ?></p>
                   <p><strong>Order Status:</strong> <b class="text-primary"><?= htmlspecialchars($order['order_status']) ?></b></p>
-                  <p><strong>Parcel Status:</strong> <b class="text-info"><?= $parcel_status; ?></b></p>
-                  <br>
-                  <p><strong>Order Note:</strong> <b class="text-success"><?= $order['order_note'] ?></b></p>
+                  <hr>
 
-                  <?php
-                    if ($is_tracking_code_set == 1) {
-                      ?>
-                      <br>
-                      <a href="https://steadfast.com.bd/t/<?= $tracking_code; ?>" class="d-inline btn btn-primary" target="_blank">
-                          <i class="mdi mdi-map-marker-path text-xl"></i>
-                          Track Your Parcel
-                      </a>
-                      <br>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <!-- Start Steadfast -->
+                      <h3 class="text-success">Steadfast</h3>
+                      <p><strong>Parcel Status:</strong> <b class="text-info"><?= $parcel_status; ?></b></p>
                       <?php
-                    }
-                  ?>
+                        if ($is_tracking_code_set == 0) {
+                          ?>
+                          <br>
+                          <a href="https://steadfast.com.bd/t/<?= $tracking_code; ?>" class="btn btn-success" target="_blank">
+                              <i class="mdi mdi-map-marker-path text-xl"></i>
+                              Track Your Parcel
+                          </a>
+                          <br>
+                          <?php
+                        }
+                      ?>
+                      <!-- End Steadfast -->
+                    </div>
+                    <div class="col-lg-6">
+                      <!-- Start Pathao -->
+                      <h3 class="text-danger">Pathao</h3>
+                      <p><strong>Parcel Status:</strong> <b class="text-info">Click bellow</b></p>
+                      <?php
+                        if (get_consignment_id($invoice_no) != 'Consignment Not Found!') {
+                          ?>
+                          <br>
+                          <a href="<?= get_track_parcel_url($invoice_no); ?>" class="btn btn-danger" target="_blank">
+                              <i class="mdi mdi-map-marker-path text-xl"></i>
+                              Track Your Parcel
+                          </a>
+                          <br>
+                          <?php
+                        }
+                      ?>
+                      <!-- End pathao -->
+                    </div>
+                  </div>
 
+                  <br><hr><br>
+                  <p><strong>Order Note:</strong> <b class="text-success"><?= $order['order_note'] ?></b></p>
                   <br>
                   <div class="p-3 mt-3" style="background:#e8f9ff; border-left: 4px solid #007bff;">
                     <p><strong>Shipping Name:</strong> <?= htmlspecialchars($order['user_full_name']) ?></p>

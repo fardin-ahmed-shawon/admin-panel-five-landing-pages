@@ -45,6 +45,11 @@ if ($row > 0) {
         $user_phone = $data['user_phone'];
         $user_address = $data['user_address'];
     }
+
+    // Add shipping charge with total order amount
+    $total_order_amount += find_shipping_charge($invoice_no);
+    // Add Discount amount deduction
+    $total_order_amount -= calculate_discount_amount($invoice_no);
 }
 
 if ($payment_method != 'Cash On Delivery') {

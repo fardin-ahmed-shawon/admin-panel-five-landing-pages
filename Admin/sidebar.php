@@ -39,12 +39,6 @@
                     <a class="nav-link" href="viewProduct.php">View Product</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="create-landing-page.php">Create Landing Page</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="landing-page-list.php">Landing Page List</a>
-                  </li>
-                  <li class="nav-item">
                     <a class="nav-link" href="sizes.php">Sizes</a>
                   </li>
                 </ul>
@@ -68,6 +62,25 @@
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="deleteCategory.php">Delete Category</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <?php endif; ?>
+
+            <?php if (isset($access['product']) && $access['product'] == 1): ?>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#landing" aria-expanded="false" aria-controls="landing">
+                <span class="menu-title">Landing Pages</span>
+                <i class="mdi mdi-book-open-page-variant-outline menu-icon"></i>
+              </a>
+              <div class="collapse" id="landing">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="create-landing-page.php">Create Landing Page</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="landing-page-list.php">Landing Page List</a>
                   </li>
                 </ul>
               </div>
@@ -196,6 +209,26 @@
                 </ul>
               </div>
             </li>
+
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#sales-reports" aria-expanded="false" aria-controls="sales-reports">
+                <span class="menu-title">Sales Reports</span>
+                <i class="mdi mdi-chart-line menu-icon"></i>
+              </a>
+              <div class="collapse" id="sales-reports">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="daily-sales-report.php">Daily Sales</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="monthly-sales-report.php">Monthly Sales</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="yearly-sales-report.php">Yearly Sales</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
             <?php endif; ?>
 
             <?php if (isset($access['inventory']) && $access['inventory'] == 1): ?>
@@ -218,10 +251,20 @@
 
             <?php if (isset($access['courier']) && $access['courier'] == 1): ?>
             <li class="nav-item">
-              <a class="nav-link" href="courier.php">
+              <a class="nav-link" data-bs-toggle="collapse" href="#couriers" aria-expanded="false" aria-controls="couriers">
                 <span class="menu-title">Courier</span>
                 <i class="mdi mdi-truck menu-icon"></i>
               </a>
+              <div class="collapse" id="couriers">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="courier.php">Steadfast</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="pathao-courier-list.php">Pathao</a>
+                  </li>
+                </ul>
+              </div>
             </li>
             <?php endif; ?>
             
