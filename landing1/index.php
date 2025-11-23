@@ -52,7 +52,14 @@ if ($row > 0) {
         $home_des = $data['home_description'];
         $home_img = $data['home_img'];
         $feature_img = $data['feature_img'];
-        $youtube_url = $data['youtube_url'] ?? '';
+        $youtube_url = $data['yt_link'] ?? '';
+
+        $features_main_title = $data['features_main_title'];
+        $why_choose_main_title = $data['why_choose_main_title'] ?? '';
+        $why_choose_bottom_title = $data['why_choose_bottom_title'] ?? '';
+        $review_main_title = $data['review_main_title'] ?? '';
+        $checkout_main_title = $data['checkout_main_title'] ?? '';
+
     }
 }
 
@@ -91,6 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($row = mysqli_fetch_assoc($result)) {
         $product_title = $row['product_title'];
         $product_price = $row['product_price'];
+        $product_regular_price = $row['product_regular_price'];
         
         // Adjust based on selection
         if ($product_selection == '2-box') {
@@ -141,6 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
         * {
             margin: 0;
             padding: 0;
@@ -148,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Poppins", sans-serif;
             line-height: 1.6;
             color: #333;
             background: #f5f5f5;
@@ -194,27 +203,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #017739 0%, #04aa3e 100%);
-            color: #fff;
             padding: 40px 20px;
             text-align: center;
         }
 
         .hero h1 {
+            background: linear-gradient(135deg, #017739 0%, #04aa3e 100%);
+            border-radius: 10px;
+            color: #fff;
             font-size: 2rem;
             margin-bottom: 10px;
         }
 
         .hero p {
-            font-size: 1.1rem;
+            color: #7a7a7a;
+            font-size: 1.3rem;
+            font-weight: 700;
             opacity: 0.9;
         }
 
         /* Video Section */
         .video-section {
-            background: #fff;
+            /* background: #fff; */
             padding: 40px 20px;
             text-align: center;
+            border-radius: 10px;
         }
 
         .video-wrapper {
@@ -265,6 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             position: sticky;
             top: 0;
             z-index: 100;
+            margin-bottom: 30px;
         }
 
         .countdown-section h3 {
@@ -299,10 +313,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .section-title {
             text-align: center;
             font-size: 1.8rem;
-            margin: 20px 0;
-            color: #000;
-            background: #fff;
-            padding: 15px 0;
+            margin-bottom: 20px;
+            color: #ffffffff;
+            background: #000000ff;
+            padding: 5px 0;
             border-top: 1px solid #e0e0e0;
             border-bottom: 1px solid #e0e0e0;
         }
@@ -351,7 +365,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         /* Gallery */
         .gallery {
             background: #f8f9fa;
-            padding: 60px 20px;
+            /* padding: 60px 20px; */
         }
 
         .gallery-grid {
@@ -359,11 +373,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin-top: 30px;
+            padding-bottom: 30px;
         }
 
         .gallery-item img {
             width: 100%;
-            height: 150px;
+            
             object-fit: contain;
             border-radius: 10px;
             transition: transform 0.3s ease;
@@ -376,7 +391,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         /* Products Section */
         .products {
             background: #fff;
-            padding: 40px 20px;
+            /* padding: 40px 20px; */
         }
 
         .products-grid {
@@ -384,6 +399,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 30px;
+            padding-bottom: 30px;
         }
 
         .product-card {
@@ -400,8 +416,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .product-card img {
-            width: 100%;
-            height: 200px;
+            width: 60%;
             object-fit: contain;
             margin-bottom: 15px;
         }
@@ -433,7 +448,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         /* Reviews */
         .reviews {
             background: #f8f9fa;
-            padding: 40px 20px;
+            /* padding: 40px 20px; */
         }
 
         .reviews-slider .review-card {
@@ -447,7 +462,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         /* Order Form */
         .order-form {
-            background: #f5f5f5;
+            background: #ffffffff;
             padding: 40px 20px;
         }
 
@@ -589,8 +604,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         /* Footer */
         footer {
-            background: #2c3e50;
-            color: #fff;
+            background: #e3effa;
+            color: #000000ff;
             padding: 40px 20px;
             text-align: center;
         }
@@ -604,7 +619,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .footer-links a {
-            color: #fff;
+            color: #000000ff;
             text-decoration: none;
         }
 
@@ -647,17 +662,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </section>
 
     <!-- Video Section -->
-    <?php if (!empty($youtube_url)): ?>
+    <?php
+    if (!empty($youtube_url)) {
+
+        // Extract ID from shorts link
+        if (preg_match('/shorts\/([a-zA-Z0-9_-]+)/', $youtube_url, $match)) {
+            $video_id = $match[1];
+            $embed_url = "https://www.youtube.com/embed/$video_id";
+        } else {
+            $embed_url = $youtube_url; // fallback
+        }
+    ?>
     <section class="video-section">
         <div class="container">
             <div class="video-wrapper">
-                <iframe src="<?= $youtube_url ?>" allowfullscreen></iframe>
+                <iframe width="100%" height="400" src="<?= $embed_url ?>" allowfullscreen></iframe>
             </div>
             <a href="#order" class="cta-button">অর্ডার করতে চাই</a>
-            <p style="margin-top: 10px; color: #666;">অফারটি সীমিত সময়ের জন্য!</p>
+            <p style="font-size: 22px; color: #fc0202ff;"><b>Limited Time OFFER!</b></p>
         </div>
     </section>
-    <?php endif; ?>
+    <?php } ?>
+
+    
 
     <!-- Countdown Timer -->
     <section class="countdown-section">
@@ -677,11 +704,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label>Seconds</label>
                 </div>
             </div>
-        </div>
+        </div><br>
     </section>
 
     <!-- Features Section -->
-    <h2 class="section-title">Product Features</h2>
+    <h2 class="section-title" style="margin-bottom: 0"><?= $features_main_title; ?></h2>
     <section class="features">
         <div class="container">
             <div class="features-grid">
@@ -710,8 +737,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Gallery Section -->
     <section class="gallery">
+        <h2 class="section-title"><?= $why_choose_main_title; ?></h2>
         <div class="container">
-            <h2 class="section-title">Product Gallery</h2>
             <div class="gallery-grid">
                 <?php
                 $sql = "SELECT * FROM gallery WHERE product_id = $product_id";
@@ -730,8 +757,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Products Section -->
     <section class="products">
+        <h2 class="section-title"><?= $why_choose_bottom_title; ?></h2>
         <div class="container">
-            <h2 class="section-title">Get Your Products</h2>
             <div class="products-grid">
                 <?php
                 $sql = "SELECT * FROM product_info WHERE product_id = $product_id";
@@ -756,8 +783,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Reviews Section -->
     <section class="reviews">
+        <h2 class="section-title"><?= $review_main_title; ?></h2>
         <div class="container">
-            <h2 class="section-title">সম্মানিত কাস্টমারের রিভিউ সমূহ</h2>
             <div class="reviews-slider">
                 <?php
                 $sql = "SELECT * FROM reviews WHERE product_id = $product_id";
@@ -777,10 +804,159 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </section>
 
+    <!-- OFfer section -->
+    <?php
+
+    $sql = "SELECT * FROM product_info WHERE product_id = $product_id";
+    $result = mysqli_query($conn, $sql);
+    if ($row = mysqli_fetch_assoc($result)) {
+        $product_price = $row['product_price'];
+        $product_regular_price = $row['product_regular_price'];
+    }
+
+    // ******* Calculate Product Discount Percentage ********* //
+    function get_product_discount_percentage($regular_price = '', $selling_price = '') {
+        // Defensive checks
+        if (!is_numeric($regular_price) || !is_numeric($selling_price)) {
+            return 0; // invalid input
+        }
+
+        if ($regular_price <= 0 || $selling_price < 0 || $selling_price >= $regular_price) {
+            return 0; // no discount
+        }
+
+        // Calculate discount percentage
+        $discount = (($regular_price - $selling_price) / $regular_price) * 100;
+
+        return round($discount); // rounded percentage
+    }
+
+    ?>
+    <section class="offers">
+    <div class="container">
+        <div class="offer-card">
+        <h2 class="offer-title">Extra <span class="accent"><?php echo get_product_discount_percentage($product_regular_price, $product_price) ?>% Off!</span></h2>
+
+        <hr class="divider">
+
+        <p class="orig-price">
+            রেগুলার মূল্য:
+            <span class="strike"><?= $product_regular_price ?> Tk.</span>
+        </p>
+
+        <p class="deal-price">
+            অফার মূল্য: <strong><?= $product_price ?> Tk.</strong>
+            <span class="wavy" aria-hidden="true"></span>
+        </p>
+
+        <!-- decorative image (uses your uploaded file) -->
+        <img class="offer-deco" src="/mnt/data/7693a936-693a-4c81-863b-bc815249604a.png" alt="">
+        </div>
+    </div>
+    </section>
+
+    <style>
+    /* container reset */
+    .offers { background: #d8f3fb; padding: 32px 0; font-family: "Helvetica Neue", Arial, sans-serif; }
+    .offers .container { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+    /* card */
+    .offer-card {
+    position: relative;
+    text-align: center;
+    padding: 28px 24px 40px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.02);
+    overflow: visible;
+    }
+
+    /* title */
+    .offer-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: #0b2436;
+    letter-spacing: 0.2px;
+    }
+    .offer-title .accent {
+    color: #1fa83a;            /* green */
+    font-weight: 900;
+    }
+
+    /* divider */
+    .divider {
+    margin: 18px auto;
+    width: 92%;
+    border: none;
+    border-top: 1px solid rgba(11,36,54,0.15);
+    }
+
+    /* original price row */
+    .orig-price {
+    margin: 12px 0 6px;
+    color: #626d76;
+    font-size: 18px;
+    line-height: 1.2;
+    }
+    .orig-price .strike {
+    color: #e23b3b;
+    margin-left: 8px;
+    text-decoration: line-through;
+    font-weight: 700;
+    }
+
+    /* deal price row */
+    .deal-price {
+    margin: 6px 0 0;
+    font-size: 26px;
+    font-weight: 800;
+    color: #071d1f;
+    position: relative;
+    display: inline-block;
+    }
+
+    /* wavy underline: using SVG data-URI background for a green squiggle under the price */
+    .deal-price .wavy {
+    display: inline-block;
+    width: 120px;
+    height: 18px;
+    vertical-align: middle;
+    margin-left: 8px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='18' viewBox='0 0 120 18'><path d='M0 9c10-6 20 6 30 0s20-6 30 0 20 6 30 0 20-6 30 0' fill='none' stroke='%231fa83a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: translateY(2px);
+    pointer-events: none;
+    }
+
+    /* decorative image (optional) */
+    .offer-deco {
+    position: absolute;
+    right: 18px;
+    bottom: -18px;
+    width: 140px;
+    opacity: 0.12;
+    transform: rotate(-6deg);
+    user-select: none;
+    pointer-events: none;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 640px) {
+    .offer-title { font-size: 20px; }
+    .deal-price { font-size: 20px; }
+    .deal-price .wavy { width: 90px; height: 14px; }
+    .offer-deco { width: 100px; right: 8px; bottom: -12px; }
+    }
+    </style>
+
+    <!-- End -->
+
     <!-- Order Form Section -->
     <section class="order-form" id="order">
         <div class="container">
-            <h2 class="section-title">Place Your Order Now!</h2>
+            <h2 class="section-title"><?= $checkout_main_title; ?></h2>
+            <h3 style="text-align: center; margin-bottom: 40px;">নিচের ফর্মে আপনার নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা লিখে ”Place Order“ ক্লিক করুন</h3>
             <div class="form-container">
                 <form method="POST" action="" id="orderForm">
                     <div class="form-grid">

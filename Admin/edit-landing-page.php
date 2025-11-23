@@ -39,6 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Landing page fields
     $home_title = $_POST['home_title'];
     $home_description = $_POST['home_description'];
+    
+    $features_main_title = $_POST['features_main_title'] ?? '';
+    $why_choose_main_title = $_POST['why_choose_main_title'] ?? '';
+    $why_choose_bottom_title = $_POST['why_choose_bottom_title'] ?? '';
+    $review_main_title = $_POST['review_main_title'] ?? '';
+    $checkout_main_title = $_POST['checkout_main_title'] ?? '';
+    $yt_link = $_POST['yt_link'] ?? '';
 
     // Handle images
     $home_img = '';
@@ -63,14 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt->num_rows) {
         // Update
         $stmt->close();
-        $stmt = $conn->prepare("UPDATE landing_pages SET product_slug=?, home_title=?, home_description=?, home_img=?, feature_img=? WHERE product_id=?");
-        $stmt->bind_param("sssssi", $product_slug, $home_title, $home_description, $home_img, $feature_img, $product_id);
+        $stmt = $conn->prepare("UPDATE landing_pages SET product_slug=?, home_title=?, home_description=?, home_img=?, feature_img=?, features_main_title=?, why_choose_main_title=?, why_choose_bottom_title=?, review_main_title=?, checkout_main_title=?, yt_link=?  WHERE product_id=?");
+        $stmt->bind_param("sssssssssssi", $product_slug, $home_title, $home_description, $home_img, $feature_img, $features_main_title, $why_choose_main_title, $why_choose_bottom_title, $review_main_title, $checkout_main_title, $yt_link,  $product_id);
         $stmt->execute();
     } else {
         // Insert
         $stmt->close();
-        $stmt = $conn->prepare("INSERT INTO landing_pages (product_id, product_slug, home_title, home_description, home_img, feature_img) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("isssss", $product_id, $product_slug, $home_title, $home_description, $home_img, $feature_img);
+        $stmt = $conn->prepare("INSERT INTO landing_pages (product_id, product_slug, home_title, home_description, home_img, feature_img, features_main_title, why_choose_main_title, why_choose_bottom_title, review_main_title, checkout_main_title, yt_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("isssssssssss", $product_id, $product_slug, $home_title, $home_description, $home_img, $feature_img, $features_main_title, $why_choose_main_title, $why_choose_bottom_title, $review_main_title, $checkout_main_title, $yt_link);
         $stmt->execute();
     }
     $stmt->close();
@@ -161,6 +168,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="file" name="feature_img" accept="image/*" class="form-control" required>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="card-body row g-3 p-3">
+                    <div class="col-12 py-3">
+                        <label class="form-label">Features Main Title</label>
+                        <input type="text" name="features_main_title" class="form-control" required>
+                    </div>
+                    <div class="col-12 py-3">
+                        <label class="form-label">Why Choose Top Title</label>
+                        <input type="text" name="why_choose_main_title" class="form-control" required>
+                    </div>
+                    <div class="col-12 py-3">
+                        <label class="form-label">Why Choose Bottom Title</label>
+                        <input type="text" name="why_choose_bottom_title" class="form-control" required>
+                    </div>
+                    <div class="col-12 py-3">
+                        <label class="form-label">Review Main Title</label>
+                        <input type="text" name="review_main_title" class="form-control" required>
+                    </div>
+                    <div class="col-12 py-3">
+                        <label class="form-label">Checkout Main Title</label>
+                        <input type="text" name="checkout_main_title" class="form-control" required>
+                    </div>
+                    <div class="col-12 py-3">
+                        <label class="form-label">Youtube Video URL</label>
+                        <input type="text" name="yt_link" class="form-control" required>
                     </div>
                 </div>
             </div>

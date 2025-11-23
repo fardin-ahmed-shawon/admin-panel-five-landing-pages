@@ -271,6 +271,14 @@ CREATE TABLE landing_pages (
     home_description TEXT NOT NULL,
     home_img VARCHAR(255) NOT NULL,
     feature_img VARCHAR(255) NOT NULL,
+
+    features_main_title VARCHAR(255) DEFAULT NULL,
+    why_choose_main_title VARCHAR(255) DEFAULT NULL,
+    why_choose_bottom_title VARCHAR(255) DEFAULT NULL,
+    review_main_title VARCHAR(255) DEFAULT NULL,
+    checkout_main_title VARCHAR(255) DEFAULT NULL,
+    yt_link TEXT DEFAULT NULL,
+
     FOREIGN KEY (product_id) REFERENCES product_info(product_id) ON DELETE CASCADE
 );
 

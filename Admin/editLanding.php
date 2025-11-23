@@ -48,6 +48,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $home_title = $_POST['home_title'];
     $home_description = $_POST['home_description'];
 
+    $features_main_title = $_POST['features_main_title'] ?? '';
+    $why_choose_main_title = $_POST['why_choose_main_title'] ?? '';
+    $why_choose_bottom_title = $_POST['why_choose_bottom_title'] ?? '';
+    $review_main_title = $_POST['review_main_title'] ?? '';
+    $checkout_main_title = $_POST['checkout_main_title'] ?? '';
+    $yt_link = $_POST['yt_link'] ?? '';
+
     $upload_dir = 'uploads/';
     if (!is_dir($upload_dir)) mkdir($upload_dir);
 
@@ -66,9 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Update landing_pages
     $stmt = $conn->prepare("
         UPDATE landing_pages 
-        SET home_title=?, home_description=?, home_img=?, feature_img=? 
+        SET home_title=?, home_description=?, home_img=?, feature_img=?, 
+        features_main_title=?, why_choose_main_title=?, why_choose_bottom_title=?, review_main_title=?,checkout_main_title=?, yt_link=?
         WHERE id=?");
-    $stmt->bind_param("ssssi", $home_title, $home_description, $home_img, $feature_img, $landing_id);
+    $stmt->bind_param("ssssssssssi", $home_title, $home_description, $home_img, $feature_img, $features_main_title, $why_choose_main_title, $why_choose_bottom_title, $review_main_title, $checkout_main_title, $yt_link, $landing_id);
     $stmt->execute();
     $stmt->close();
 
@@ -155,6 +163,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="file" name="feature_img" accept="image/*" class="form-control">
                     </div>
                 </div>
+
+                <div class="card-body row g-3 p-3">
+                    <div class="col-12 py-3">
+                        <label class="form-label">Features Main Title</label>
+                        <input type="text" name="features_main_title" class="form-control" value="<?= htmlspecialchars($landing['features_main_title']) ?>" required>
+                    </div>
+                    <div class="col-12 py-3">
+                        <label class="form-label">Why Choose Top Title</label>
+                        <input type="text" name="why_choose_main_title" class="form-control" value="<?= htmlspecialchars($landing['why_choose_main_title']) ?>" required>
+                    </div>
+                    <div class="col-12 py-3">
+                        <label class="form-label">Why Choose Bottom Title</label>
+                        <input type="text" name="why_choose_bottom_title" class="form-control" value="<?= htmlspecialchars($landing['why_choose_bottom_title']) ?>" required>
+                    </div>
+                    <div class="col-12 py-3">
+                        <label class="form-label">Review Main Title</label>
+                        <input type="text" name="review_main_title" class="form-control" value="<?= htmlspecialchars($landing['review_main_title']) ?>" required>
+                    </div>
+                    <div class="col-12 py-3">
+                        <label class="form-label">Checkout Main Title</label>
+                        <input type="text" name="checkout_main_title" class="form-control" value="<?= htmlspecialchars($landing['checkout_main_title']) ?>" required>
+                    </div>
+                    <div class="col-12 py-3">
+                        <label class="form-label">Youtube Video URL</label>
+                        <input type="text" name="yt_link" class="form-control" value="<?= htmlspecialchars($landing['yt_link']) ?>" required>
+                    </div>
+                </div>
+
             </div>
 
             <!-- Features -->
