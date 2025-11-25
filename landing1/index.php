@@ -166,13 +166,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            /*padding: 0 20px;*/
         }
 
         /* Header */
         header {
             background: #fff;
-            padding: 20px 0;
+            padding: 10px 0;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
@@ -182,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .logo img {
-            max-width: 200px;
+            max-width: 150px;
             height: auto;
         }
 
@@ -203,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         /* Hero Section */
         .hero {
-            padding: 40px 20px;
+            padding: 10px 5px;
             text-align: center;
         }
 
@@ -213,11 +213,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             color: #fff;
             font-size: 2rem;
             margin-bottom: 10px;
+            padding: 10px;
         }
 
         .hero p {
             color: #7a7a7a;
-            font-size: 1.3rem;
+            font-size: 1rem;
             font-weight: 700;
             opacity: 0.9;
         }
@@ -225,7 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         /* Video Section */
         .video-section {
             /* background: #fff; */
-            padding: 40px 20px;
+            padding: 10px 5px;
             text-align: center;
             border-radius: 10px;
         }
@@ -255,10 +256,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             color: #fff;
             padding: 15px 40px;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 10px;
             font-size: 1.2rem;
             font-weight: bold;
-            margin: 20px 0;
+            margin: 10px 0;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 48, 255, 0.3);
         }
@@ -324,7 +325,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         /* Features Section */
         .features {
             background: #fff;
-            padding: 40px 20px;
+            padding: 10px 5px;
         }
 
         .features-grid {
@@ -337,7 +338,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .feature-card {
             background: #fff;
-            padding: 30px 20px;
+            padding: 10px 5px;
             text-align: center;
             border-bottom: 1px solid #e0e0e0;
         }
@@ -463,7 +464,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         /* Order Form */
         .order-form {
             background: #ffffffff;
-            padding: 40px 20px;
+            padding: 20px;
         }
 
         .order-form .section-title {
@@ -473,6 +474,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             padding: 12px 20px;
             margin-bottom: 30px;
             border: none;
+            border-radius: 10px;
         }
 
         .form-container {
@@ -679,12 +681,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <iframe width="100%" height="400" src="<?= $embed_url ?>" allowfullscreen></iframe>
             </div>
             <a href="#order" class="cta-button">অর্ডার করতে চাই</a>
-            <p style="font-size: 22px; color: #fc0202ff;"><b>Limited Time OFFER!</b></p>
+            <p style="font-size: 15px; color: #fc0202ff;"><b>অফারটি সীমিত সময়ের জন্য!</b></p>
+
+            <h2 style="text-align: center; padding: 10px 0"><?= $checkout_main_title; ?></h2>
+
         </div>
     </section>
     <?php } ?>
 
-    
 
     <!-- Countdown Timer -->
     <section class="countdown-section">
@@ -729,15 +733,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
                 ?>
             </div>
-            <div style="text-align: center; margin-top: 40px;">
+            <div style="text-align: center; margin-top: 10px;">
                 <a href="#order" class="cta-button">এখনই অর্ডার করুন</a>
+                <p style="font-size: 15px; color: #fc0202ff;"><b>Limited Time OFFER!</b></p>
             </div>
         </div>
     </section>
 
     <!-- Gallery Section -->
     <section class="gallery">
-        <h2 class="section-title"><?= $why_choose_main_title; ?></h2>
         <div class="container">
             <div class="gallery-grid">
                 <?php
@@ -755,9 +759,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </section>
 
+
+    <!-- <h2 class="section-title"><?= $why_choose_main_title; ?></h2>
+    <h2 class="section-title"><?= $why_choose_bottom_title; ?></h2> -->
+
+
     <!-- Products Section -->
-    <section class="products">
-        <h2 class="section-title"><?= $why_choose_bottom_title; ?></h2>
+    <section style="display: none;" class="products">
         <div class="container">
             <div class="products-grid">
                 <?php
@@ -800,9 +808,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div style="text-align: center; margin-top: 40px;">
                 <a href="#order" class="cta-button">এখনই অর্ডার করুন</a>
+                <p style="font-size: 15px; color: #fc0202ff;"><b>Limited Time OFFER!</b></p>
             </div>
         </div>
-    </section>
+    </section><br>
 
     <!-- OFfer section -->
     <?php
@@ -835,36 +844,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <section class="offers">
     <div class="container">
         <div class="offer-card">
-        <h2 class="offer-title">Extra <span class="accent"><?php echo get_product_discount_percentage($product_regular_price, $product_price) ?>% Off!</span></h2>
+            <h2 class="offer-title">Extra <span class="accent"><?php echo get_product_discount_percentage($product_regular_price, $product_price) ?>% Off!</span></h2>
 
-        <hr class="divider">
+            <hr class="divider">
 
-        <p class="orig-price">
-            রেগুলার মূল্য:
-            <span class="strike"><?= $product_regular_price ?> Tk.</span>
-        </p>
+            <p class="orig-price">
+                রেগুলার মূল্য:
+                <span class="strike"><?= $product_regular_price ?> Tk.</span>
+            </p>
 
-        <p class="deal-price">
-            অফার মূল্য: <strong><?= $product_price ?> Tk.</strong>
-            <span class="wavy" aria-hidden="true"></span>
-        </p>
+            <p class="deal-price">
+                অফার মূল্য: <strong><?= $product_price ?> Tk.</strong>
+                <br>
+                <span class="wavy" aria-hidden="true"></span>
+            </p>
 
-        <!-- decorative image (uses your uploaded file) -->
-        <img class="offer-deco" src="/mnt/data/7693a936-693a-4c81-863b-bc815249604a.png" alt="">
+            <!-- decorative image (uses your uploaded file) -->
+            <img class="offer-deco" src="/mnt/data/7693a936-693a-4c81-863b-bc815249604a.png" alt="">
         </div>
     </div>
     </section>
 
     <style>
     /* container reset */
-    .offers { background: #d8f3fb; padding: 32px 0; font-family: "Helvetica Neue", Arial, sans-serif; }
+    .offers { background: #d8f3fb; padding: 12px 0; font-family: "Helvetica Neue", Arial, sans-serif; }
     .offers .container { max-width: 980px; margin: 0 auto; padding: 0 16px; }
 
     /* card */
     .offer-card {
     position: relative;
     text-align: center;
-    padding: 28px 24px 40px;
+    padding: 10px;
     border-radius: 6px;
     background: rgba(255,255,255,0.02);
     overflow: visible;
@@ -896,6 +906,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     margin: 12px 0 6px;
     color: #626d76;
     font-size: 18px;
+    font-weight: 800;
     line-height: 1.2;
     }
     .orig-price .strike {
@@ -1071,8 +1082,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="container">
             <div class="footer-links">
                 <a href="tel:<?= $websitePhone ?>">Call us: <?= $websitePhone ?></a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms & Conditions</a>
+                <!-- <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a> -->
             </div>
             <p>© <?= date('Y') ?> <?= $websiteName ?>. All Rights Reserved</p>
         </div>
