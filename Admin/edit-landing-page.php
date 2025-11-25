@@ -95,6 +95,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    // Why Choose This Product
+    if (!empty($_POST['why_text'])) {
+        foreach ($_POST['why_text'] as $why_text) {
+            if ($why_text) {
+                $stmt = $conn->prepare("INSERT INTO why_choose_product (product_id, why_text) VALUES (?, ?)");
+                $stmt->bind_param("is", $product_id, $why_text);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+    }
+
     // Reviews
     if (!empty($_FILES['review_image']['name'][0])) {
         foreach ($_FILES['review_image']['tmp_name'] as $i => $tmp_name) {
@@ -217,6 +229,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="button" class="btn btn-outline-success" id="add-feature"><b>Add Feature</b></button>
             </div>
 
+            <!-- Why Choose This Product -->
+            <div class="card mb-4 rounded-0">
+                <div class="card-header bg-dark text-white">Why Choose This Product</div>
+                <div class="card-body p-3" id="why-choose-section">
+                    <div class="why-choose-group row g-3 mb-2">
+                        <div class="col-md-10">
+                            <input type="text" name="why_text[]" class="form-control" placeholder="Why Choose This Product" required>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger remove-why-choose">Remove</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-warning" id="add-why-choose"><b>Add Why Choose Item</b></button>
+            </div>
+
             <!-- Reviews -->
             <div class="card mb-4 rounded-0">
                 <div class="card-header bg-dark text-white">Reviews</div>
@@ -276,6 +304,26 @@ document.getElementById('add-feature').onclick = function() {
 document.getElementById('features-section').onclick = function(e) {
     if (e.target.classList.contains('remove-feature')) {
         e.target.closest('.feature-group').remove();
+    }
+};
+
+document.getElementById('add-why-choose').onclick = function() {
+    let section = document.getElementById('why-choose-section');
+    let group = document.createElement('div');
+    group.className = 'why-choose-group row g-3 mb-2';
+    group.innerHTML = `
+        <div class="col-md-10">
+            <input type="text" name="why_text[]" class="form-control" placeholder="Why Choose This Product" required>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-danger remove-why-choose">Remove</button>
+        </div>
+    `;
+    section.appendChild(group);
+};
+document.getElementById('why-choose-section').onclick = function(e) {
+    if (e.target.classList.contains('remove-why-choose')) {
+        e.target.closest('.why-choose-group').remove();
     }
 };
 

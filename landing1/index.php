@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&display=swap');
         * {
             margin: 0;
             padding: 0;
@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         body {
-            font-family: "Poppins", sans-serif;
+            font-family: "Anek Bangla", sans-serif;
             line-height: 1.6;
             color: #333;
             background: #f5f5f5;
@@ -166,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            /*padding: 0 20px;*/
+            padding: 0 20px;
         }
 
         /* Header */
@@ -397,7 +397,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
             margin-top: 30px;
             padding-bottom: 30px;
@@ -760,32 +760,99 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </section>
 
 
-    <!-- <h2 class="section-title"><?= $why_choose_main_title; ?></h2>
-    <h2 class="section-title"><?= $why_choose_bottom_title; ?></h2> -->
+    <style>
+        .why-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
+        .why-list li {
+            font-size: 28px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
 
-    <!-- Products Section -->
-    <section style="display: none;" class="products">
+        .why-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tick-icon {
+            margin-top: 3px; /* align icon with text */
+        }
+
+        .text {
+            line-height: 1.5;
+            color: #333;
+            font-size: 16px;
+        }
+    </style>
+    <!-- Why Choose Product Section -->
+    <section class="products">
+        <h2 class="section-title"><?= $why_choose_main_title; ?></h2>
         <div class="container">
-            <div class="products-grid">
-                <?php
-                $sql = "SELECT * FROM product_info WHERE product_id = $product_id";
-                $result = mysqli_query($conn, $sql);
-                if (mysqli_num_rows($result) > 0) {
-                    while ($data = mysqli_fetch_assoc($result)) {
-                        echo '
-                        <div class="product-card">
-                            <img src="'.$data['product_img1'].'" alt="'.$data['product_title'].'">
-                            <h3>'.$data['product_title'].'</h3>
-                            <div class="product-price">
-                                <h4>৳'.$data['product_price'].'</h4>
-                                <span class="old-price">৳'.$data['product_regular_price'].'</span>
-                            </div>
-                        </div>';
-                    }
-                }
-                ?>
+            <div class="form-grid">
+
+                <div class="why-list">
+                    <ul>
+                        <?php
+                        $sql = "SELECT why_text FROM why_choose_product WHERE product_id = $product_id";
+                        $result = mysqli_query($conn, $sql);
+
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($data = mysqli_fetch_assoc($result)) {
+                                echo '
+                                <li><b>
+                                    <span class="tick-icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                            <path d="M20 6L9 17L4 12" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                    <span class="text">'.$data['why_text'].'</span>
+                                </b></li>';
+                            }
+                        }
+                        ?>
+                    </ul>
+                </div>
+
+                <div>
+                    <?php
+                        $sql = "SELECT * FROM product_info WHERE product_id = $product_id";
+                        $result = mysqli_query($conn, $sql);
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($data = mysqli_fetch_assoc($result)) {
+                                echo '
+                                <img style="border-radius: 10px; max-width: 100%;height: auto;display: block; max-height: 500px" src="'.$data['product_img1'].'" alt="'.$data['product_title'].'">
+                                ';
+                            }
+                        }
+                    ?>
+                </div>
+                
             </div>
+
+            <h2 style="
+                background: linear-gradient(135deg, #017739 0%, #04aa3e 100%);
+                border-radius: 10px;
+                color: #fff;
+                font-size: 2rem;
+                margin: 30px 0px;
+                padding: 10px;
+                text-align: center;
+                "
+            >
+            <?= $why_choose_bottom_title; ?>
+            </h2>
+
+            <div style="text-align: center;">
+                <a href="#order" class="cta-button">এখনই অর্ডার করুন</a>
+                <p style="font-size: 15px; color: #fc0202ff;"><b>Limited Time OFFER!</b></p>
+            </div>
+            <br><br>
         </div>
     </section>
 

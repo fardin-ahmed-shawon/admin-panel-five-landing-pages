@@ -24,10 +24,11 @@ if (!$landing) die("Landing page not found");
 
 $product_id = $landing['product_id'];
 
-// Fetch Features, Reviews, Gallery
+// Fetch Features, Reviews, Gallery, Why Choose
 $features = $conn->query("SELECT * FROM features WHERE product_id = $product_id")->fetch_all(MYSQLI_ASSOC);
 $reviews = $conn->query("SELECT * FROM reviews WHERE product_id = $product_id")->fetch_all(MYSQLI_ASSOC);
 $gallery = $conn->query("SELECT * FROM gallery WHERE product_id = $product_id")->fetch_all(MYSQLI_ASSOC);
+$why_choose = $conn->query("SELECT * FROM why_choose_product WHERE product_id = $product_id")->fetch_all(MYSQLI_ASSOC);
 
 // Helper: Compress image
 function compressImage($source, $destination, $quality = 70) {
@@ -87,6 +88,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($ftitle && $fdesc) {
                 $stmt = $conn->prepare("INSERT INTO features (product_id, feature_title, feature_description) VALUES (?, ?, ?)");
                 $stmt->bind_param("iss", $product_id, $ftitle, $fdesc);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+    }
+
+    // Insert new Why Choose items
+    if (!empty($_POST['why_text'])) {
+        foreach ($_POST['why_text'] as $why_text) {
+            if ($why_text) {
+                $stmt = $conn->prepare("INSERT INTO why_choose_product (product_id, why_text) VALUES (?, ?)");
+                $stmt->bind_param("is", $product_id, $why_text);
                 $stmt->execute();
                 $stmt->close();
             }
@@ -208,6 +221,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="button" class="btn btn-outline-success" id="add-feature"><b>Add Feature</b></button>
             </div>
 
+            <!-- Why Choose This Product -->
+            <div class="card mb-4 rounded-0">
+                <div class="card-header bg-dark text-white">Why Choose This Product</div>
+                <div class="card-body p-3" id="why-choose-section">
+                    <?php foreach ($why_choose as $wc): ?>
+                        <div class="why-choose-group row g-3 mb-2">
+                            <div class="col-md-10"><input type="text" class="form-control" value="<?= htmlspecialchars($wc['why_text']) ?>" readonly></div>
+                            <div class="col-md-2"><a href="delete_why_choose.php?id=<?= $wc['id'] ?>" class="btn btn-danger">Delete</a></div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <button type="button" class="btn btn-outline-warning" id="add-why-choose"><b>Add Why Choose Item</b></button>
+            </div>
+
             <!-- Reviews -->
             <div class="card mb-4 rounded-0">
                 <div class="card-header bg-dark text-white">Reviews</div>
@@ -256,6 +283,18 @@ document.getElementById('add-feature').onclick = function() {
     section.appendChild(group);
 };
 document.getElementById('features-section').onclick = e => { if (e.target.classList.contains('remove-feature')) e.target.closest('.feature-group').remove(); };
+
+document.getElementById('add-why-choose').onclick = function() {
+    let section = document.getElementById('why-choose-section');
+    let group = document.createElement('div');
+    group.className = 'why-choose-group row g-3 mb-2';
+    group.innerHTML = `
+        <div class="col-md-10"><input type="text" name="why_text[]" class="form-control" placeholder="Why Choose This Product" required></div>
+        <div class="col-md-2"><button type="button" class="btn btn-danger remove-why-choose">Remove</button></div>
+    `;
+    section.appendChild(group);
+};
+document.getElementById('why-choose-section').onclick = e => { if (e.target.classList.contains('remove-why-choose')) e.target.closest('.why-choose-group').remove(); };
 
 document.getElementById('add-review').onclick = function() {
     let section = document.getElementById('reviews-section');
