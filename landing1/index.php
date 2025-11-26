@@ -224,6 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         /* Video Section */
+        /* Video Section with Fixed Dimensions */
         .video-section {
             padding: 10px 5px;
             text-align: center;
@@ -232,6 +233,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .video-wrapper {
             max-width: 100%;
+            width: 900px; /* Set your desired width */
+            height: 900px; /* Set your desired height */
             margin: 0 auto;
             position: relative;
             border-radius: 10px;
@@ -243,14 +246,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             position: relative;
             cursor: pointer;
             width: 100%;
+            height: 100%;
             display: block;
         }
 
         .video-thumbnail img {
             width: 100%;
-            height: auto;
+            height: 100%;
             display: block;
             border-radius: 10px;
+            object-fit: cover; /* or use 'contain' to prevent cropping */
         }
 
         .play-button {
@@ -268,6 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 10;
         }
 
         .play-button:hover {
@@ -287,10 +293,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .video-iframe-container {
             display: none;
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .video-iframe-container.active {
@@ -298,16 +305,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .video-iframe-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             border: none;
             border-radius: 10px;
         }
 
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .video-wrapper {
+                width: 600px;
+                height: 600px; 
+            }
+        }
+
         @media (max-width: 768px) {
+            .video-wrapper {
+                width: 500px;
+                height: 500px; 
+            }
+            
             .play-button {
                 width: 60px;
                 height: 60px;
@@ -317,6 +334,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 border-left: 18px solid white;
                 border-top: 11px solid transparent;
                 border-bottom: 11px solid transparent;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .video-wrapper {
+                width: 400px;
+                height: 400px; 
+            }
+            
+            .play-button {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .play-button::after {
+                border-left: 15px solid white;
+                border-top: 9px solid transparent;
+                border-bottom: 9px solid transparent;
             }
         }
 
