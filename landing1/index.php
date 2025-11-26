@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($stmt->execute()) {
             $stmt->close();
             $conn->close();
-            echo "<script>window.location.href = 'index.php?slug=$product_slug&or_msg=successful';</script>";
+            echo "<script>window.location.href = 'thank-you/order-success.php?invoice=$invoice_no';</script>";
             exit;
         }
     }
