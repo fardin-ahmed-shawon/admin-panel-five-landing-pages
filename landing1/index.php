@@ -464,7 +464,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         /* Order Form */
         .order-form {
             background: #ffffffff;
-            padding: 20px;
+            padding: 20px 0;
         }
 
         .order-form .section-title {
@@ -478,7 +478,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .form-container {
-            max-width: 900px;
+            /* max-width: 900px; */
             margin: 0 auto;
         }
 
@@ -593,7 +593,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border: none;
             border-radius: 5px;
             font-size: 1.1rem;
-            font-weight: 600;
+            /* font-weight: 600; */
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 20px;
@@ -633,6 +633,241 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             .countdown { gap: 10px; }
             .countdown-item { padding: 8px 15px; }
             .countdown-item span { font-size: 1.5rem; }
+        }
+    </style>
+
+    <style>
+        /* ... existing styles ... */
+        
+        /* Product Selection Table Style */
+        .product-selection {
+            margin-top: 30px;
+        }
+        
+        .product-selection-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .product-table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            background: #f5f5f5;
+            padding: 12px 20px;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            color: #333;
+            font-size: 1rem;
+            border: 1px solid #e0e0e0;
+            border-bottom: none;
+        }
+        
+        .product-option {
+            position: relative;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            align-items: center;
+            background: #fff;
+            padding: 20px;
+            margin: 25px 0;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Tablet */
+        @media (max-width: 968px) {
+            .product-option {
+                grid-template-columns: 1.5fr 1fr; /* Reduce columns */
+                gap: 10px;
+                padding: 15px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            .product-option {
+                grid-template-columns: 1fr; /* Stack all items */
+                text-align: left;
+                padding: 12px;
+                gap: 6px;
+            }
+        }
+        
+        .product-option:first-of-type {
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .product-option:last-of-type {
+            border-radius: 8px;
+        }
+        
+        .product-option:hover {
+            background: #f9f9f9;
+        }
+        
+        .product-option.active {
+            background: #fff;
+            border-color: #0030FF;
+        }
+        
+        .discount-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #0030FF;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            z-index: 1;
+        }
+        
+        .free-delivery-badge {
+            position: absolute;
+            top: -10px;
+            right: 160px;
+            background: #28a745;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            z-index: 1;
+        }
+        
+        .product-column {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .product-radio {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+            cursor: pointer;
+        }
+        
+        .product-save-text {
+            font-size: 0.8rem;
+            color: #28a745;
+            font-weight: 500;
+        }
+        
+        /* Quantity Controls */
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn:hover {
+            background: #0030FF;
+            color: #fff;
+            border-color: #0030FF;
+        }
+        
+        .quantity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .price-column {
+            text-align: center;
+        }
+        
+        .product-regular-price {
+            font-size: 0.85rem;
+            color: #999;
+            text-decoration: line-through;
+            margin-bottom: 2px;
+        }
+        
+        .product-sale-price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        /* Product Image in Checkout */
+        .order-product-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .order-product-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .order-product-details {
+            flex: 1;
+        }
+        
+        .order-product-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .order-product-qty {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .order-product-price {
+            font-weight: bold;
+            color: #0030FF;
         }
     </style>
 </head>
@@ -1032,10 +1267,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- End -->
 
     <!-- Order Form Section -->
-    <section class="order-form" id="order">
+     <section class="order-form" id="order">
         <div class="container">
             <h2 class="section-title"><?= $checkout_main_title; ?></h2>
-            <h3 style="text-align: center; margin-bottom: 40px;">নিচের ফর্মে আপনার নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা লিখে ”Place Order“ ক্লিক করুন</h3>
+            <h3 style="text-align: center; margin-bottom: 40px;">নিচের ফর্মে আপনার নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা লিখে "Place Order" ক্লিক করুন</h3>
             <div class="form-container">
                 <form method="POST" action="" id="orderForm">
                     <div class="form-grid">
@@ -1063,27 +1298,81 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
 
                             <div class="product-selection">
+                                <h3 class="product-selection-title">Your Product</h3>
+                                
+                                <div class="product-table-header">
+                                    <div>Product</div>
+                                    <div style="text-align: center;">Quantity</div>
+                                    <div style="text-align: center;">Price</div>
+                                </div>
+                                
                                 <?php
                                 $sql = "SELECT * FROM product_info WHERE product_id = $product_id LIMIT 1";
                                 $result = mysqli_query($conn, $sql);
                                 if ($row = mysqli_fetch_assoc($result)) {
                                     $productTitle = $row['product_title'];
                                     $productPrice = $row['product_price'];
+                                    $productRegularPrice = $row['product_regular_price'];
+                                    $productImg = $row['product_img1'];
                                     $doublePrice = $productPrice * 2;
+                                    $doubleRegularPrice = $productRegularPrice * 2;
+                                    
+                                    // Calculate discount percentages
+                                    $discount1 = round((($productRegularPrice - $productPrice) / $productRegularPrice) * 100);
+                                    $discount2 = round((($doubleRegularPrice - $doublePrice) / $doubleRegularPrice) * 100);
+                                    $saving1 = $productRegularPrice - $productPrice;
+                                    $saving2 = $doubleRegularPrice - $doublePrice;
                                     
                                     echo '
-                                    <div class="product-option active" data-price="'.$productPrice.'" data-shipping="'.$outside_delivery_charge.'">
-                                        <input type="radio" name="product" id="product1" value="1-box" checked>
-                                        <label for="product1">
-                                            <h4>1 '.$productTitle.' (৳'.$productPrice.')</h4>
-                                        </label>
+                                    <div class="product-option active" data-price="'.$productPrice.'" data-regular-price="'.$productRegularPrice.'" data-shipping="'.$outside_delivery_charge.'" data-img="'.$productImg.'" data-title="'.$productTitle.'">
+                                        <div class="discount-badge">EXTRA '.$discount1.'% OFF!</div>
+                                        
+                                        <div class="product-column">
+                                            <input type="radio" name="product" id="product1" value="1-box" class="product-radio" checked>
+                                            <div class="product-info">
+                                                <label for="product1" class="product-title">
+                                                    1Box '.$productTitle.' (5 Pair in 1 Box)
+                                                </label>
+                                                <div class="product-save-text">SAVE ৳'.$saving1.'</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="quantity-controls">
+                                            <button type="button" class="quantity-btn" onclick="decreaseQty(1)">-</button>
+                                            <input type="text" class="quantity-input" id="qty1" value="1" readonly>
+                                            <button type="button" class="quantity-btn" onclick="increaseQty(1)">+</button>
+                                        </div>
+                                        
+                                        <div class="price-column">
+                                            <div class="product-regular-price">৳'.$productRegularPrice.'</div>
+                                            <div class="product-sale-price" id="price1">৳'.$productPrice.'</div>
+                                        </div>
                                     </div>
                                     
-                                    <div class="product-option" data-price="'.$doublePrice.'" data-shipping="0">
-                                        <input type="radio" name="product" id="product2" value="2-box">
-                                        <label for="product2">
-                                            <h4>2 '.$productTitle.' (৳'.$doublePrice.') - FREE DELIVERY</h4>
-                                        </label>
+                                    <div class="product-option" data-price="'.$doublePrice.'" data-regular-price="'.$doubleRegularPrice.'" data-shipping="0" data-img="'.$productImg.'" data-title="'.$productTitle.'">
+                                        <div class="free-delivery-badge">FREE DELIVERY</div>
+                                        <div class="discount-badge">EXTRA '.$discount2.'% OFF!</div>
+                                        
+                                        <div class="product-column">
+                                            <input type="radio" name="product" id="product2" value="2-box" class="product-radio">
+                                            <div class="product-info">
+                                                <label for="product2" class="product-title">
+                                                    2 Box '.$productTitle.' (10 Pair in 2 Box)
+                                                </label>
+                                                <div class="product-save-text">SAVE ৳'.$saving2.' + DELIVERY CHARGE FREE</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="quantity-controls">
+                                            <button type="button" class="quantity-btn" onclick="decreaseQty(2)">-</button>
+                                            <input type="text" class="quantity-input" id="qty2" value="1" readonly>
+                                            <button type="button" class="quantity-btn" onclick="increaseQty(2)">+</button>
+                                        </div>
+                                        
+                                        <div class="price-column">
+                                            <div class="product-regular-price">৳'.$doubleRegularPrice.'</div>
+                                            <div class="product-sale-price" id="price2">৳'.$doublePrice.'</div>
+                                        </div>
                                     </div>';
                                 }
                                 ?>
@@ -1099,12 +1388,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 $result = mysqli_query($conn, $sql);
                                 $defaultProduct = mysqli_fetch_assoc($result);
                                 $defaultPrice = $defaultProduct['product_price'];
+                                $defaultImg = $defaultProduct['product_img1'];
                                 $defaultTotal = $defaultPrice + $outside_delivery_charge;
                                 ?>
                                 
-                                <div class="summary-row">
-                                    <span>Product</span>
-                                    <span id="productName">1 <?= $defaultProduct['product_title'] ?> × 1</span>
+                                <div class="order-product-row" id="orderProductRow">
+                                    <img src="<?= $defaultImg ?>" alt="Product" class="order-product-img" id="orderProductImg">
+                                    <div class="order-product-details">
+                                        <div class="order-product-name" id="productName"><?= $defaultProduct['product_title'] ?></div>
+                                        <div class="order-product-qty" id="productQty">Quantity: 1</div>
+                                    </div>
+                                    <div class="order-product-price" id="productPrice">৳<?= number_format($defaultPrice, 2) ?></div>
                                 </div>
 
                                 <div class="summary-row">
@@ -1112,9 +1406,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <span id="subtotal">৳<?= number_format($defaultPrice, 2) ?></span>
                                 </div>
 
-                                <div class="summary-row">
+                                <div class="summary-row" id="shippingRow">
                                     <span>Shipping</span>
-                                    <span>
+                                    <span id="shippingOptions">
                                         <div class="shipping-options" style="text-align: right;">
                                             <label>
                                                 <input type="radio" name="shipping" value="outside-dhaka" data-cost="<?= $outside_delivery_charge ?>" checked>
@@ -1132,8 +1426,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <span>Total</span>
                                     <span id="total">৳<?= number_format($defaultTotal, 2) ?></span>
                                 </div>
+                                
+                                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                                    <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: #333;">Cash on delivery</h4>
+                                    <p style="margin: 0; color: #666; font-size: 0.9rem;">Pay with cash upon delivery.</p>
+                                </div>
 
                                 <button type="submit" class="submit-btn">
+                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style="margin-right: 8px; vertical-align: middle;">
+                                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                                    </svg>
                                     Place Order <span id="orderTotal">৳<?= number_format($defaultTotal, 2) ?></span>
                                 </button>
                             </div>
@@ -1208,42 +1510,121 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
 
+        // Store shipping costs
+        const shippingCosts = {
+            inside: <?= $inside_delivery_charge ?>,
+            outside: <?= $outside_delivery_charge ?>
+        };
+
+        // Store original shipping HTML
+        const originalShippingHTML = `
+            <div class="shipping-options" style="text-align: right;">
+                <label>
+                    <input type="radio" name="shipping" value="outside-dhaka" data-cost="${shippingCosts.outside}" checked>
+                    Outside Dhaka: ৳${shippingCosts.outside}
+                </label>
+                <label>
+                    <input type="radio" name="shipping" value="inside-dhaka" data-cost="${shippingCosts.inside}">
+                    Inside Dhaka: ৳${shippingCosts.inside}
+                </label>
+            </div>
+        `;
+
+        // Quantity Management
+        let quantities = {
+            1: 1,
+            2: 1
+        };
+
+        function increaseQty(product) {
+            quantities[product]++;
+            document.getElementById('qty' + product).value = quantities[product];
+            updateOrderSummary();
+        }
+
+        function decreaseQty(product) {
+            if (quantities[product] > 1) {
+                quantities[product]--;
+                document.getElementById('qty' + product).value = quantities[product];
+                updateOrderSummary();
+            }
+        }
+
+        // Attach shipping event listeners
+        function attachShippingListeners() {
+            document.querySelectorAll('input[name="shipping"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    updateOrderSummary();
+                });
+            });
+        }
+
         // Order Calculation
         function updateOrderSummary() {
             const selectedProduct = document.querySelector('input[name="product"]:checked');
-            const selectedShipping = document.querySelector('input[name="shipping"]:checked');
-
-            if (!selectedProduct || !selectedShipping) return;
+            
+            if (!selectedProduct) return;
 
             const productOption = selectedProduct.closest('.product-option');
-            const productPrice = parseInt(productOption.dataset.price);
+            const basePrice = parseInt(productOption.dataset.price);
+            const baseRegularPrice = parseInt(productOption.dataset.regularPrice);
             const productShipping = parseInt(productOption.dataset.shipping);
+            const productImg = productOption.dataset.img;
+            const productTitle = productOption.dataset.title;
+            const productId = selectedProduct.value === '1-box' ? 1 : 2;
+            const quantity = quantities[productId];
             
-            // Get product name from label
-            const productLabel = productOption.querySelector('label h4').textContent;
+            // Calculate prices
+            const subtotal = basePrice * quantity;
+            const regularTotal = baseRegularPrice * quantity;
             
-            // If product has free shipping (2-box), use 0, otherwise use selected shipping
-            const shippingPrice = productShipping === 0 ? 0 : parseInt(selectedShipping.dataset.cost);
+            // Update individual product price display
+            document.getElementById('price' + productId).textContent = '৳' + subtotal.toFixed(2);
+            
+            let shippingPrice = 0;
+            
+            // Update shipping options based on product selection
+            const shippingContainer = document.getElementById('shippingOptions');
+            const shippingRow = document.getElementById('shippingRow');
+            
+            if (productShipping === 0) {
+                // Free delivery for 2-box option
+                shippingContainer.innerHTML = '<span style="color: #4caf50; font-weight: bold;">FREE DELIVERY</span>';
+                shippingPrice = 0;
+            } else {
+                // Check if we need to restore shipping options
+                const currentShippingInputs = shippingContainer.querySelectorAll('input[name="shipping"]');
+                
+                if (currentShippingInputs.length === 0) {
+                    // Restore original shipping options
+                    shippingContainer.innerHTML = originalShippingHTML;
+                    // Re-attach event listeners
+                    attachShippingListeners();
+                }
+                
+                // Get selected shipping cost
+                const selectedShipping = document.querySelector('input[name="shipping"]:checked');
+                if (selectedShipping) {
+                    shippingPrice = parseInt(selectedShipping.dataset.cost);
+                }
+            }
 
-            const subtotal = productPrice;
             const total = subtotal + shippingPrice;
 
             // Update quantity field
-            const quantity = selectedProduct.value === '1-box' ? 1 : 2;
-            document.getElementById('quantityField').value = quantity;
+            const totalQuantity = selectedProduct.value === '1-box' ? quantity : quantity * 2;
+            document.getElementById('quantityField').value = totalQuantity;
 
-            // Update HTML
-            document.getElementById('productName').textContent = productLabel.replace(/\(.*?\)/g, '').trim() + ' × 1';
+            // Update product display with image
+            document.getElementById('orderProductImg').src = productImg;
+            document.getElementById('productName').textContent = productTitle + (selectedProduct.value === '2-box' ? ' (2 Box)' : '');
+            document.getElementById('productQty').textContent = 'Quantity: ' + quantity;
+            document.getElementById('productPrice').textContent = '৳' + subtotal.toFixed(2);
+            
+            // Update summary
             document.getElementById('subtotal').textContent = '৳' + subtotal.toFixed(2);
             document.getElementById('total').textContent = '৳' + total.toFixed(2);
             document.getElementById('orderTotal').textContent = '৳' + total.toFixed(2);
-
-            // Update shipping options display
-            const shippingContainer = document.querySelector('.shipping-options');
-            if (productShipping === 0 && shippingContainer) {
-                shippingContainer.parentElement.innerHTML = 
-                    '<span style="color: #4caf50; font-weight: bold;">FREE DELIVERY</span>';
-            }
         }
 
         // Product Selection
@@ -1259,10 +1640,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             });
         });
 
-        // Shipping Selection
-        document.querySelectorAll('input[name="shipping"]').forEach(radio => {
-            radio.addEventListener('change', updateOrderSummary);
-        });
+        // Initial shipping listeners
+        attachShippingListeners();
+
+        // Initialize
+        updateOrderSummary();
 
         // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
