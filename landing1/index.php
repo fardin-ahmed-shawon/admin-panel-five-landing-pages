@@ -225,7 +225,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         /* Video Section */
         .video-section {
-            /* background: #fff; */
             padding: 10px 5px;
             text-align: center;
             border-radius: 10px;
@@ -235,18 +234,90 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             max-width: 100%;
             margin: 0 auto;
             position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            cursor: pointer;
+            width: 100%;
+            display: block;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 0, 0, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .play-button:hover {
+            background: rgba(255, 0, 0, 1);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 25px solid white;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            margin-left: 5px;
+        }
+
+        .video-iframe-container {
+            display: none;
+            position: relative;
             padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
         }
 
-        .video-wrapper iframe {
+        .video-iframe-container.active {
+            display: block;
+        }
+
+        .video-iframe-container iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             border: none;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .play-button {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .play-button::after {
+                border-left: 18px solid white;
+                border-top: 11px solid transparent;
+                border-bottom: 11px solid transparent;
+            }
         }
 
         /* CTA Button */
@@ -290,12 +361,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-top: 10px;
+            /* margin-top: 10px; */
         }
 
         .countdown-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
+            /* background: rgba(255, 255, 255, 0.1); */
+            /* padding: 10px 20px; */
             border-radius: 10px;
         }
 
@@ -631,8 +702,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             .features-grid { grid-template-columns: 1fr; }
             .form-grid { grid-template-columns: 1fr; }
             .countdown { gap: 10px; }
-            .countdown-item { padding: 8px 15px; }
-            .countdown-item span { font-size: 1.5rem; }
+            
+            .countdown-item span { font-size: 1.4rem; }
         }
     </style>
 
@@ -716,7 +787,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         .discount-badge {
             position: absolute;
-            top: -10px;
+            top: -20px;
             right: 20px;
             background: #0030FF;
             color: #fff;
@@ -729,7 +800,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         .free-delivery-badge {
             position: absolute;
-            top: -10px;
+            top: -20px;
             right: 160px;
             background: #28a745;
             color: #fff;
@@ -901,29 +972,72 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Video Section -->
     <?php
     if (!empty($youtube_url)) {
-
-        // Extract ID from shorts link
+        // Extract video ID from different YouTube URL formats
+        $video_id = '';
+        
+        // Handle shorts URL
         if (preg_match('/shorts\/([a-zA-Z0-9_-]+)/', $youtube_url, $match)) {
             $video_id = $match[1];
-            $embed_url = "https://www.youtube.com/embed/$video_id";
-        } else {
-            $embed_url = $youtube_url; // fallback
         }
+        // Handle regular watch URL
+        elseif (preg_match('/watch\?v=([a-zA-Z0-9_-]+)/', $youtube_url, $match)) {
+            $video_id = $match[1];
+        }
+        // Handle youtu.be short URL
+        elseif (preg_match('/youtu\.be\/([a-zA-Z0-9_-]+)/', $youtube_url, $match)) {
+            $video_id = $match[1];
+        }
+        // Handle embed URL
+        elseif (preg_match('/embed\/([a-zA-Z0-9_-]+)/', $youtube_url, $match)) {
+            $video_id = $match[1];
+        }
+        
+        if ($video_id) {
+            $embed_url = "https://www.youtube.com/embed/$video_id?autoplay=1&rel=0";
+            $thumbnail_url = "https://img.youtube.com/vi/$video_id/maxresdefault.jpg";
     ?>
     <section class="video-section">
         <div class="container">
-            <div class="video-wrapper">
-                <iframe width="100%" height="400" src="<?= $embed_url ?>" allowfullscreen></iframe>
+            <div class="video-wrapper" id="videoWrapper">
+                <!-- Video Thumbnail -->
+                <div class="video-thumbnail" id="videoThumbnail" onclick="playVideo()">
+                    <img src="<?= $thumbnail_url ?>" alt="Video Thumbnail" 
+                        onerror="this.src='https://img.youtube.com/vi/<?= $video_id ?>/hqdefault.jpg'">
+                    <div class="play-button"></div>
+                </div>
+                
+                <!-- Video iFrame -->
+                <div class="video-iframe-container" id="videoIframe">
+                    <iframe src="" id="youtubePlayer" allowfullscreen allow="autoplay"></iframe>
+                </div>
             </div>
+            
             <a href="#order" class="cta-button">অর্ডার করতে চাই</a>
             <p style="font-size: 15px; color: #fc0202ff;"><b>অফারটি সীমিত সময়ের জন্য!</b></p>
 
             <h2 style="text-align: center; padding-top: 15px"><?= $checkout_main_title; ?></h2>
             <h2 style="text-align: center; padding-bottom: 10px;color: #008000;">ডেলিভারি চার্জ সম্পূর্ণ ফ্রি !</h2>
-
         </div>
     </section>
-    <?php } ?>
+
+    <script>
+        function playVideo() {
+            const thumbnail = document.getElementById('videoThumbnail');
+            const iframeContainer = document.getElementById('videoIframe');
+            const iframe = document.getElementById('youtubePlayer');
+            
+            // Hide thumbnail
+            thumbnail.style.display = 'none';
+            
+            // Show and load iframe with autoplay
+            iframeContainer.classList.add('active');
+            iframe.src = '<?= $embed_url ?>';
+        }
+    </script>
+    <?php 
+        }
+    } 
+    ?>
 
 
     <!-- Countdown Timer -->
@@ -944,7 +1058,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label>Seconds</label>
                 </div>
             </div>
-        </div><br>
+        </div>
     </section>
 
     <!-- Features Section -->
