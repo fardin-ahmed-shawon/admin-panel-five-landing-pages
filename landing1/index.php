@@ -1336,13 +1336,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     .offer-title {
     margin: 0;
     font-size: 28px;
-    font-weight: 800;
+    font-weight: 600;
     color: #0b2436;
     letter-spacing: 0.2px;
     }
     .offer-title .accent {
     color: #1fa83a;            /* green */
-    font-weight: 900;
+    font-weight: 600;
     }
 
     /* divider */
@@ -1356,7 +1356,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     /* original price row */
     .orig-price {
     margin: 12px 0 6px;
-    color: #626d76;
+    color: #54595f;
     font-size: 18px;
     font-weight: 800;
     line-height: 1.2;
@@ -1410,6 +1410,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     .deal-price { font-size: 20px; }
     .deal-price .wavy { width: 90px; height: 14px; }
     .offer-deco { width: 100px; right: 8px; bottom: -12px; }
+    }
+
+    .deal-price .wavy {
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 200px;
+        height: 6px;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='6' viewBox='0 0 200 6'><path d='M0 3 Q5 0, 10 3 T20 3 T30 3 T40 3 T50 3 T60 3 T70 3 T80 3 T90 3 T100 3 T110 3 T120 3 T130 3 T140 3 T150 3 T160 3 T170 3 T180 3 T190 3 T200 3' fill='none' stroke='%231fa83a' stroke-width='2' stroke-linecap='round'/></svg>");
+        background-repeat: repeat-x;
+        background-size: 200px 6px;
+        animation: wave-move 2s linear infinite;
     }
     </style>
 
