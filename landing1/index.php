@@ -1050,10 +1050,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <a href="#order" class="cta-button">অর্ডার করতে চাই</a>
             <p style="font-size: 15px; color: #fc0202ff;"><b>অফারটি সীমিত সময়ের জন্য!</b></p>
 
-            <h2 style="text-align: center; padding-top: 15px"><?= $checkout_main_title; ?></h2>
-            <h2 style="text-align: center; padding-bottom: 10px;color: #008000;">ডেলিভারি চার্জ সম্পূর্ণ ফ্রি !</h2>
+            
         </div>
     </section>
+    
+    <div style="background: #fff">
+        <h2 style="text-align: center; padding-top: 15px"><?= $checkout_main_title; ?></h2>
+    <h2 style="text-align: center; padding-bottom: 10px;color: #008000;">ডেলিভারি চার্জ সম্পূর্ণ ফ্রি
+            !</h2>
+    </div>
+    
 
     <script>
         function playVideo() {
