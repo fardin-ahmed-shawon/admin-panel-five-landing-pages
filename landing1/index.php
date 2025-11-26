@@ -344,10 +344,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .feature-icon {
-            width: 50px;
-            height: 50px;
+            width: 20px;
+            height: 20px;
             margin: 0 auto 15px;
-            fill: #4caf50;
+            fill: #008000;
         }
 
         .feature-card h3 {
@@ -683,7 +683,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <a href="#order" class="cta-button">অর্ডার করতে চাই</a>
             <p style="font-size: 15px; color: #fc0202ff;"><b>অফারটি সীমিত সময়ের জন্য!</b></p>
 
-            <h2 style="text-align: center; padding: 10px 0"><?= $checkout_main_title; ?></h2>
+            <h2 style="text-align: center; padding-top: 15px"><?= $checkout_main_title; ?></h2>
+            <h2 style="text-align: center; padding-bottom: 10px;color: #008000;">ডেলিভারি চার্জ সম্পূর্ণ ফ্রি !</h2>
 
         </div>
     </section>
@@ -1178,19 +1179,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Countdown Timer
         function startCountdown() {
-            const endDate = new Date();
-            endDate.setHours(endDate.getHours() + 24);
 
             function updateCountdown() {
-                const now = new Date().getTime();
+                const now = new Date();
+
+                // Countdown resets every day at midnight (24:00:00)
+                const endDate = new Date();
+                endDate.setHours(24, 0, 0, 0);
+
                 const distance = endDate - now;
 
-                if (distance < 0) {
+                if (distance <= 0) {
                     document.getElementById('countdown').innerHTML = '<p>Offer Ended!</p>';
                     return;
                 }
 
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const hours = Math.floor(distance / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -1202,6 +1206,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             updateCountdown();
             setInterval(updateCountdown, 1000);
         }
+
 
         // Order Calculation
         function updateOrderSummary() {
