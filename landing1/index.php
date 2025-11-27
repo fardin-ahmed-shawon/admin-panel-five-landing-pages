@@ -1049,6 +1049,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $embed_url = "https://www.youtube.com/embed/$video_id?autoplay=1&rel=0";
             $thumbnail_url = "https://img.youtube.com/vi/$video_id/maxresdefault.jpg";
     ?>
+    
     <section class="video-section">
         <div class="container">
             <div class="video-wrapper" id="videoWrapper">
