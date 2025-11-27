@@ -81,11 +81,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $payment_method = 'Cash On Delivery';
     $user_id = 0;
 
+    
     function generateInvoiceNo() {
-        $timestamp = microtime(true) * 10000;
-        $uniqueString = 'INV-' . strtoupper(base_convert($timestamp, 10, 36));
-        return $uniqueString;
+        global $conn;
+        // Fetch the last invoice_no and generate new one
+        $result = $conn->query("SELECT invoice_no FROM order_info ORDER BY order_no DESC LIMIT 1");
+        if ($result && $row = $result->fetch_assoc()) {
+            $lastInvoice = intval($row['invoice_no']);
+            $newInvoiceNo = $lastInvoice + 1;
+        } else {
+            // If no invoice exists yet, start from 1000
+            $newInvoiceNo = 1000;
+        }
+        return $newInvoiceNo;
     }
+
     $invoice_no = generateInvoiceNo();
     $_SESSION['temporary_invoice_no'] = $invoice_no;
 
@@ -409,6 +419,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             display: block;
             font-size: 2rem;
             font-weight: bold;
+            margin: -15px;
+            padding-top: 9px;
         }
 
         .countdown-item label {
@@ -483,9 +495,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             padding-bottom: 30px;
         }
 
+        @media only screen and (max-width: 767px) {
+            .gallery-grid {
+                grid-template-columns: repeat(1, 150px); 
+                justify-content: center;
+            }
+        }
+
         .gallery-item img {
             width: 100%;
-            
             object-fit: contain;
             border-radius: 10px;
             transition: transform 0.3s ease;
@@ -1217,7 +1235,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         if (mysqli_num_rows($result) > 0) {
                             while ($data = mysqli_fetch_assoc($result)) {
                                 echo '
-                                <img style="border-radius: 10px; max-width: 100%;height: auto;display: block; max-height: 500px" src="'.$data['product_img1'].'" alt="'.$data['product_title'].'">
+                                <img style="border-radius: 10px; max-width: 100%;height: auto;display: block;" src="'.$data['product_img1'].'" alt="'.$data['product_title'].'">
                                 ';
                             }
                         }
