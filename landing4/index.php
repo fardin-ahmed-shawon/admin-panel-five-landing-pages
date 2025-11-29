@@ -86,12 +86,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $selectedSize = $_POST['product_size'];
     $quantity = intval($_POST['quantity']);
     $shippingCost = intval($_POST['shipping']);
-    
+
     $city = $shippingCost == 80 ? 'Inside Dhaka' : 'Outside Dhaka';
     $payment_method = 'Cash On Delivery';
     $user_id = 0;
 
-    function generateInvoiceNo() {
+    function generateInvoiceNo()
+    {
         $timestamp = microtime(true) * 10000;
         $uniqueString = 'INV-' . strtoupper(base_convert($timestamp, 10, 36));
         return $uniqueString;
@@ -103,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($selectedSize) && $selectedSize !== 'standard') {
         $product_title_full .= " (Size: $selectedSize)";
     }
-    
+
     $total_price = ($productPrice * $quantity);
 
     $sql = "INSERT INTO order_info (user_id, user_full_name, user_phone, user_email, user_address, city_address, invoice_no, product_id, product_title, product_quantity, product_size, total_price, payment_method)
@@ -127,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $payment_method
     );
     $stmt->execute();
-    
+
     $stmt->close();
     $conn->close();
     echo "<script>window.location.href = 'index.php?slug=$product_slug&or_msg=successful';</script>";
@@ -138,26 +139,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $reviews_sql = "SELECT review_image FROM reviews WHERE product_id = $product_id";
 $reviews_result = mysqli_query($conn, $reviews_sql);
 $reviews = [];
-while($review = mysqli_fetch_assoc($reviews_result)) {
+while ($review = mysqli_fetch_assoc($reviews_result)) {
     $reviews[] = $review['review_image'];
 }
 ?>
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $websiteName; ?> - <?php echo $productTitle; ?></title>
     <link href="../Admin/<?= $logo ?>" rel="icon">
-    
+
     <!-- Hind Siliguri font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    
+
     <style>
         * {
             margin: 0;
@@ -189,7 +191,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
             padding: 20px;
             text-align: center;
             z-index: 9999;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             font-size: 18px;
             font-weight: bold;
         }
@@ -200,11 +202,14 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
         }
 
         .hero-title {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
             margin-bottom: 30px;
             color: #2c3e50;
             line-height: 1.3;
+       background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding:10px 12px
         }
 
         .hero-image {
@@ -212,7 +217,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
             height: auto;
             border-radius: 15px;
             margin: 20px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .price-box {
@@ -220,7 +225,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
             padding: 30px;
             border-radius: 15px;
             margin: 30px 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .price-item {
@@ -228,7 +233,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
             padding: 15px;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .old-price {
@@ -289,7 +294,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
         .detail-image {
             width: 100%;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .benefits-list {
@@ -303,7 +308,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
             background: white;
             border-radius: 8px;
             border-left: 4px solid #27ae60;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .section-title {
@@ -323,7 +328,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
             background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .review-image {
@@ -364,7 +369,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
             background: white;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             margin: 40px 0;
         }
 
@@ -456,7 +461,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
             height: 80px;
             object-fit: cover;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .variant-info {
@@ -622,39 +627,122 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
             .hero-title {
                 font-size: 2rem;
             }
-            
+
             .product-display {
                 flex-direction: column;
                 text-align: center;
             }
-            
+
             .form-section {
                 padding: 20px;
             }
         }
+        @media(max-width:575px) {
+            .hero-section {
+    text-align: center;
+    padding: 10px 12px;
+}.hero-section {
+    padding: 10px 12px;
+}
+.hero-title {
+    font-size: 20px;
+}
+.price-item {
+    margin-bottom: 0px;
+        }
+        .price-box {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 15px;
+    margin: 5px 0;
+}
+.offer-notice {
+    padding: 15px;
+    margin: 10px 0;
+}
+.order-button {
+    padding: 16px 40px;
+    margin: 10px 0;
+    font-size: 1rem;
+}
+.details-section {
+    margin: 0px 0;
+    padding: 15px 20px;
+}
+.product-variant-card {
+    display: flex;
+    flex-wrap: wrap;
+}
+.variant-quantity {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.reviews-section {
+    margin: 10px 0;
+    padding: 0px 20px;
+}
+.section-title {
+    font-size: 1.7rem;
+    margin-bottom: 10px;
+}
+.contact-section {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 23px 20px;
+    text-align: center;
+    border-radius: 15px;
+    margin: 15px 0;
+}
+.form-section {
+    padding: 20px;
+    margin: 10px 0;
+}
+.product-variant-card {
+    padding: 10px 12px;;
+}
+.variant-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+.order-summary {
+    margin: 10px 0;
+}
+.submit-button {
+    width: 100%;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1.1rem;
+}
+        }
     </style>
 </head>
+
 <body>
     <?php if (isset($_GET['or_msg'])): ?>
-    <div class="success-message" id="successMsg">
-        আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে! আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।
-    </div>
-    <script>
-        setTimeout(() => {
-            document.getElementById('successMsg').style.display = 'none';
-        }, 5000);
-    </script>
+        <div class="success-message" id="successMsg">
+            আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে! আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।
+        </div>
+        <script>
+            setTimeout(() => {
+                document.getElementById('successMsg').style.display = 'none';
+            }, 5000);
+        </script>
     <?php endif; ?>
 
     <div class="container">
         <!-- Hero Section -->
         <div class="hero-section">
             <h1 class="hero-title"><?= $home_title ?></h1>
-            <?php 
+            <?php
             $hero_img = strpos($home_img, 'Admin/') === 0 ? '../' . $home_img : '../Admin/' . $home_img;
             ?>
             <img src="<?= $hero_img ?>" alt="<?= $productTitle ?>" class="hero-image">
-            
+
             <div class="price-box">
                 <div class="price-item">
                     <div>পূর্বের মূল্য <span class="old-price">৳<?= $regularPrice ?></span></div>
@@ -673,54 +761,54 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
 
         <!-- Product Details -->
         <?php if (!empty($gallery_images) || !empty($features)): ?>
-        <div class="details-section">
-            <?php if (!empty($gallery_images)): ?>
-            <div class="detail-images">
-                <?php foreach($gallery_images as $img): 
-                    $img_path = strpos($img, 'Admin/') === 0 ? '../' . $img : '../Admin/' . $img;
-                ?>
-                <img src="<?= $img_path ?>" alt="Product Image" class="detail-image">
-                <?php endforeach; ?>
-            </div>
-            <?php endif; ?>
+            <div class="details-section">
+                <?php if (!empty($gallery_images)): ?>
+                    <div class="detail-images">
+                        <?php foreach ($gallery_images as $img):
+                            $img_path = strpos($img, 'Admin/') === 0 ? '../' . $img : '../Admin/' . $img;
+                        ?>
+                            <img src="<?= $img_path ?>" alt="Product Image" class="detail-image">
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
 
-            <?php if (!empty($features)): ?>
-            <ul class="benefits-list">
-                <?php foreach($features as $feature): ?>
-                <li><strong><?= $feature['feature_title'] ?>:</strong> <?= $feature['feature_description'] ?></li>
-                <?php endforeach; ?>
-            </ul>
-            <?php endif; ?>
+                <?php if (!empty($features)): ?>
+                    <ul class="benefits-list">
+                        <?php foreach ($features as $feature): ?>
+                            <li><strong><?= $feature['feature_title'] ?>:</strong> <?= $feature['feature_description'] ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
 
-            <div style="text-align: center; margin: 30px 0;">
-                <button class="order-button" onclick="scrollToForm()">
-                    🛒 অর্ডার করতে ক্লিক করুন
-                </button>
+                <div style="text-align: center; margin: 15px 0;">
+                    <button class="order-button" onclick="scrollToForm()">
+                        🛒 অর্ডার করতে ক্লিক করুন
+                    </button>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
 
         <!-- Customer Reviews -->
         <?php if (!empty($reviews)): ?>
-        <div class="reviews-section">
-            <h2 class="section-title">আমাদের কাস্টমার ফিডব্যাক</h2>
-            
-            <div class="swiper reviews-swiper">
-                <div class="swiper-wrapper">
-                    <?php foreach($reviews as $review_img): ?>
-                    <div class="swiper-slide">
-                        <div class="review-card">
-                            <img src="../Admin/<?= $review_img ?>" alt="Review" class="review-image">
-                        </div>
+            <div class="reviews-section">
+                <h2 class="section-title">আমাদের কাস্টমার ফিডব্যাক</h2>
+
+                <div class="swiper reviews-swiper">
+                    <div class="swiper-wrapper">
+                        <?php foreach ($reviews as $review_img): ?>
+                            <div class="swiper-slide">
+                                <div class="review-card">
+                                    <img src="../Admin/<?= $review_img ?>" alt="Review" class="review-image">
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
-                    <?php endforeach; ?>
+
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-pagination"></div>
                 </div>
-                
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-pagination"></div>
             </div>
-        </div>
         <?php endif; ?>
 
         <!-- Contact Section -->
@@ -755,22 +843,22 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
 
                 <div class="product-variants">
                     <?php if (!empty($sizes)): ?>
-                        <?php foreach($sizes as $index => $size): ?>
-                        <div class="product-variant-card <?= $index === 0 ? 'selected' : '' ?>" onclick="selectVariant(<?= $index ?>)">
-                            <div class="variant-radio">
-                                <input type="radio" name="product_variant" value="<?= $size ?>" <?= $index === 0 ? 'checked' : '' ?> id="variant_<?= $index ?>">
+                        <?php foreach ($sizes as $index => $size): ?>
+                            <div class="product-variant-card <?= $index === 0 ? 'selected' : '' ?>" onclick="selectVariant(<?= $index ?>)">
+                                <div class="variant-radio">
+                                    <input type="radio" name="product_variant" value="<?= $size ?>" <?= $index === 0 ? 'checked' : '' ?> id="variant_<?= $index ?>">
+                                </div>
+                                <img src="<?= $productImg ?>" alt="<?= $productTitle ?>" class="variant-image">
+                                <div class="variant-info">
+                                    <div class="variant-name"><?= $productTitle ?> - সাইজ: <?= $size ?></div>
+                                    <div class="variant-price">৳ <?= $productPrice ?></div>
+                                </div>
+                                <div class="variant-quantity">
+                                    <button type="button" class="quantity-btn" onclick="updateVariantQuantity(<?= $index ?>, -1); event.stopPropagation();">−</button>
+                                    <input type="text" class="quantity-input" value="1" readonly data-variant="<?= $index ?>">
+                                    <button type="button" class="quantity-btn" onclick="updateVariantQuantity(<?= $index ?>, 1); event.stopPropagation();">+</button>
+                                </div>
                             </div>
-                            <img src="<?= $productImg ?>" alt="<?= $productTitle ?>" class="variant-image">
-                            <div class="variant-info">
-                                <div class="variant-name"><?= $productTitle ?> - সাইজ: <?= $size ?></div>
-                                <div class="variant-price">৳ <?= $productPrice ?></div>
-                            </div>
-                            <div class="variant-quantity">
-                                <button type="button" class="quantity-btn" onclick="updateVariantQuantity(<?= $index ?>, -1); event.stopPropagation();">−</button>
-                                <input type="text" class="quantity-input" value="1" readonly data-variant="<?= $index ?>">
-                                <button type="button" class="quantity-btn" onclick="updateVariantQuantity(<?= $index ?>, 1); event.stopPropagation();">+</button>
-                            </div>
-                        </div>
                         <?php endforeach; ?>
                         <input type="hidden" name="product_size" id="selectedSize" value="<?= $sizes[0] ?? 'standard' ?>">
                         <input type="hidden" name="quantity" id="selectedQuantity" value="1">
@@ -820,7 +908,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
                     </div>
                 </div>
 
-                <input type="submit" class="submit-button" value="অর্ডারটি কনফার্ম করুন"/>
+                <input type="submit" class="submit-button" value="অর্ডারটি কনফার্ম করুন" />
             </form>
         </div>
     </div>
@@ -831,40 +919,40 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
     <script>
         const productPrice = <?= $productPrice ?>;
         let selectedVariantIndex = 0;
-        let variantQuantities = [1<?php if (!empty($sizes)): ?><?php for($i = 1; $i < count($sizes); $i++): ?>, 1<?php endfor; ?><?php endif; ?>];
+        let variantQuantities = [1 <?php if (!empty($sizes)): ?><?php for ($i = 1; $i < count($sizes); $i++): ?>, 1 <?php endfor; ?><?php endif; ?>];
 
         // Initialize Swiper for Reviews
         <?php if (!empty($reviews)): ?>
-        const reviewsSwiper = new Swiper('.reviews-swiper', {
-            slidesPerView: 1,
-            spaceBetween: 20,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 2,
+            const reviewsSwiper = new Swiper('.reviews-swiper', {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
                 },
-                1024: {
-                    slidesPerView: 3,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                    }
                 }
-            }
-        });
+            });
         <?php endif; ?>
 
         function selectVariant(index) {
             selectedVariantIndex = index;
-            
+
             // Update card selection
             document.querySelectorAll('.product-variant-card').forEach((card, i) => {
                 if (i === index) {
@@ -885,7 +973,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
 
         function updateVariantQuantity(index, change) {
             variantQuantities[index] = Math.max(1, variantQuantities[index] + change);
-            
+
             const quantityInput = document.querySelector(`input.quantity-input[data-variant="${index}"]`);
             quantityInput.value = variantQuantities[index];
 
@@ -908,7 +996,10 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
         }
 
         function scrollToForm() {
-            document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.getElementById('orderForm').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         }
 
         // Form validation
@@ -925,4 +1016,5 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
         updateTotal();
     </script>
 </body>
+
 </html>

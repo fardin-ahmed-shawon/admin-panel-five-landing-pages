@@ -86,7 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $payment_method = 'Cash On Delivery';
     $user_id = 0;
 
-    function generateInvoiceNo() {
+    function generateInvoiceNo()
+    {
         $timestamp = microtime(true) * 10000;
         $uniqueString = 'INV-' . strtoupper(base_convert($timestamp, 10, 36));
         return $uniqueString;
@@ -98,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($size)) {
         $product_title_full .= " (Size: $size)";
     }
-    
+
     $total_price = $productPrice * $quantity;
 
     $sql = "INSERT INTO order_info (user_id, user_full_name, user_phone, user_email, user_address, city_address, invoice_no, product_id, product_title, product_quantity, product_size, total_price, payment_method)
@@ -132,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -142,6 +144,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -149,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         body {
-            font-family: "Hind Siliguri", sans-serif;
+            font-family: "Anek Bangla", sans-serif;
             line-height: 1.6;
             color: #333;
             background: #fff;
@@ -200,8 +204,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
         }
 
         .hero-banner h1 {
@@ -714,21 +725,103 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         /* Responsive */
         @media (max-width: 768px) {
-            .hero-banner h1 { font-size: 1.8rem; }
-            .product-info { grid-template-columns: 1fr; }
-            .size-options { grid-template-columns: 1fr; }
-            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-banner h1 {
+                font-size: 1.8rem;
+            }
+
+            .product-info {
+                grid-template-columns: 1fr;
+            }
+
+            .size-options {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:575px) {
+            .cta-button {
+                padding: 16px 24px;
+            }
+
+            .cta-section {
+                padding: 18px 26px;
+            }
+
+            .notice-box {
+                margin: 0 auto;
+            }
+
+            .quality-badge p {
+                font-size: 1rem;
+            }
+
+            .product-showcase {
+                padding: 0px 15px 10px 15px;
+            }
+
+            .gallery {
+                padding: 20px 20px;
+            }
+
+            .section-title {
+
+                font-size: 2rem;
+            }
+            .gallery-grid {
+    grid-template-columns: repeat(1, 1fr);
+}
+.reviews-section {
+    padding: 20px 20px 10px 20px;
+}
+.reviews-section .section-title {
+    font-size: 1.5rem;
+}.container {
+    padding: 0px 0px;
+}
+.order-form-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0;
+}
+.product-details h3 {
+    font-size: 1.5rem;
+}
+.offer-price {
+    font-size: 1.6rem;
+}
+.regular-price {
+    font-size: 1.5rem;
+}
+.order-summary {
+    margin-top: 24px;
+}
+.summary-total {
+    font-size: 1.2rem;
+}
+.submit-button {
+    font-size: 1rem;
+}
+.order-form-section {
+    padding: 20px 20px 20px;
+}
+footer {
+    padding: 10px 20px;
+}
         }
     </style>
 </head>
+
 <body>
     <?php if (isset($_GET['or_msg'])): ?>
-    <div id="success-box">অর্ডার সফলভাবে সম্পন্ন হয়েছে!</div>
-    <script>
-        setTimeout(() => {
-            document.getElementById('success-box').style.display = 'none';
-        }, 3000);
-    </script>
+        <div id="success-box">অর্ডার সফলভাবে সম্পন্ন হয়েছে!</div>
+        <script>
+            setTimeout(() => {
+                document.getElementById('success-box').style.display = 'none';
+            }, 3000);
+        </script>
     <?php endif; ?>
 
     <!-- Hero Banner -->
@@ -782,7 +875,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (mysqli_num_rows($result) > 0) {
                     while ($data = mysqli_fetch_assoc($result)) {
                         echo '<div class="gallery-item">
-                                <img src="../Admin/'.$data['gallery_image'].'" alt="Gallery">
+                                <img src="../Admin/' . $data['gallery_image'] . '" alt="Gallery">
                               </div>';
                     }
                 }
@@ -811,7 +904,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 <div class="reviewer-name">সন্তুষ্ট গ্রাহক</div>
                                             </div>
                                             <div class="review-text">
-                                                <img src="../Admin/'.$data['review_image'].'" style="width: 100%; border-radius: 10px;" alt="Review">
+                                                <img src="../Admin/' . $data['review_image'] . '" style="width: 100%; border-radius: 10px;" alt="Review">
                                             </div>
                                         </div>
                                         <div class="review-stars">⭐⭐⭐⭐⭐</div>
@@ -844,16 +937,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
 
                             <?php if (!empty($sizes)): ?>
-                            <div class="size-selector">
-                                <label>সাইজ নির্বাচন করুন:</label>
-                                <div class="size-options">
-                                    <?php foreach($sizes as $size): ?>
-                                    <div class="size-option" data-size="<?= $size ?>"><?= $size ?></div>
-                                    <?php endforeach; ?>
+                                <div class="size-selector">
+                                    <label>সাইজ নির্বাচন করুন:</label>
+                                    <div class="size-options">
+                                        <?php foreach ($sizes as $size): ?>
+                                            <div class="size-option" data-size="<?= $size ?>"><?= $size ?></div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <p class="size-status" id="sizeStatus">দয়া করে একটি সাইজ নির্বাচন করুন</p>
                                 </div>
-                                <p class="size-status" id="sizeStatus">দয়া করে একটি সাইজ নির্বাচন করুন</p>
-                            </div>
-                            <input type="hidden" name="size" id="selectedSize">
+                                <input type="hidden" name="size" id="selectedSize">
                             <?php endif; ?>
 
                             <div class="quantity-selector">
@@ -961,9 +1054,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 clickable: true,
             },
             breakpoints: {
-                640: { slidesPerView: 1, spaceBetween: 20 },
-                768: { slidesPerView: 2, spaceBetween: 25 },
-                1024: { slidesPerView: 3, spaceBetween: 30 },
+                640: {
+                    slidesPerView: 1,
+                    spaceBetween: 20
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 25
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30
+                },
             },
         });
 
@@ -972,22 +1074,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Size Selection
         <?php if (!empty($sizes)): ?>
-        const sizeOptions = document.querySelectorAll('.size-option');
-        const sizeStatus = document.getElementById('sizeStatus');
-        const selectedSizeInput = document.getElementById('selectedSize');
+            const sizeOptions = document.querySelectorAll('.size-option');
+            const sizeStatus = document.getElementById('sizeStatus');
+            const selectedSizeInput = document.getElementById('selectedSize');
 
-        sizeOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                sizeOptions.forEach(opt => opt.classList.remove('selected'));
-                this.classList.add('selected');
-                selectedSize = this.getAttribute('data-size');
-                selectedSizeInput.value = selectedSize;
-                sizeStatus.style.color = '#66bb6a';
-                sizeStatus.textContent = 'সাইজ ' + selectedSize + ' নির্বাচিত';
+            sizeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    sizeOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedSize = this.getAttribute('data-size');
+                    selectedSizeInput.value = selectedSize;
+                    sizeStatus.style.color = '#66bb6a';
+                    sizeStatus.textContent = 'সাইজ ' + selectedSize + ' নির্বাচিত';
+                });
             });
-        });
         <?php else: ?>
-        selectedSize = 'N/A'; // No size needed for this product
+            selectedSize = 'N/A'; // No size needed for this product
         <?php endif; ?>
 
         // Quantity Controls
@@ -1021,15 +1123,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Form Submission
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             <?php if (!empty($sizes)): ?>
-            if (!selectedSize) {
-                e.preventDefault();
-                alert('দয়া করে একটি সাইজ নির্বাচন করুন');
-                window.scrollTo({
-                    top: document.querySelector('.size-selector').offsetTop - 100,
-                    behavior: 'smooth'
-                });
-                return;
-            }
+                if (!selectedSize) {
+                    e.preventDefault();
+                    alert('দয়া করে একটি সাইজ নির্বাচন করুন');
+                    window.scrollTo({
+                        top: document.querySelector('.size-selector').offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    return;
+                }
             <?php endif; ?>
 
             const name = document.getElementById('name').value.trim();
@@ -1069,4 +1171,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         updateTotal();
     </script>
 </body>
+
 </html>

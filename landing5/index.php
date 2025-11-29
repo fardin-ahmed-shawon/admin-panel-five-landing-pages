@@ -711,7 +711,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
             }
 
             .review-card {
-                width: 280px;
+                width: 300px;
             }
             
             .swiper-button-next,
@@ -730,15 +730,77 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
             }
         }
 
-        @media (max-width: 480px) {
-            .section-title {
-                font-size: 1.4rem;
-                padding: 15px;
-            }
-            
-            .review-card {
+        @media (max-width: 575px) {
+            header {
+    background: #ffd9a84d;
+    padding: 10px 0;
+}
+.section-title {
+    font-size: 1.4rem;
+    padding: 15px;
+    margin: 0px 0 -2px;
+}
+.countdown-item span {
+    font-size: 1.1rem;
+}
+.hero {
+    padding: 10px 20px;
+}      
+.product-hero {
+    background: #fff;
+    padding: 20px 20px;
+}
+.features-list {
+    padding: 20px 20px;
+}
+.feature-item {
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 14px;
+}           
+.gallery-section {
+    padding: 10px 20px;
+}
+.review-card {
                 width: 250px;
             }
+.reviews {
+    padding: 20px 20px;
+}
+.cta-button {
+    padding: 13px 15px;
+    font-size: 0.93rem;
+    margin: 20px 0;
+}
+.order-form {
+    padding: 10px 15px;
+}
+.form-container {
+    padding: 20px; 
+}
+.quantity-control {
+    justify-content: start;
+}
+.form-grid {
+    gap: 10px;
+}
+.submit-btn {
+    font-size: 1rem;
+    margin-top: 10px;
+}
+footer {
+    padding: 10px 10px;
+}
+.footer-contact {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+}
+element.style {
+    margin-top: 0;
+    opacity: 0.8;
+}
         }
     </style>
 </head>
@@ -982,7 +1044,7 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
 
                             <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 5px; border-left: 4px solid #ffc107;">
                                 <p style="margin: 0; font-size: 0.9rem; color: #856404;">
-                                    <strong>💵 ক্যাশ অন ডেলিভারি</strong><br>
+                                    <strong> ক্যাশ অন ডেলিভারি</strong><br>
                                     পণ্য হাতে পেয়ে টাকা পরিশোধ করুন।
                                 </p>
                             </div>
@@ -1005,8 +1067,8 @@ while($review = mysqli_fetch_assoc($reviews_result)) {
     <footer>
         <div class="container">
             <h2 class="footer-contact">আরো জানতে কল করুন!</h2>
-            <p style="font-size: 1.8rem; font-weight: bold; margin: 15px 0;">📞 <?= $websitePhone ?></p>
-            <p style="margin-top: 20px; opacity: 0.8;">© 2025 <?= $websiteName ?>. সর্বস্বত্ব সংরক্ষিত</p>
+            <p style="font-size: 1.6rem; font-weight: bold; margin: 0px 0;"><?= $websitePhone ?></p>
+            <p style="margin-top: 0px; opacity: 0.8;">© 2025 <?= $websiteName ?>. সর্বস্বত্ব সংরক্ষিত</p>
         </div>
     </footer>
 
